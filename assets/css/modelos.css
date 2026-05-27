@@ -1,0 +1,828 @@
+/* ══════════════════════════════════════════
+   HOME — split categories hero
+══════════════════════════════════════════ */
+
+.nil-home-body,
+.nil-home-body .nil-home {
+	margin: 0;
+	padding: 0;
+}
+
+.nil-home {
+	height: 100vh;
+	overflow: hidden;
+}
+
+.nil-categories-hero {
+	display: flex;
+	height: 100%;
+}
+
+.nil-cat-panel {
+	flex: 1;
+	position: relative;
+	overflow: hidden;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+/* Vertical separator */
+.nil-cat-panel + .nil-cat-panel::before {
+	content: '';
+	position: absolute;
+	left: 0;
+	top: 10%;
+	height: 80%;
+	width: 1px;
+	background: rgba(255, 255, 255, .2);
+	z-index: 3;
+}
+
+.nil-cat-bg {
+	position: absolute;
+	inset: 0;
+	background-size: cover;
+	background-position: center top;
+	transition: transform .9s cubic-bezier(.25, .46, .45, .94);
+}
+
+.nil-cat-panel:hover .nil-cat-bg {
+	transform: scale(1.06);
+}
+
+.nil-cat-overlay {
+	position: absolute;
+	inset: 0;
+	background: rgba(0, 0, 0, .38);
+	transition: background .5s ease;
+	z-index: 1;
+}
+
+.nil-cat-panel:hover .nil-cat-overlay {
+	background: rgba(0, 0, 0, .18);
+}
+
+.nil-cat-content {
+	position: absolute;
+	inset: 0;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+	padding: 52px 44px;
+	z-index: 2;
+}
+
+.nil-cat-count {
+	display: block;
+	color: rgba(255, 255, 255, .65);
+	font-size: .68rem;
+	letter-spacing: .32em;
+	text-transform: uppercase;
+	margin-bottom: 10px;
+}
+
+.nil-cat-name {
+	color: #fff;
+	font-size: clamp(2rem, 3vw, 3.8rem);
+	font-weight: 300;
+	letter-spacing: .28em;
+	margin: 0 0 16px;
+	line-height: 1;
+}
+
+.nil-cat-cta {
+	display: inline-block;
+	color: rgba(255, 255, 255, .7);
+	font-size: .68rem;
+	letter-spacing: .28em;
+	text-transform: uppercase;
+	opacity: 0;
+	transform: translateY(8px);
+	transition: opacity .4s ease, transform .4s ease;
+}
+
+.nil-cat-panel:hover .nil-cat-cta {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+/* ══════════════════════════════════════════
+   BREADCRUMB
+══════════════════════════════════════════ */
+
+.nil-breadcrumb {
+	font-size: .7rem;
+	letter-spacing: .2em;
+	text-transform: uppercase;
+	color: #aaa;
+	margin: 0 0 16px;
+}
+
+.nil-breadcrumb a {
+	color: #aaa;
+	text-decoration: none;
+	border-bottom: 1px solid transparent;
+	transition: border-color .2s;
+}
+
+.nil-breadcrumb a:hover {
+	border-color: #aaa;
+}
+
+.nil-archive-desc {
+	font-size: .9rem;
+	color: #888;
+	letter-spacing: .05em;
+	margin: 0;
+}
+
+/* ══════════════════════════════════════════
+   ARCHIVE — grid de modelos
+══════════════════════════════════════════ */
+
+.nil-archive-modelos {
+	padding-bottom: 80px;
+}
+
+.nil-archive-header {
+	text-align: center;
+	padding: 100px 20px 70px;
+}
+
+.nil-archive-title {
+	font-size: clamp(2rem, 5vw, 4.5rem);
+	font-weight: 300;
+	letter-spacing: .35em;
+	text-transform: uppercase;
+	margin: 0 0 12px;
+	line-height: 1.1;
+}
+
+.nil-models-grid {
+	column-count: 3;
+	column-gap: 3px;
+	padding: 0 3px;
+}
+
+.nil-model-card {
+	display: block;
+	break-inside: avoid;
+	margin-bottom: 3px;
+	position: relative;
+	overflow: hidden;
+	text-decoration: none;
+	color: inherit;
+}
+
+.nil-model-thumb {
+	position: relative;
+	overflow: hidden;
+	line-height: 0;
+}
+
+.nil-model-thumb img {
+	width: 100%;
+	height: auto;
+	display: block;
+	transition: transform .7s cubic-bezier(.25, .46, .45, .94);
+}
+
+.nil-model-card:hover .nil-model-thumb img {
+	transform: scale(1.05);
+}
+
+.nil-model-overlay {
+	position: absolute;
+	inset: 0;
+	background: rgba(0, 0, 0, .38);
+	display: flex;
+	align-items: flex-end;
+	padding: 28px 24px;
+	opacity: 0;
+	transition: opacity .4s ease;
+}
+
+.nil-model-card:hover .nil-model-overlay {
+	opacity: 1;
+}
+
+.nil-model-name {
+	color: #fff;
+	font-size: .8rem;
+	letter-spacing: .3em;
+	text-transform: uppercase;
+	font-weight: 500;
+	margin: 0;
+	line-height: 1;
+}
+
+/* Paginación */
+.nil-archive-modelos .nav-links {
+	display: flex;
+	justify-content: center;
+	gap: 12px;
+	padding: 48px 0 0;
+	font-size: .85rem;
+	letter-spacing: .15em;
+	text-transform: uppercase;
+}
+
+/* ══════════════════════════════════════════
+   TAXONOMY — related categories (interlinking)
+══════════════════════════════════════════ */
+
+.nil-related-cats {
+	padding: 80px 24px 60px;
+	border-top: 1px solid #e8e8e8;
+	margin-top: 72px;
+}
+
+.nil-related-cats-title {
+	font-size: .72rem;
+	letter-spacing: .32em;
+	text-transform: uppercase;
+	font-weight: 600;
+	color: #aaa;
+	margin: 0 0 32px;
+	text-align: center;
+}
+
+.nil-related-cats-grid {
+	display: flex;
+	gap: 3px;
+}
+
+.nil-related-cat-card {
+	flex: 1;
+	position: relative;
+	overflow: hidden;
+	height: 300px;
+	text-decoration: none;
+}
+
+.nil-related-cat-card .nil-cat-bg {
+	position: absolute;
+	inset: 0;
+	background-size: cover;
+	background-position: center top;
+	transition: transform .6s ease;
+}
+
+.nil-related-cat-card:hover .nil-cat-bg {
+	transform: scale(1.05);
+}
+
+.nil-related-cat-card .nil-cat-overlay {
+	position: absolute;
+	inset: 0;
+	background: rgba(0, 0, 0, .42);
+	transition: background .4s ease;
+}
+
+.nil-related-cat-card:hover .nil-cat-overlay {
+	background: rgba(0, 0, 0, .22);
+}
+
+.nil-related-cat-info {
+	position: absolute;
+	bottom: 24px;
+	left: 24px;
+	z-index: 2;
+}
+
+.nil-related-cat-name {
+	display: block;
+	color: #fff;
+	font-size: .82rem;
+	letter-spacing: .3em;
+	text-transform: uppercase;
+	font-weight: 400;
+	margin-bottom: 4px;
+}
+
+.nil-related-cat-count {
+	display: block;
+	color: rgba(255, 255, 255, .6);
+	font-size: .65rem;
+	letter-spacing: .25em;
+	text-transform: uppercase;
+}
+
+/* ══════════════════════════════════════════
+   SINGLE — perfil del modelo
+══════════════════════════════════════════ */
+
+.nil-single-modelo {
+	max-width: 1360px;
+	margin: 0 auto;
+	padding: 0 24px 100px;
+}
+
+.nil-modelo-hero {
+	display: grid;
+	grid-template-columns: 55% 1fr;
+	gap: 72px;
+	padding: 64px 0 80px;
+	align-items: start;
+}
+
+.nil-modelo-photo {
+	line-height: 0;
+}
+
+.nil-modelo-photo img {
+	width: 100%;
+	height: auto;
+	display: block;
+}
+
+.nil-modelo-info {
+	position: sticky;
+	top: 40px;
+}
+
+.nil-modelo-name {
+	font-size: clamp(2.4rem, 3.5vw, 4rem);
+	font-weight: 300;
+	letter-spacing: .35em;
+	text-transform: uppercase;
+	margin: 0 0 48px;
+	line-height: 1.05;
+}
+
+/* Stats */
+.nil-modelo-stats {
+	border-top: 1px solid #d8d8d8;
+	margin-bottom: 40px;
+}
+
+.nil-stat-row {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 14px 0;
+	border-bottom: 1px solid #d8d8d8;
+}
+
+.nil-stat-label {
+	font-size: .72rem;
+	letter-spacing: .22em;
+	text-transform: uppercase;
+	font-weight: 600;
+	color: #aaa;
+}
+
+.nil-stat-value {
+	font-size: .85rem;
+	letter-spacing: .1em;
+	font-weight: 400;
+}
+
+/* Bio */
+.nil-modelo-bio {
+	font-size: .92rem;
+	line-height: 1.75;
+	color: #555;
+}
+
+/* ══════════════════════════════════════════
+   GALERÍA DE FOTOS
+══════════════════════════════════════════ */
+
+.nil-gallery-section {
+	padding: 20px 0 60px;
+}
+
+.nil-gallery-grid {
+	column-count: 3;
+	column-gap: 3px;
+}
+
+.nil-gallery-item {
+	break-inside: avoid;
+	margin-bottom: 3px;
+	line-height: 0;
+	overflow: hidden;
+}
+
+.nil-gallery-item img {
+	width: 100%;
+	height: auto;
+	display: block;
+	transition: transform .6s ease;
+}
+
+.nil-gallery-item:hover img {
+	transform: scale(1.03);
+}
+
+/* ══════════════════════════════════════════
+   GALERÍA DE VIDEOS
+══════════════════════════════════════════ */
+
+.nil-videos-section {
+	padding: 20px 0 60px;
+}
+
+.nil-videos-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+	gap: 12px;
+}
+
+.nil-video-item {
+	position: relative;
+	aspect-ratio: 16 / 9;
+	overflow: hidden;
+	background: #111;
+}
+
+.nil-video-item iframe {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	border: 0;
+}
+
+/* ══════════════════════════════════════════
+   SINGLE — interlinking (related + categories)
+══════════════════════════════════════════ */
+
+.nil-related-models {
+	padding: 60px 0;
+	border-top: 1px solid #e8e8e8;
+}
+
+.nil-section-label {
+	display: block;
+	font-size: .72rem;
+	letter-spacing: .3em;
+	text-transform: uppercase;
+	font-weight: 600;
+	color: #aaa;
+	margin-bottom: 32px;
+}
+
+.nil-related-models-grid {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 3px;
+}
+
+.nil-related-model-card {
+	display: block;
+	position: relative;
+	overflow: hidden;
+	text-decoration: none;
+	color: inherit;
+}
+
+.nil-related-model-card img {
+	width: 100%;
+	height: auto;
+	display: block;
+	transition: transform .6s ease;
+}
+
+.nil-related-model-card:hover img {
+	transform: scale(1.04);
+}
+
+.nil-related-model-info {
+	padding: 12px 0 0;
+}
+
+.nil-related-model-info h3 {
+	font-size: .78rem;
+	letter-spacing: .2em;
+	text-transform: uppercase;
+	font-weight: 400;
+	margin: 0;
+}
+
+.nil-other-cats {
+	padding: 48px 0;
+	border-top: 1px solid #e8e8e8;
+	display: flex;
+	align-items: center;
+	gap: 36px;
+	flex-wrap: wrap;
+}
+
+.nil-other-cats-label {
+	font-size: .68rem;
+	letter-spacing: .28em;
+	text-transform: uppercase;
+	color: #aaa;
+	font-weight: 600;
+	white-space: nowrap;
+}
+
+.nil-other-cats-links {
+	display: flex;
+	gap: 28px;
+	flex-wrap: wrap;
+}
+
+.nil-other-cats-links a {
+	font-size: .75rem;
+	letter-spacing: .22em;
+	text-transform: uppercase;
+	color: #222;
+	text-decoration: none;
+	border-bottom: 1px solid transparent;
+	transition: border-color .2s ease;
+}
+
+.nil-other-cats-links a:hover {
+	border-color: #222;
+}
+
+/* ══════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════ */
+
+@media (max-width: 1024px) {
+	.nil-models-grid       { column-count: 2; }
+	.nil-modelo-hero       { grid-template-columns: 1fr; gap: 40px; }
+	.nil-modelo-info       { position: static; }
+	.nil-gallery-grid      { column-count: 2; }
+}
+
+@media (max-width: 768px) {
+	.nil-home              { height: auto; }
+	.nil-categories-hero   { flex-direction: column; height: auto; }
+	.nil-cat-panel         { height: 55vw; min-height: 260px; }
+	.nil-cat-panel + .nil-cat-panel::before { display: none; }
+	.nil-related-cats-grid { flex-direction: column; }
+	.nil-related-cat-card  { height: 200px; }
+}
+
+@media (max-width: 600px) {
+	.nil-models-grid           { column-count: 2; column-gap: 2px; }
+	.nil-models-grid .nil-model-card { margin-bottom: 2px; }
+	.nil-related-models-grid   { grid-template-columns: repeat(2, 1fr); }
+	.nil-videos-grid           { grid-template-columns: 1fr; }
+}
+
+
+.nil-archive-modelos {
+	padding-bottom: 80px;
+}
+
+.nil-archive-header {
+	text-align: center;
+	padding: 100px 20px 70px;
+}
+
+.nil-archive-title {
+	font-size: clamp(2rem, 5vw, 4.5rem);
+	font-weight: 300;
+	letter-spacing: .35em;
+	text-transform: uppercase;
+	margin: 0;
+	line-height: 1.1;
+}
+
+.nil-models-grid {
+	column-count: 3;
+	column-gap: 3px;
+	padding: 0 3px;
+}
+
+.nil-model-card {
+	display: block;
+	break-inside: avoid;
+	margin-bottom: 3px;
+	position: relative;
+	overflow: hidden;
+	text-decoration: none;
+	color: inherit;
+}
+
+.nil-model-thumb {
+	position: relative;
+	overflow: hidden;
+	line-height: 0;
+}
+
+.nil-model-thumb img {
+	width: 100%;
+	height: auto;
+	display: block;
+	transition: transform .7s cubic-bezier(.25, .46, .45, .94);
+}
+
+.nil-model-card:hover .nil-model-thumb img {
+	transform: scale(1.05);
+}
+
+.nil-model-overlay {
+	position: absolute;
+	inset: 0;
+	background: rgba(0, 0, 0, .38);
+	display: flex;
+	align-items: flex-end;
+	padding: 28px 24px;
+	opacity: 0;
+	transition: opacity .4s ease;
+}
+
+.nil-model-card:hover .nil-model-overlay {
+	opacity: 1;
+}
+
+.nil-model-name {
+	color: #fff;
+	font-size: .8rem;
+	letter-spacing: .3em;
+	text-transform: uppercase;
+	font-weight: 500;
+	margin: 0;
+	line-height: 1;
+}
+
+/* Paginación */
+.nil-archive-modelos .nav-links {
+	display: flex;
+	justify-content: center;
+	gap: 12px;
+	padding: 48px 0 0;
+	font-size: .85rem;
+	letter-spacing: .15em;
+	text-transform: uppercase;
+}
+
+/* ══════════════════════════════════════════
+   SINGLE — perfil del modelo
+══════════════════════════════════════════ */
+
+.nil-single-modelo {
+	max-width: 1360px;
+	margin: 0 auto;
+	padding: 0 24px 100px;
+}
+
+.nil-modelo-hero {
+	display: grid;
+	grid-template-columns: 55% 1fr;
+	gap: 72px;
+	padding: 64px 0 80px;
+	align-items: start;
+}
+
+.nil-modelo-photo {
+	line-height: 0;
+}
+
+.nil-modelo-photo img {
+	width: 100%;
+	height: auto;
+	display: block;
+}
+
+.nil-modelo-info {
+	position: sticky;
+	top: 40px;
+}
+
+.nil-modelo-name {
+	font-size: clamp(2.4rem, 3.5vw, 4rem);
+	font-weight: 300;
+	letter-spacing: .35em;
+	text-transform: uppercase;
+	margin: 0 0 48px;
+	line-height: 1.05;
+}
+
+/* Stats */
+.nil-modelo-stats {
+	border-top: 1px solid #d8d8d8;
+	margin-bottom: 40px;
+}
+
+.nil-stat-row {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 14px 0;
+	border-bottom: 1px solid #d8d8d8;
+}
+
+.nil-stat-label {
+	font-size: .72rem;
+	letter-spacing: .22em;
+	text-transform: uppercase;
+	font-weight: 600;
+	color: #aaa;
+}
+
+.nil-stat-value {
+	font-size: .85rem;
+	letter-spacing: .1em;
+	font-weight: 400;
+}
+
+/* Bio / contenido */
+.nil-modelo-bio {
+	font-size: .92rem;
+	line-height: 1.75;
+	color: #555;
+}
+
+/* ══════════════════════════════════════════
+   GALERÍA DE FOTOS
+══════════════════════════════════════════ */
+
+.nil-gallery-section {
+	padding: 20px 0 60px;
+}
+
+.nil-gallery-grid {
+	column-count: 3;
+	column-gap: 3px;
+}
+
+.nil-gallery-item {
+	break-inside: avoid;
+	margin-bottom: 3px;
+	line-height: 0;
+	overflow: hidden;
+}
+
+.nil-gallery-item img {
+	width: 100%;
+	height: auto;
+	display: block;
+	transition: transform .6s ease;
+}
+
+.nil-gallery-item:hover img {
+	transform: scale(1.03);
+}
+
+/* ══════════════════════════════════════════
+   GALERÍA DE VIDEOS
+══════════════════════════════════════════ */
+
+.nil-videos-section {
+	padding: 20px 0 60px;
+}
+
+.nil-videos-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+	gap: 12px;
+}
+
+.nil-video-item {
+	position: relative;
+	aspect-ratio: 16 / 9;
+	overflow: hidden;
+	background: #111;
+}
+
+.nil-video-item iframe {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	border: 0;
+}
+
+/* ══════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════ */
+
+@media (max-width: 1024px) {
+	.nil-models-grid {
+		column-count: 2;
+	}
+	.nil-modelo-hero {
+		grid-template-columns: 1fr;
+		gap: 40px;
+	}
+	.nil-modelo-info {
+		position: static;
+	}
+	.nil-gallery-grid {
+		column-count: 2;
+	}
+}
+
+@media (max-width: 600px) {
+	.nil-models-grid {
+		column-count: 2;
+		column-gap: 2px;
+	}
+	.nil-models-grid .nil-model-card {
+		margin-bottom: 2px;
+	}
+	.nil-gallery-grid {
+		column-count: 2;
+	}
+	.nil-videos-grid {
+		grid-template-columns: 1fr;
+	}
+}
