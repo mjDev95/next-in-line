@@ -6,7 +6,7 @@
 
 	<header class="nil-archive-header">
 		<p class="nil-breadcrumb">
-			<a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php _e( 'Home', 'hello-elementor-child' ); ?></a>
+			<a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php esc_html_e( 'Inicio', 'hello-elementor-child' ); ?></a>
 			<span>&nbsp;/&nbsp;</span>
 			<span><?php echo esc_html( $term->name ); ?></span>
 		</p>
@@ -20,7 +20,12 @@
 		<?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
 			<a href="<?php the_permalink(); ?>"
 			   class="nil-model-card"
-			   title="<?php the_title_attribute(); ?> — <?php echo esc_attr( $term->name ); ?> Model">
+			   title="<?php echo esc_attr( sprintf(
+			   		/* translators: 1: nombre del modelo, 2: nombre de la categoría */
+			   		__( '%1$s — Modelo %2$s', 'hello-elementor-child' ),
+			   		get_the_title(),
+			   		$term->name
+			   ) ); ?>">
 				<div class="nil-model-thumb">
 					<?php the_post_thumbnail( 'large' ); ?>
 					<div class="nil-model-overlay">
@@ -44,9 +49,9 @@
 	if ( ! is_wp_error( $other_terms ) && ! empty( $other_terms ) ) :
 	?>
 
-	<section class="nil-related-cats" aria-label="<?php esc_attr_e( 'Other model categories', 'hello-elementor-child' ); ?>">
+	<section class="nil-related-cats" aria-label="<?php esc_attr_e( 'Otras divisiones de modelos', 'hello-elementor-child' ); ?>">
 
-		<h2 class="nil-related-cats-title"><?php _e( 'Discover Other Categories', 'hello-elementor-child' ); ?></h2>
+		<h2 class="nil-related-cats-title"><?php esc_html_e( 'Descubre otras divisiones', 'hello-elementor-child' ); ?></h2>
 
 		<div class="nil-related-cats-grid">
 			<?php foreach ( $other_terms as $other ) :
@@ -69,7 +74,11 @@
 
 				<a href="<?php echo esc_url( get_term_link( $other ) ); ?>"
 				   class="nil-related-cat-card"
-				   title="<?php echo esc_attr( $other->name ); ?> Models">
+				   title="<?php echo esc_attr( sprintf(
+				   		/* translators: %s: nombre de la categoría */
+				   		__( 'Modelos %s', 'hello-elementor-child' ),
+				   		$other->name
+				   ) ); ?>">
 
 					<?php if ( $bg_url ) : ?>
 						<div class="nil-cat-bg" style="background-image:url('<?php echo esc_url( $bg_url ); ?>')"></div>
@@ -77,7 +86,7 @@
 					<div class="nil-cat-overlay"></div>
 					<div class="nil-related-cat-info">
 						<span class="nil-related-cat-name"><?php echo esc_html( strtoupper( $other->name ) ); ?></span>
-						<span class="nil-related-cat-count"><?php echo absint( $other->count ); ?> <?php _e( 'Models', 'hello-elementor-child' ); ?></span>
+						<span class="nil-related-cat-count"><?php echo absint( $other->count ); ?> <?php esc_html_e( 'Modelos', 'hello-elementor-child' ); ?></span>
 					</div>
 
 				</a>

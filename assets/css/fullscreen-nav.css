@@ -1,0 +1,313 @@
+/* ══════════════════════════════════════════
+   SITE BAR — persistent top strip
+══════════════════════════════════════════ */
+
+.nil-site-bar {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	z-index: 200;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 28px 40px;
+	pointer-events: none; /* children re-enable */
+}
+
+.nil-bar-brand {
+	pointer-events: all;
+	text-decoration: none;
+	display: flex;
+	align-items: center;
+}
+
+.nil-bar-brand img {
+	height: 36px;
+	width: auto;
+	display: block;
+	object-fit: contain;
+}
+
+.nil-bar-brand span {
+	color: #111;
+	font-size: .72rem;
+	font-weight: 400;
+	letter-spacing: .4em;
+	text-transform: uppercase;
+}
+
+/* ── Hamburger ── */
+
+.nil-hamburger {
+	pointer-events: all;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	gap: 8px;
+	background: none;
+	border: none;
+	cursor: pointer;
+	padding: 10px;
+	z-index: 300; /* above nav overlay */
+	position: relative;
+}
+
+.nil-ham-line {
+	display: block;
+	width: 36px;
+	height: 2px;
+	background: #111;
+	transform-origin: center;
+	transition: background 0.3s ease;
+}
+
+/* When menu is open, lines go white (nav bg is dark) */
+.nil-hamburger.is-open .nil-ham-line {
+	background: #fff;
+}
+
+/* ══════════════════════════════════════════
+   FULLSCREEN NAV OVERLAY
+══════════════════════════════════════════ */
+
+.nil-fullscreen-nav {
+	position: fixed;
+	inset: 0;
+	z-index: 250;
+	background: #0c0c0c;
+	display: flex;
+	align-items: stretch;
+
+	/* GSAP controls visibility via clip-path */
+	clip-path: inset(0 100% 0 0);
+	visibility: hidden;
+	pointer-events: none;
+}
+
+.nil-fn-inner {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	width: 100%;
+	padding: 80px 10vw 60px;
+}
+
+/* ── Menu items ── */
+
+.nil-fn-menu {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	counter-reset: fn-item;
+}
+
+.nil-fn-menu > .menu-item {
+	counter-increment: fn-item;
+	overflow: hidden; /* clip per-item for future reveal variant */
+	margin-bottom: 4px;
+}
+
+.nil-fn-menu > .menu-item > a {
+	display: inline-flex;
+	align-items: baseline;
+	gap: 20px;
+	text-decoration: none;
+	color: rgba(255, 255, 255, .85);
+	font-size: clamp(2.2rem, 5vw, 5rem);
+	font-weight: 200;
+	letter-spacing: .1em;
+	text-transform: uppercase;
+	line-height: 1.15;
+	transition: color .25s ease;
+	padding: 6px 0;
+}
+
+.nil-fn-menu > .menu-item > a::before {
+	content: counter(fn-item, decimal-leading-zero);
+	font-size: .45em;
+	letter-spacing: .25em;
+	color: rgba(255, 255, 255, .35);
+	font-weight: 300;
+	flex-shrink: 0;
+	transition: color .25s ease;
+}
+
+.nil-fn-menu > .menu-item > a:hover {
+	color: #fff;
+}
+
+.nil-fn-menu > .menu-item > a:hover::before {
+	color: rgba(255, 255, 255, .6);
+}
+
+/* ── Sub-menu ── */
+
+.nil-fn-menu .sub-menu {
+	list-style: none;
+	margin: 2px 0 10px calc(clamp(2.2rem, 5vw, 5rem) * .45 + 20px);
+	padding: 0;
+}
+
+.nil-fn-menu .sub-menu .menu-item {
+	margin-bottom: 2px;
+}
+
+.nil-fn-menu .sub-menu .menu-item a {
+	display: block;
+	text-decoration: none;
+	color: rgba(255, 255, 255, .45);
+	font-size: .7rem;
+	letter-spacing: .35em;
+	text-transform: uppercase;
+	padding: 4px 0;
+	transition: color .25s ease;
+}
+
+.nil-fn-menu .sub-menu .menu-item a:hover {
+	color: rgba(255, 255, 255, .85);
+}
+
+/* ── Close button (×) ── */
+
+.nil-fn-close {
+	position: absolute;
+	top: 28px;
+	right: 40px;
+	background: none;
+	border: none;
+	cursor: pointer;
+	width: 36px;
+	height: 36px;
+	padding: 0;
+	z-index: 10;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.nil-fn-close::before,
+.nil-fn-close::after {
+	content: '';
+	position: absolute;
+	width: 28px;
+	height: 1px;
+	background: rgba(255, 255, 255, .55);
+	transition: background 0.25s ease;
+}
+
+.nil-fn-close::before {
+	transform: rotate(45deg);
+}
+
+.nil-fn-close::after {
+	transform: rotate(-45deg);
+}
+
+.nil-fn-close:hover::before,
+.nil-fn-close:hover::after {
+	background: #fff;
+}
+
+/* ── Footer ── */
+
+.nil-fn-footer {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	gap: 16px;
+	padding-top: 40px;
+	border-top: 1px solid rgba(255, 255, 255, .1);
+}
+
+.nil-fn-footer-brand {
+	color: rgba(255, 255, 255, .4);
+	text-decoration: none;
+	font-size: .62rem;
+	letter-spacing: .45em;
+	text-transform: uppercase;
+	transition: color .25s ease;
+}
+
+.nil-fn-footer-brand:hover {
+	color: rgba(255, 255, 255, .75);
+}
+
+.nil-fn-footer-social {
+	display: flex;
+	gap: 20px;
+}
+
+.nil-fn-footer-social a {
+	color: rgba(255, 255, 255, .4);
+	display: flex;
+	align-items: center;
+	text-decoration: none;
+	transition: color .25s ease;
+}
+
+.nil-fn-footer-social a:hover {
+	color: rgba(255, 255, 255, .85);
+}
+
+/* ══════════════════════════════════════════
+   PAGE OFFSET (content below fixed bar)
+══════════════════════════════════════════ */
+
+/* Explicit targets only — never touch #wpadminbar or anything else */
+.nil-archive-modelos,
+.nil-single-modelo {
+	padding-top: 96px;
+}
+
+/* ══════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+	.nil-site-bar {
+		padding: 20px 24px;
+	}
+
+	.nil-fn-close {
+		top: 20px;
+		right: 24px;
+	}
+
+	.nil-fn-inner {
+		padding: 72px 8vw 48px;
+	}
+
+	.nil-fn-menu > .menu-item > a {
+		gap: 14px;
+	}
+
+	.nil-fn-menu .sub-menu {
+		margin-left: calc(clamp(2.2rem, 5vw, 5rem) * .45 + 14px);
+	}
+}
+
+/* ══════════════════════════════════════════
+   ADMIN BAR COMPATIBILITY
+   WP adds `html { margin-top: 32px }` when
+   logged in — offset our fixed elements.
+══════════════════════════════════════════ */
+
+body.admin-bar .nil-site-bar {
+	top: 32px;
+}
+
+body.admin-bar .nil-fullscreen-nav {
+	top: 32px;
+}
+
+@media screen and (max-width: 782px) {
+	body.admin-bar .nil-site-bar {
+		top: 46px;
+	}
+
+	body.admin-bar .nil-fullscreen-nav {
+		top: 46px;
+	}
+}

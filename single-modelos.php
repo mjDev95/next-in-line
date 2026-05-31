@@ -2,6 +2,24 @@
 
 <main class="nil-single-modelo">
 
+	<nav class="nil-breadcrumb" aria-label="<?php esc_attr_e( 'Ruta de navegación', 'hello-elementor-child' ); ?>">
+		<?php if ( function_exists( 'yoast_breadcrumb' ) ) :
+			yoast_breadcrumb( '<div class="nil-breadcrumb-inner">', '</div>' );
+		else : ?>
+			<div class="nil-breadcrumb-inner">
+				<a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php esc_html_e( 'Inicio', 'hello-elementor-child' ); ?></a>
+				<?php
+				$bc_terms = get_the_terms( get_the_ID(), 'tipo-modelo' );
+				if ( $bc_terms && ! is_wp_error( $bc_terms ) ) : ?>
+					<span class="nil-bc-sep" aria-hidden="true">/</span>
+					<a href="<?php echo esc_url( get_term_link( $bc_terms[0] ) ); ?>"><?php echo esc_html( $bc_terms[0]->name ); ?></a>
+				<?php endif; ?>
+				<span class="nil-bc-sep" aria-hidden="true">/</span>
+				<span class="nil-bc-current" aria-current="page"><?php the_title(); ?></span>
+			</div>
+		<?php endif; ?>
+	</nav>
+
 	<div class="nil-modelo-hero">
 
 		<div class="nil-modelo-photo">
