@@ -25,6 +25,16 @@ function nil_modelos_register_settings() {
 		'default'           => 7,
 		'sanitize_callback' => 'absint',
 	) );
+	register_setting( 'nil_modelos_settings_group', 'nil_modelos_hero_animation', array(
+		'type'              => 'string',
+		'default'           => 'none',
+		'sanitize_callback' => 'nil_sanitize_modelos_hero_animation',
+	) );
+}
+
+function nil_sanitize_modelos_hero_animation( $value ) {
+	$value = sanitize_key( $value );
+	return in_array( $value, array( 'none', 'scroll', 'timelapse' ), true ) ? $value : 'none';
 }
 
 function nil_modelos_settings_page() {
@@ -55,6 +65,30 @@ function nil_modelos_settings_page() {
 						>
 						<p class="description">
 							<?php esc_html_e( 'Días que tiene un modelo publicado para añadir fotos a su galería. Si el plazo vence sin fotos, el perfil se mueve a Borradores automáticamente.', 'hello-elementor-child' ); ?>
+						</p>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row">
+						<label for="nil_modelos_hero_animation">
+							<?php esc_html_e( 'Animación del hero en perfiles', 'hello-elementor-child' ); ?>
+						</label>
+					</th>
+					<td>
+						<?php $hero_animation = get_option( 'nil_modelos_hero_animation', 'none' ); ?>
+						<select id="nil_modelos_hero_animation" name="nil_modelos_hero_animation">
+							<option value="none" <?php selected( $hero_animation, 'none' ); ?>>
+								<?php esc_html_e( 'Sin animación', 'hello-elementor-child' ); ?>
+							</option>
+							<option value="scroll" <?php selected( $hero_animation, 'scroll' ); ?>>
+								<?php esc_html_e( 'Por scroll', 'hello-elementor-child' ); ?>
+							</option>
+							<option value="timelapse" <?php selected( $hero_animation, 'timelapse' ); ?>>
+								<?php esc_html_e( 'Automática', 'hello-elementor-child' ); ?>
+							</option>
+						</select>
+						<p class="description">
+							<?php esc_html_e( 'Este ajuste aplica globalmente a todos los perfiles de modelos.', 'hello-elementor-child' ); ?>
 						</p>
 					</td>
 				</tr>

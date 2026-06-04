@@ -24,6 +24,23 @@ $panels = array_values(
 
 <header class="nil-home" role="banner">
 
+	<!-- ── Logo ── -->
+	<div class="nil-home-logo">
+		<?php
+		$_nil_custom_logo_id = (int) get_theme_mod( 'custom_logo', 0 );
+		$_nil_logo_id        = $_nil_custom_logo_id ?: (int) get_option( 'nil_header_logo_id', 0 );
+		$_nil_logo_url       = $_nil_logo_id ? wp_get_attachment_image_url( $_nil_logo_id, 'full' ) : '';
+		if ( $_nil_logo_url ) : ?>
+			<a href="<?php echo esc_url( home_url( '/' ) ); ?>" aria-label="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>">
+				<img src="<?php echo esc_url( $_nil_logo_url ); ?>" alt="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>">
+			</a>
+		<?php else : ?>
+			<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="nil-home-logo-text">
+				<?php bloginfo( 'name' ); ?>
+			</a>
+		<?php endif; ?>
+	</div>
+
 	<?php if ( $home_video ) : ?>
 		<video class="nil-home-bg-video" autoplay muted loop playsinline>
 			<source src="<?php echo esc_url( $home_video ); ?>" type="video/mp4">

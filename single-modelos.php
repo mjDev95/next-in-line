@@ -1,8 +1,31 @@
-<?php get_header(); the_post(); ?>
+<?php
+get_header();
+the_post();
 
-<main class="nil-single-modelo">
+$nil_hero_animation = get_option( 'nil_modelos_hero_animation', 'scroll' );
+if ( ! in_array( $nil_hero_animation, array( 'scroll', 'timelapse' ), true ) ) {
+	$nil_hero_animation = 'scroll';
+}
 
-	<nav class="nil-breadcrumb" aria-label="<?php esc_attr_e( 'Ruta de navegación', 'hello-elementor-child' ); ?>">
+$nil_terms = get_the_terms( get_the_ID(), 'tipo-modelo' );
+$nil_model_category = ( $nil_terms && ! is_wp_error( $nil_terms ) ) ? $nil_terms[0]->name : '';
+
+$stats = array(
+	'HEIGHT' => get_post_meta( get_the_ID(), 'height', true ),
+	'SUIT'   => get_post_meta( get_the_ID(), 'suit',   true ),
+	'COLLAR' => get_post_meta( get_the_ID(), 'collar', true ),
+	'WAIST'  => get_post_meta( get_the_ID(), 'waist',  true ),
+	'INSEAM' => get_post_meta( get_the_ID(), 'inseam', true ),
+	'SHOE'   => get_post_meta( get_the_ID(), 'shoe',   true ),
+	'HAIR'   => get_post_meta( get_the_ID(), 'hair',   true ),
+	'EYES'   => get_post_meta( get_the_ID(), 'eyes',   true ),
+);
+$has_stats = array_filter( $stats );
+?>
+
+<main class="nil-single-modelo nil-modelo-hero-mode-<?php echo esc_attr( $nil_hero_animation ); ?>">
+
+	<nav class="nil-breadcrumb d-none" aria-label="<?php esc_attr_e( 'Ruta de navegación', 'hello-elementor-child' ); ?>">
 		<?php if ( function_exists( 'yoast_breadcrumb' ) ) :
 			yoast_breadcrumb( '<div class="nil-breadcrumb-inner">', '</div>' );
 		else : ?>
@@ -20,47 +43,57 @@
 		<?php endif; ?>
 	</nav>
 
-	<div class="nil-modelo-hero">
+	<div class="nil-hero-scroll-wrapper">
 
-		<div class="nil-modelo-photo">
-			<?php if ( has_post_thumbnail() ) : the_post_thumbnail( 'full' ); endif; ?>
-		</div>
+		<section class="nil-single-modelo nil-modelo-hero-mode-scroll nil-modelo-hero" data-hero-mode="<?php echo esc_attr( $nil_hero_animation ); ?>">
 
-		<div class="nil-modelo-info">
-			<h1 class="nil-modelo-name"><?php the_title(); ?></h1>
+			<div class="nil-modelo-hero-text nil-modelo-hero-left">
+				<span class="nil-modelo-kicker"><?php esc_html_e( 'Modelo', 'hello-elementor-child' ); ?></span>
+				<h1 class="nil-modelo-name"><?php the_title(); ?></h1>
+			</div>
 
-			<?php
-			$stats = array(
-				'HEIGHT' => get_post_meta( get_the_ID(), 'height', true ),
-				'SUIT'   => get_post_meta( get_the_ID(), 'suit',   true ),
-				'COLLAR' => get_post_meta( get_the_ID(), 'collar', true ),
-				'WAIST'  => get_post_meta( get_the_ID(), 'waist',  true ),
-				'INSEAM' => get_post_meta( get_the_ID(), 'inseam', true ),
-				'SHOE'   => get_post_meta( get_the_ID(), 'shoe',   true ),
-				'HAIR'   => get_post_meta( get_the_ID(), 'hair',   true ),
-				'EYES'   => get_post_meta( get_the_ID(), 'eyes',   true ),
-			);
-			$has_stats = array_filter( $stats );
-			if ( $has_stats ) : ?>
-				<div class="nil-modelo-stats">
-					<?php foreach ( $stats as $label => $value ) :
-						if ( ! $value ) continue; ?>
-						<div class="nil-stat-row">
-							<span class="nil-stat-label"><?php echo esc_html( $label ); ?></span>
-							<span class="nil-stat-value"><?php echo esc_html( $value ); ?></span>
-						</div>
-					<?php endforeach; ?>
+			<div class="nil-modelo-photo nil-modelo-photo-target">
+				<?php if ( has_post_thumbnail() ) : the_post_thumbnail( 'full' ); endif; ?>
+			</div>
+
+			<?php if ( $nil_model_category ) : ?>
+				<div class="nil-modelo-hero-text nil-modelo-hero-right">
+					<span class="nil-modelo-kicker"><?php esc_html_e( 'Categoría', 'hello-elementor-child' ); ?></span>
+					<p class="nil-modelo-category"><?php echo esc_html( $nil_model_category ); ?></p>
 				</div>
 			<?php endif; ?>
 
-			<?php if ( get_the_content() ) : ?>
-				<div class="nil-modelo-bio">
-					<?php the_content(); ?>
-				</div>
-			<?php endif; ?>
-		</div>
+		</section>
 
 	</div>
+
+	<?php if ( $has_stats || get_the_content() ) : ?>
+		<section class="nil-modelo-details">
+			<div class="nil-modelo-details-label">
+				<?php esc_html_e( 'Perfil', 'hello-elementor-child' ); ?>
+			</div>
+
+			<div class="nil-modelo-details-body">
+				<?php if ( get_the_content() ) : ?>
+					<div class="nil-modelo-bio">
+						<?php the_content(); ?>
+					</div>
+				<?php endif; ?>
+
+				<?php if ( $has_stats ) : ?>
+					<div class="nil-modelo-stats">
+						<?php foreach ( $stats as $label => $value ) :
+							if ( ! $value ) continue; ?>
+							<div class="nil-stat-row">
+								<span class="nil-stat-label"><?php echo esc_html( $label ); ?></span>
+								<span class="nil-stat-value"><?php echo esc_html( $value ); ?></span>
+							</div>
+						<?php endforeach; ?>
+					</div>
+				<?php endif; ?>
+			</div>
+		</section>
+	<?php endif; ?>
 
 	<?php
 	$ids_string = get_post_meta( get_the_ID(), 'galeria_fotos', true );

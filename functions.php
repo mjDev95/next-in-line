@@ -11,9 +11,31 @@ require_once get_stylesheet_directory() . '/inc/grace-period.php';
 add_action( 'after_setup_theme', 'nil_theme_setup' );
 function nil_theme_setup() {
 	add_theme_support( 'post-thumbnails' );
+	add_theme_support( 'custom-logo', array(
+		'height'      => 60,
+		'width'       => 200,
+		'flex-height' => true,
+		'flex-width'  => true,
+	) );
 	register_nav_menus( array(
 		'nil-fullscreen-menu' => __( 'Menú Pantalla Completa (Header)', 'hello-elementor-child' ),
 	) );
+}
+
+/**
+ * Script crítico en <head>:
+ * - Añade la clase nil-js antes del primer paint (evita FOUC del page-transition overlay).
+ * - Detecta visita previa via sessionStorage y añade nil-preloader-skip.
+ * - En primera visita a la Home añade nil-preloader-active (el overlay permanece oculto).
+ */
+add_action( 'wp_head', 'nil_head_inline_script', 1 );
+function nil_head_inline_script() {
+	$is_home = is_front_page() ? 'true' : 'false';
+	echo "<script>(function(){
+	var d=document.documentElement;
+	d.classList.add('nil-js');
+	if({$is_home}){d.classList.add('nil-preloader-active');}
+})();</script>\n";
 }
 
 add_action( 'admin_enqueue_scripts', 'nil_admin_scripts' );
@@ -27,61 +49,105 @@ function nil_admin_scripts( $hook ) {
 
 add_action( 'wp_enqueue_scripts', 'hello_elementor_child_enqueue_styles' );
 function hello_elementor_child_enqueue_styles() {
-	wp_enqueue_style(
-		'hello-elementor-style',
-		get_template_directory_uri() . '/style.css'
-	);
+	// Helper: usa filemtime para que el navegador siempre descargue la versión más reciente
+	$v = function ( $rel ) {
+		$path = get_stylesheet_directory() . $rel;
+		return file_exists( $path ) ? filemtime( $path ) : wp_get_theme()->get( 'Version' );
+	};
+
+	wp_enqueue_style( 'hello-elementor-style', get_template_directory_uri() . '/style.css' );
 	wp_enqueue_style(
 		'hello-elementor-child-style',
 		get_stylesheet_directory_uri() . '/style.css',
 		[ 'hello-elementor-style' ],
 		wp_get_theme()->get( 'Version' )
 	);
+	wp_enqueue_style(
+		'bootstrap-layout-lite',
+		get_stylesheet_directory_uri() . '/assets/css/bootstrap-layout-lite.css',
+		[ 'hello-elementor-child-style' ],
+		$v( '/assets/css/bootstrap-layout-lite.css' )
+	);
+	wp_enqueue_style(
+		'hello-elementor-child-global',
+		get_stylesheet_directory_uri() . '/assets/css/global.css',
+		[ 'hello-elementor-child-style' ],
+		$v( '/assets/css/global.css' )
+	);
 	if ( is_front_page() || is_post_type_archive( 'modelos' ) || is_singular( 'modelos' ) || is_tax( 'tipo-modelo' ) ) {
 		wp_enqueue_style(
 			'nil-modelos',
 			get_stylesheet_directory_uri() . '/assets/css/modelos.css',
 			[],
-			wp_get_theme()->get( 'Version' )
+			$v( '/assets/css/modelos.css' )
 		);
 	}
 
 	// GSAP + page transition: todas las páginas
-	wp_enqueue_script(
-		'gsap',
-		'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js',
-		[],
-		null,
-		true
-	);
+	wp_enqueue_script( 'gsap', 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js', [], null, true );
+	if ( is_singular( 'modelos' ) ) {
+		wp_enqueue_script( 'gsap-scrolltrigger', 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js', array( 'gsap' ), null, true );
+	}
 	wp_enqueue_style(
 		'nil-page-transition',
 		get_stylesheet_directory_uri() . '/assets/css/page-transition.css',
 		[],
-		wp_get_theme()->get( 'Version' )
+		$v( '/assets/css/page-transition.css' )
 	);
 	wp_enqueue_script(
 		'nil-page-transition',
 		get_stylesheet_directory_uri() . '/assets/js/page-transition.js',
 		array( 'gsap' ),
-		wp_get_theme()->get( 'Version' ),
+		$v( '/assets/js/page-transition.js' ),
 		true
 	);
-	// Marcar que JS está disponible (para el clip-path inicial del overlay)
-	wp_add_inline_script( 'gsap', 'document.documentElement.classList.add("nil-js");', 'before' );
+
+	// Preloader + hero: solo en la Home
+	if ( is_front_page() ) {
+		wp_enqueue_style(
+			'nil-preloader',
+			get_stylesheet_directory_uri() . '/assets/css/preloader.css',
+			[],
+			$v( '/assets/css/preloader.css' )
+		);
+		wp_enqueue_script(
+			'nil-preloader',
+			get_stylesheet_directory_uri() . '/assets/js/preloader.js',
+			array( 'gsap' ),
+			$v( '/assets/js/preloader.js' ),
+			true
+		);
+		wp_enqueue_script(
+			'nil-home-hero',
+			get_stylesheet_directory_uri() . '/assets/js/home-hero.js',
+			array( 'gsap' ),
+			$v( '/assets/js/home-hero.js' ),
+			true
+		);
+	}
 
 	if ( ! is_front_page() ) {
 		wp_enqueue_style(
 			'nil-fullscreen-nav',
 			get_stylesheet_directory_uri() . '/assets/css/fullscreen-nav.css',
 			[],
-			wp_get_theme()->get( 'Version' )
+			$v( '/assets/css/fullscreen-nav.css' )
 		);
 		wp_enqueue_script(
 			'nil-fullscreen-nav',
 			get_stylesheet_directory_uri() . '/assets/js/fullscreen-nav.js',
 			array( 'gsap', 'nil-page-transition' ),
-			wp_get_theme()->get( 'Version' ),
+			$v( '/assets/js/fullscreen-nav.js' ),
+			true
+		);
+	}
+
+	if ( is_singular( 'modelos' ) ) {
+		wp_enqueue_script(
+			'nil-modelo-hero',
+			get_stylesheet_directory_uri() . '/assets/js/modelo-hero.js',
+			array( 'gsap', 'gsap-scrolltrigger' ),
+			$v( '/assets/js/modelo-hero.js' ),
 			true
 		);
 	}

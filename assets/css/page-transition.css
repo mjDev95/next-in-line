@@ -1,27 +1,33 @@
 /* ══════════════════════════════════════════
    PAGE TRANSITION OVERLAY
-   Wipe direction: entra desde izquierda, sale hacia derecha
+   Wipe direction: sube desde abajo, sale hacia arriba
 ══════════════════════════════════════════ */
 
 #nil-page-transition {
 	position: fixed;
-	inset: 0;
-	z-index: 9999; /* por encima de todo, incluso del fullscreen-nav */
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100vh;
+	z-index: 100000; /* encima de cualquier contexto del tema / Elementor */
 	background: #0c0c0c;
+	transform: translateY( 100% );
 
 	/*
-	 * Estado por defecto: oculto (fallback si no hay JS).
-	 * Cuando JS está disponible, html.nil-js lo cubre al cargar
-	 * y GSAP lo anima hacia afuera.
+	 * Estado por defecto: oculto bajo la pantalla (fallback sin JS).
 	 */
-	clip-path: inset(0 0% 0 100%);
 	pointer-events: none;
-	will-change: clip-path;
+	will-change: transform;
 }
 
 /* Con JS activo: cubre la página al cargar — GSAP lo retira */
 html.nil-js #nil-page-transition {
-	clip-path: inset(0 0% 0 0);
+	transform: translateY( 0 );
+}
+
+/* Cuando el preloader está activo: el overlay permanece oculto */
+html.nil-js.nil-preloader-active #nil-page-transition {
+	transform: translateY( 100% );
 }
 
 /* ── Admin bar ── */
@@ -35,25 +41,62 @@ body.admin-bar #nil-page-transition {
 	}
 }
 
-/* ── Logo dentro del overlay ───────────────────────────────────── */
+/* ── Curvas hechas con divs, no SVG ── */
+.nil-pt-rounded-wrap {
+	position: absolute;
+	left: 0;
+	width: 100%;
+	height: 10vh;
+	pointer-events: none;
+	overflow: hidden;
+	will-change: transform;
+	z-index: 1;
+	transform: scaleY( 0 );
+}
 
+.nil-pt-rounded-wrap.top {
+	top: 0;
+	transform: translateY( -99% ) scaleY( 0 );
+	transform-origin: bottom center;
+}
+
+.nil-pt-rounded-wrap.bottom {
+	bottom: 0;
+	transform: translateY( 99% ) scaleY( 0 );
+	transform-origin: top center;
+}
+
+.nil-pt-rounded {
+	position: absolute;
+	left: 50%;
+	bottom: 0;
+	width: 150%;
+	height: 745%;
+	border-radius: 50%;
+	background: #0c0c0c;
+	transform: translateX( -50% );
+}
+
+.nil-pt-rounded-wrap.top .nil-pt-rounded {
+	top: 0;
+	bottom: auto;
+}
+
+/* ── Logo dentro del overlay ── */
 .nil-pt-logo {
 	position: absolute;
 	left: 40px;
-	top: 28px; /* alineado con el top padding del site-bar */
+	top: 28px;
+	z-index: 2;
 }
 
 .nil-pt-logo img,
 .nil-pt-logo svg {
-	height: 36px; /* igual que el logo del site-bar */
+	height: 36px;
 	width: auto;
 	display: block;
 }
 
-/*
- * Home page: logo a la izquierda, a 1/4 del borde superior,
- * un poco más pequeño para simular que se ubicó en su posición del hero.
- */
 body.home .nil-pt-logo {
 	top: 25vh;
 }
@@ -63,7 +106,7 @@ body.home .nil-pt-logo svg {
 	height: 26px;
 }
 
-@media (max-width: 768px) {
+@media ( max-width: 768px ) {
 	.nil-pt-logo {
 		left: 24px;
 	}

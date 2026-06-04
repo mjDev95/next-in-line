@@ -1,0 +1,8 @@
+/* ==========================================================================
+   GLOBAL FIXES
+   Evita el desbordamiento horizontal causado por anchos de 100vw
+   ========================================================================== */
+html, body {
+    overflow-x: hidden;
+    width: 100%;
+}

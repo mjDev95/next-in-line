@@ -8,8 +8,16 @@
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
 
-<!-- ── Page transition overlay ───────────────────────────────────────── -->
+<?php get_template_part( 'template-parts/preloader' ); ?>
+
+<!-- ── Page transition overlay ────────────────────────────────────────────────── -->
 <div id="nil-page-transition" aria-hidden="true">
+	<div class="nil-pt-rounded-wrap top" aria-hidden="true">
+		<div class="nil-pt-rounded"></div>
+	</div>
+	<div class="nil-pt-rounded-wrap bottom" aria-hidden="true">
+		<div class="nil-pt-rounded"></div>
+	</div>
 	<div class="nil-pt-logo" aria-hidden="true">
 		<?php
 		$pt_logo_id  = (int) get_option( 'nil_header_logo_id', 0 );
@@ -19,7 +27,7 @@
 		<?php else : ?>
 			<!-- Placeholder SVG — reemplazar con logo real -->
 			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34 46" fill="none" aria-hidden="true">
-				<path d="M4 6 L4 40 L30 6 L30 40" stroke="white" stroke-width="1.5"
+				<path d="M4 6 L4 40 L30 6 L30 40" stroke="white" stroke-width="5"
 				      stroke-linecap="round" stroke-linejoin="round"/>
 			</svg>
 		<?php endif; ?>

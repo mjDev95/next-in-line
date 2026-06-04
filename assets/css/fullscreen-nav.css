@@ -169,7 +169,9 @@
 }
 
 /* ── Close button (×) ── */
-
+.d-none{
+	display: none;
+}
 .nil-fn-close {
 	position: absolute;
 	top: 28px;
