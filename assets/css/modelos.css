@@ -577,118 +577,82 @@ body.admin-bar .nil-home-logo {
 	.nil-related-models-grid   { grid-template-columns: repeat(2, 1fr); }
 	.nil-videos-grid           { grid-template-columns: 1fr; }
 }
-
 /* ══════════════════════════════════════════
-   SINGLE — perfil del modelo
+   SINGLE — Perfil del Modelo (Estructura Base)
 ══════════════════════════════════════════ */
 
 .nil-single-modelo {
-    max-width: 1360px;
-    margin: 0 auto;
-    padding: 0 24px 100px;
-}
-
-.nil-modelo-hero {
-    display: grid;
-    grid-template-columns: 1fr 50%;
-    gap: 72px;
-    padding: 64px 0 80px;
-    align-items: start;
-}
-
-.nil-modelo-photo {
-    line-height: 0;
-}
-
-.nil-modelo-photo img {
     width: 100%;
-    height: auto;
-    display: block;
 }
 
-.nil-single-modelo.nil-modelo-hero-mode-scroll,
+.nil-single-modelo.nil-modelo-hero-mode-scroll, 
 .nil-single-modelo.nil-modelo-hero-mode-timelapse {
-    max-width: 1360px;
-    margin: 0 auto;
-    padding: 0 24px 100px;
-    overflow-x: visible;
-}
-
-.nil-modelo-hero-mode-scroll .nil-breadcrumb,
-.nil-modelo-hero-mode-timelapse .nil-breadcrumb {
-    position: static;
     max-width: none;
-    margin-left: 0;
-    margin-right: 0;
-    padding-left: 0;
-    padding-right: 0;
+    margin: 0;
+    padding: 0 0 var(--nil-s-2xl);
+    overflow-x: hidden;
 }
 
+/* Forzamos a que el contenedor del Pin ocupe el viewport limpio */
+.nil-hero-scroll-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+/* El Hero como contenedor maestro de las dos capas (Foto y Textos) */
 .nil-modelo-hero-mode-scroll .nil-modelo-hero,
 .nil-modelo-hero-mode-timelapse .nil-modelo-hero {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(280px, min(42vw, 520px)) minmax(0, 1fr);
-    gap: clamp(24px, 5vw, 72px);
-    align-items: center;
+    position: relative;
     width: 100%;
-    max-width: none;
-    min-height: auto;
-    margin: 0;
-    padding: 64px 0 80px;
-    overflow: visible;
-}
-
-.nil-modelo-hero-mode-scroll .nil-modelo-hero-left,
-.nil-modelo-hero-mode-timelapse .nil-modelo-hero-left {
-    grid-column: 1;
-    grid-row: 1;
-}
-
-/* ⚡ MODIFICADO PARA MODO SCROLL: El contenedor de la foto se limpia aquí 
-   para heredar correctamente el tamaño de pantalla completa inicial */
-.nil-modelo-hero-mode-scroll .nil-modelo-photo {
-    grid-column: 2;
-    grid-row: 1;
-    width: 100%;
-    height: 100%; /* Dejamos que el estado inicial de GSAP mande */
-    overflow: visible; /* Permitimos que se desborde a 100vw */
-}
-
-/* Mantenemos el timelapse intacto como lo tenías */
-.nil-modelo-hero-mode-timelapse .nil-modelo-photo {
-    grid-column: 2;
-    grid-row: 1;
-    width: 100%;
-    height: min(72vh, 720px);
+    height: 100vh;
     overflow: hidden;
-    background: #111;
 }
 
-.nil-modelo-photo-placeholder {
-    grid-column: 2;
-    grid-row: 1;
+/* ─────────────────────────────────────────
+   CAPA 1: La Foto Absoluta (Lienzo Inicial)
+   ───────────────────────────────────────── */
+.nil-modelo-hero-mode-scroll .nil-modelo-photo-target,
+.nil-modelo-hero-mode-timelapse .nil-modelo-photo-target {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    overflow: hidden;
+    clip-path: inset(0% 0% 0% 0%);
+    will-change: clip-path;
+}
+
+.nil-modelo-photo-target img {
     width: 100%;
+    height: 100%;
+    object-fit: cover;
+    scale: 1.15;
+    will-change: transform;
+}
+/* ─────────────────────────────────────────
+   CAPA 2: El Layout de Columnas (Sobre la foto)
+   ───────────────────────────────────────── */
+.nil-modelo-hero-layout {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+}
+
+.nil-modelo-photo-box {
+    height: min(72vh, 720px);
     visibility: hidden;
     pointer-events: none;
 }
 
-/* Cambiado: Solo aplica al modo timelapse, el modo scroll usa absolute abajo */
-.nil-modelo-hero-mode-timelapse .nil-modelo-photo img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-}
-
+.nil-modelo-hero-mode-scroll .nil-modelo-hero-left,
 .nil-modelo-hero-mode-scroll .nil-modelo-hero-right,
+.nil-modelo-hero-mode-timelapse .nil-modelo-hero-left,
 .nil-modelo-hero-mode-timelapse .nil-modelo-hero-right {
-    grid-column: 3;
-    grid-row: 1;
-}
-
-.nil-modelo-info {
-    position: sticky;
-    top: 40px;
+    pointer-events: auto;
+    /* ⚡ Esencial para que el zoom suavice los bordes tipográficos vectoriales */
+    will-change: transform, opacity; 
 }
 
 .nil-modelo-name {
@@ -696,106 +660,54 @@ body.admin-bar .nil-home-logo {
     font-weight: 300;
     letter-spacing: .35em;
     text-transform: uppercase;
-    margin: 0 0 48px;
+    margin: 0; 
     line-height: 1.05;
 }
 
-/* Stats */
-.nil-modelo-stats {
-    border-top: 1px solid #d8d8d8;
-    margin-bottom: 40px;
+.nil-modelo-category {
+    font-size: .85rem;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    margin: 0;
 }
 
-.nil-stat-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 14px 0;
-    border-bottom: 1px solid #d8d8d8;
+@media (max-width: 767px) {
+    .nil-modelo-photo-box {
+        height: min(55vh, 480px);
+    }
+}
+/* ══════════════════════════════════════════
+   ESPECIFICACIONES — REDUCCIÓN POR GRID
+══════════════════════════════════════════ */
+
+.nil-modelo-specs-grid {
+    width: 100%;
+    border-top: 1px solid #e8e8e8;
+    padding-top: var(--nil-s-md);
 }
 
-.nil-stat-label {
-    font-size: .72rem;
-    letter-spacing: .22em;
+/* Tu contenedor por cada ítem: solo maneja el marco visual */
+.nil-spec-box {
+    padding-block: var(--nil-s-sm);
+    border-bottom: 1px solid #e8e8e8;
+}
+
+/* Tu etiqueta (ej: Height) */
+.nil-spec-label {
+    font-size: 1.22rem;
     text-transform: uppercase;
     font-weight: 600;
     color: #aaa;
 }
 
-.nil-stat-value {
-    font-size: .85rem;
-    letter-spacing: .1em;
-    font-weight: 400;
+/* Tu valor (ej: 187 cm) */
+.nil-spec-value {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #111;
+    text-align: right; 
+	text-transform: uppercase;
 }
-
-/* Bio / contenido */
-.nil-modelo-bio {
-    font-size: .92rem;
-    line-height: 1.75;
-    color: #555;
-}
-
-/* ==========================================================================
-   AJUSTES PARA ANIMACIÓN DE RECORTE EDITORIAL (GSAP)
-   ========================================================================== */
-
-/* El contenedor padre que absorbe el scroll */
-.nil-hero-scroll-wrapper {
-    position: relative;
-    width: 100%;
-}
-
-/* Forzamos a que el hero ocupe toda la pantalla al inicio de la animación */
-.nil-modelo-hero-mode-scroll .nil-modelo-hero {
-    position: relative;
-    width: 100%;
-    height: 100vh; /* Ocupa todo el alto inicial */
-    padding: 0;
-    margin: 0;
-    max-width: none;
-}
-
-/* ⚡ CORREGIDO: Usamos la técnica posicional para centrar el 100vw dentro de la columna 2 */
-.nil-modelo-hero-mode-scroll .nil-modelo-photo-target {
-    position: relative; 
-    width: 100vw;
-    height: 100vh;
-    left: 50%;
-    transform: translateX(-50%); /* Rompe el contenedor de forma limpia y se hace full-width */
-    z-index: 1;
-    overflow: hidden;
-    clip-path: inset(0% 0% 0% 0%); /* Inicializa en pantalla completa total */
-    will-change: clip-path;
-}
-
-.nil-modelo-hero-mode-scroll .nil-modelo-photo-target img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    scale: 1.15; /* Margen para el parallax */
-    will-change: transform;
-}
-
-/* ⚡ NUEVO: Asegura que los textos floten por encima del lienzo inicial y no arranquen abajo */
-.nil-modelo-hero-mode-scroll .nil-modelo-hero-left,
-.nil-modelo-hero-mode-scroll .nil-modelo-hero-right {
-    position: relative;
-    z-index: 2;
-    opacity: 0; /* JS los irá mostrando en el scrub */
-    transform: translateY(30px);
-}
-/* Quitamos el padding superior para que el Hero inicie pegado al tope exacto de la pantalla */
-.nil-single-modelo.nil-modelo-hero-mode-scroll {
-    padding-top: 0;
-}
-/* ══════════════════════════════════════════
-   GALERÍA DE FOTOS
-══════════════════════════════════════════ */
-
- 
 
 /* ══════════════════════════════════════════
    GALERÍA DE VIDEOS
