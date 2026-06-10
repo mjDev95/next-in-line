@@ -20,12 +20,12 @@
             gsap.set(siteBar, { yPercent: -100, autoAlpha: 0 });
         }
 
-        // ⚡ MODIFICADO: Agregamos zoom inicial (scale) masivo en el piso de la pantalla
+        // ⚡ ESTADO INICIAL (Visibles abajo con zoom masivo editorial)
         if (textLeft) {
             gsap.set(textLeft, { 
                 y: "32vh", 
-                scale: 1.4,             // Arranca gigante
-                transformOrigin: "left bottom", // Crece desde la esquina inferior izquierda
+                scale: 1.4,             
+                transformOrigin: "left bottom", 
                 opacity: 1  
             });
         }
@@ -33,8 +33,8 @@
         if (textRight) {
             gsap.set(textRight, { 
                 y: "32vh", 
-                scale: 1.25,            // Arranca un poco más grande
-                transformOrigin: "right bottom", // Crece desde la esquina inferior derecha
+                scale: 1.25,            
+                transformOrigin: "right bottom", 
                 opacity: 1  
             });
         }
@@ -46,59 +46,45 @@
         }
 
         // ══════════════════════════════════════════════════════════════════
-        // TIMELINE MASTER (Scrubbed)
+        // ⚡ 1. INTRO CINEMÁTICA AUTOMÁTICA (Con 1 segundo de Delay)
         // ══════════════════════════════════════════════════════════════════
-        const tlMaster = gsap.timeline({
-            scrollTrigger: {
-                trigger: heroWrapper,
-                start: "top top",
-                end: "+=120%",      
-                pin: true,          
-                pinSpacing: true,   
-                scrub: 1, // ⚡ Reducido a 1 para que tenga una respuesta más directa y limpia
-                fastScrollEnd: true, // ⚡ CLAVE: Sincroniza y suaviza el escape del pin al pasar el 'end'
-                preventOverlaps: true, // ⚡ Evita que la animación colisione con las secciones de abajo
-                invalidateOnRefresh: true,
-                markers: { startColor: "green", endColor: "red", fontSize: "14px", label: "Hero Master" }
-            }
+        const tlIntro = gsap.timeline({
+            delay: 1 // ⚡ CLAVE: La página carga, se mantiene estática 1 segundo y luego despega sola
         });
 
-        // 1. La foto inicia su recorte de inmediato con el dedo
-        tlMaster.to(photoTarget, {
+        // Recorte automático de la foto
+        tlIntro.to(photoTarget, {
             clipPath: () => getClipPathTarget(), 
-            ease: "none" 
+            duration: 1.2,
+            ease: "power4.inOut"
         }, "start");
         
         if (innerImg) {
-            tlMaster.to(innerImg, {
+            tlIntro.to(innerImg, {
                 yPercent: -8,   
                 scale: 1.0,     
-                ease: "none"
+                duration: 1.2,
+                ease: "power4.inOut"
             }, "start");
         }
 
-        // 2. ⚡ ANIMACIÓN MIXTA (POSICIÓN + ZOOM) POR TIEMPO AUTÓNOMA
-        tlMaster.call(() => {
-            const isScrollingDown = tlMaster.scrollTrigger.direction === 1;
+        // Subida de textos y contra-zoom automático
+        if (textRight) {
+            tlIntro.to(textRight, { y: 0, scale: 1, duration: 0.9, ease: "power3.out" }, "start+=0.2");
+        }
+        if (textLeft) {
+            tlIntro.to(textLeft, { y: 0, scale: 1, duration: 1.0, ease: "power3.out" }, "start+=0.35");
+        }
 
-            if (isScrollingDown) {
-                // Al bajar, suben a su origen (y:0) y reducen su escala a su tamaño real (scale:1)
-                gsap.to(textRight, { y: 0, scale: 1, duration: 0.8, ease: "power3.out" });
-                gsap.to(textLeft, { y: 0, scale: 1, duration: 0.9, ease: "power3.out", delay: 0.15 });
-            } else {
-                // Al regresar arriba, vuelven a expandirse y bajan suavemente
-                gsap.to(textRight, { y: "32vh", scale: 1.25, duration: 0.6, ease: "power2.inOut" });
-                gsap.to(textLeft, { y: "32vh", scale: 1.4, duration: 0.6, ease: "power2.inOut" });
-            }
-        }, null, "start+=0.05");
 
         // ══════════════════════════════════════════════════════════════════
-        // TRIGGER 3: REVELADO SUTIL DEL HEADER
+        // 2. TRIGGER DEL HEADER (Scroll Natural Libre)
         // ══════════════════════════════════════════════════════════════════
         if (siteBar) {
             ScrollTrigger.create({
                 trigger: heroWrapper,
                 start: "bottom top", 
+                invalidateOnRefresh: true,
                 markers: { startColor: "blue", endColor: "orange", fontSize: "14px", label: "Aparición Header" },
                 onEnter: () => gsap.to(siteBar, { yPercent: 0, autoAlpha: 1, duration: 0.6, ease: "power3.out" }),
                 onLeaveBack: () => gsap.to(siteBar, { yPercent: -100, autoAlpha: 0, duration: 0.4, ease: "power2.in" })

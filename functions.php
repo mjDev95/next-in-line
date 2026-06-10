@@ -4,7 +4,6 @@
  */
 
 require_once get_stylesheet_directory() . '/inc/custom-posts.php';
-require_once get_stylesheet_directory() . '/inc/custom-gallery.php';
 require_once get_stylesheet_directory() . '/inc/custom-fields.php';
 require_once get_stylesheet_directory() . '/inc/grace-period.php';
 
@@ -21,7 +20,6 @@ function nil_theme_setup() {
 		'nil-fullscreen-menu' => __( 'Menú Pantalla Completa (Header)', 'hello-elementor-child' ),
 	) );
 }
-
 /**
  * Script crítico en <head>:
  * - Añade la clase nil-js antes del primer paint (evita FOUC del page-transition overlay).
@@ -30,127 +28,148 @@ function nil_theme_setup() {
  */
 add_action( 'wp_head', 'nil_head_inline_script', 1 );
 function nil_head_inline_script() {
-	$is_home = is_front_page() ? 'true' : 'false';
-	echo "<script>(function(){
-	var d=document.documentElement;
-	d.classList.add('nil-js');
-	if({$is_home}){d.classList.add('nil-preloader-active');}
+    $is_home = is_front_page() ? 'true' : 'false';
+    echo "<script>(function(){
+    var d=document.documentElement;
+    d.classList.add('nil-js');
+    if({$is_home}){d.classList.add('nil-preloader-active');}
 })();</script>\n";
-}
-
-add_action( 'admin_enqueue_scripts', 'nil_admin_scripts' );
-function nil_admin_scripts( $hook ) {
-	global $post;
-	if ( ( $hook === 'post.php' || $hook === 'post-new.php' ) && isset( $post ) && $post->post_type === 'modelos' ) {
-		wp_enqueue_media();
-		wp_enqueue_script( 'nil-admin-gallery', get_stylesheet_directory_uri() . '/assets/js/admin-gallery.js', array( 'jquery' ), null, true );
-	}
 }
 
 add_action( 'wp_enqueue_scripts', 'hello_elementor_child_enqueue_styles' );
 function hello_elementor_child_enqueue_styles() {
-	// Helper: usa filemtime para que el navegador siempre descargue la versión más reciente
-	$v = function ( $rel ) {
-		$path = get_stylesheet_directory() . $rel;
-		return file_exists( $path ) ? filemtime( $path ) : wp_get_theme()->get( 'Version' );
-	};
+    // Helper: usa filemtime para que el navegador siempre descargue la versión más reciente
+    $v = function ( $rel ) {
+        $path = get_stylesheet_directory() . $rel;
+        return file_exists( $path ) ? filemtime( $path ) : wp_get_theme()->get( 'Version' );
+    };
 
-	wp_enqueue_style( 'hello-elementor-style', get_template_directory_uri() . '/style.css' );
-	wp_enqueue_style(
-		'hello-elementor-child-style',
-		get_stylesheet_directory_uri() . '/style.css',
-		[ 'hello-elementor-style' ],
-		wp_get_theme()->get( 'Version' )
-	);
-	wp_enqueue_style(
-		'bootstrap-layout-lite',
-		get_stylesheet_directory_uri() . '/assets/css/bootstrap-layout-lite.css',
-		[ 'hello-elementor-child-style' ],
-		$v( '/assets/css/bootstrap-layout-lite.css' )
-	);
-	wp_enqueue_style(
-		'hello-elementor-child-global',
-		get_stylesheet_directory_uri() . '/assets/css/global.css',
-		[ 'hello-elementor-child-style' ],
-		$v( '/assets/css/global.css' )
-	);
-	if ( is_front_page() || is_post_type_archive( 'modelos' ) || is_singular( 'modelos' ) || is_tax( 'tipo-modelo' ) ) {
-		wp_enqueue_style(
-			'nil-modelos',
-			get_stylesheet_directory_uri() . '/assets/css/modelos.css',
-			[],
-			$v( '/assets/css/modelos.css' )
-		);
-	}
+    wp_enqueue_style( 'hello-elementor-style', get_template_directory_uri() . '/style.css' );
+    wp_enqueue_style(
+        'hello-elementor-child-style',
+        get_stylesheet_directory_uri() . '/style.css',
+        [ 'hello-elementor-style' ],
+        wp_get_theme()->get( 'Version' )
+    );
+    wp_enqueue_style(
+        'bootstrap-layout-lite',
+        get_stylesheet_directory_uri() . '/assets/css/bootstrap-layout-lite.css',
+        [ 'hello-elementor-child-style' ],
+        $v( '/assets/css/bootstrap-layout-lite.css' )
+    );
+    wp_enqueue_style(
+        'hello-elementor-child-global',
+        get_stylesheet_directory_uri() . '/assets/css/global.css',
+        [ 'hello-elementor-child-style' ],
+        $v( '/assets/css/global.css' )
+    );
+    
+    if ( is_front_page() || is_post_type_archive( 'modelos' ) || is_singular( 'modelos' ) || is_tax( 'tipo-modelo' ) ) {
+        wp_enqueue_style(
+            'nil-modelos',
+            get_stylesheet_directory_uri() . '/assets/css/modelos.css',
+            [],
+            $v( '/assets/css/modelos.css' )
+        );
+    }
 
-	// GSAP + page transition: todas las páginas
-	wp_enqueue_script( 'gsap', 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js', [], null, true );
-	if ( is_singular( 'modelos' ) ) {
-		wp_enqueue_script( 'gsap-scrolltrigger', 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js', array( 'gsap' ), null, true );
-	}
-	wp_enqueue_style(
-		'nil-page-transition',
-		get_stylesheet_directory_uri() . '/assets/css/page-transition.css',
-		[],
-		$v( '/assets/css/page-transition.css' )
-	);
-	wp_enqueue_script(
-		'nil-page-transition',
-		get_stylesheet_directory_uri() . '/assets/js/page-transition.js',
-		array( 'gsap' ),
-		$v( '/assets/js/page-transition.js' ),
-		true
-	);
+    // ── LIBRERÍAS DE TERCEROS (GSAP + PAGE TRANSITION EN TODO EL SITIO) ──
+    wp_enqueue_script( 'gsap', 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js', [], null, true );
 
-	// Preloader + hero: solo en la Home
-	if ( is_front_page() ) {
-		wp_enqueue_style(
-			'nil-preloader',
-			get_stylesheet_directory_uri() . '/assets/css/preloader.css',
-			[],
-			$v( '/assets/css/preloader.css' )
-		);
-		wp_enqueue_script(
-			'nil-preloader',
-			get_stylesheet_directory_uri() . '/assets/js/preloader.js',
-			array( 'gsap' ),
-			$v( '/assets/js/preloader.js' ),
-			true
-		);
-		wp_enqueue_script(
-			'nil-home-hero',
-			get_stylesheet_directory_uri() . '/assets/js/home-hero.js',
-			array( 'gsap' ),
-			$v( '/assets/js/home-hero.js' ),
-			true
-		);
-	}
+    // ── FEATHER ICONS (iconos minimalistas para el cursor global y uso futuro) ──
+    wp_enqueue_script( 'feather-icons', 'https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js', [], '4.29.2', true );
 
-	if ( ! is_front_page() ) {
-		wp_enqueue_style(
-			'nil-fullscreen-nav',
-			get_stylesheet_directory_uri() . '/assets/css/fullscreen-nav.css',
-			[],
-			$v( '/assets/css/fullscreen-nav.css' )
-		);
-		wp_enqueue_script(
-			'nil-fullscreen-nav',
-			get_stylesheet_directory_uri() . '/assets/js/fullscreen-nav.js',
-			array( 'gsap', 'nil-page-transition' ),
-			$v( '/assets/js/fullscreen-nav.js' ),
-			true
-		);
-	}
+    // ── CURSOR PERSONALIZADO GLOBAL ──
+    wp_enqueue_script(
+        'nil-cursor',
+        get_stylesheet_directory_uri() . '/assets/js/nil-cursor.js',
+        array( 'jquery', 'gsap', 'feather-icons' ),
+        $v( '/assets/js/nil-cursor.js' ),
+        true
+    );
+    
+    if ( is_singular( 'modelos' ) ) {
+        wp_enqueue_script( 'gsap-scrolltrigger', 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js', array( 'gsap' ), null, true );
+        
+        // ⚡ EXTENSIÓN PREMIUM: Encolamos Swiper JS Core solo en el perfil individual de los modelos
+        wp_enqueue_style( 'swiper-css', 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css', array(), '11.0.0' );
+        wp_enqueue_script( 'swiper-js', 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js', array(), '11.0.0', true );
+    }
 
-	if ( is_singular( 'modelos' ) ) {
-		wp_enqueue_script(
-			'nil-modelo-hero',
-			get_stylesheet_directory_uri() . '/assets/js/modelo-hero.js',
-			array( 'gsap', 'gsap-scrolltrigger' ),
-			$v( '/assets/js/modelo-hero.js' ),
-			true
-		);
-	}
+    wp_enqueue_style(
+        'nil-page-transition',
+        get_stylesheet_directory_uri() . '/assets/css/page-transition.css',
+        [],
+        $v( '/assets/css/page-transition.css' )
+    );
+    wp_enqueue_script(
+        'nil-page-transition',
+        get_stylesheet_directory_uri() . '/assets/js/page-transition.js',
+        array( 'gsap' ),
+        $v( '/assets/js/page-transition.js' ),
+        true
+    );
+
+    // ⚡ MOTOR DE LA GALERÍA EDITORIAL: Carga diferida, Swiper interactivo y cursor magnético de GSAP
+    if ( is_singular( 'modelos' ) ) {
+        wp_enqueue_script(
+            'nil-gallery-lazy',
+            get_stylesheet_directory_uri() . '/assets/js/gallery-lazy.js',
+            array( 'jquery', 'gsap', 'gsap-scrolltrigger', 'swiper-js', 'nil-cursor' ),
+            $v( '/assets/js/gallery-lazy.js' ),
+            true
+        );
+    }
+
+    // Preloader + hero: solo en la Home
+    if ( is_front_page() ) {
+        wp_enqueue_style(
+            'nil-preloader',
+            get_stylesheet_directory_uri() . '/assets/css/preloader.css',
+            [],
+            $v( '/assets/css/preloader.css' )
+        );
+        wp_enqueue_script(
+            'nil-preloader',
+            get_stylesheet_directory_uri() . '/assets/js/preloader.js',
+            array( 'gsap' ),
+            $v( '/assets/js/preloader.js' ),
+            true
+        );
+        wp_enqueue_script(
+            'nil-home-hero',
+            get_stylesheet_directory_uri() . '/assets/js/home-hero.js',
+            array( 'gsap' ),
+            $v( '/assets/js/home-hero.js' ),
+            true
+        );
+    }
+
+    if ( ! is_front_page() ) {
+        wp_enqueue_style(
+            'nil-fullscreen-nav',
+            get_stylesheet_directory_uri() . '/assets/css/fullscreen-nav.css',
+            [],
+            $v( '/assets/css/fullscreen-nav.css' )
+        );
+        wp_enqueue_script(
+            'nil-fullscreen-nav',
+            get_stylesheet_directory_uri() . '/assets/js/fullscreen-nav.js',
+            array( 'gsap', 'nil-page-transition' ),
+            $v( '/assets/js/fullscreen-nav.js' ),
+            true
+        );
+    }
+
+    if ( is_singular( 'modelos' ) ) {
+        wp_enqueue_script(
+            'nil-modelo-hero',
+            get_stylesheet_directory_uri() . '/assets/js/modelo-hero.js',
+            array( 'gsap', 'gsap-scrolltrigger' ),
+            $v( '/assets/js/modelo-hero.js' ),
+            true
+        );
+    }
 }
 
 // ── SEO: title + meta description (fallback when Yoast SEO is not active) ──────

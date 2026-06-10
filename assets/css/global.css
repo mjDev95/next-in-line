@@ -6,3 +6,124 @@ html, body {
     overflow-x: hidden;
     width: 100%;
 }
+
+/* ══════════════════════════════════════════
+   PÁGINA 404 — ESTILO UNIFICADO FLUIDO
+══════════════════════════════════════════ */
+
+.nil-404-wrapper {
+    width: 100%;
+    min-height: 90vh;
+    background-color: #fff;
+    box-sizing: border-box;
+}
+
+/* Identificadores tipográficos de la sección */
+.nil-404-eyebrow {
+    font-size: .68rem;
+    letter-spacing: .25em;
+    font-weight: 600;
+    color: #aaa;
+}
+
+.nil-404-title {
+    font-size: clamp(5rem, 12vw, 9rem); /* Escala proporcional líquida */
+    font-weight: 200;
+    line-height: 0.9;
+    letter-spacing: -0.02em;
+    color: #111;
+}
+
+.nil-404-subtitle {
+    font-size: .85rem;
+    line-height: 1.5;
+    letter-spacing: .1em;
+    color: #111;
+    font-weight: 500;
+}
+
+.nil-404-description {
+    font-size: .95rem;
+    line-height: 1.6;
+    color: #666;
+    font-weight: 300;
+}
+
+/* ══════════════════════════════════════════
+   CURSOR PERSONALIZADO GLOBAL
+   Estilos base + estados. La lógica vive en assets/js/nil-cursor.js.
+   Para añadir un nuevo estado: agrega una regla
+   #nil-custom-cursor[data-state="nombre"] .nil-cursor-state--nombre { ... }
+══════════════════════════════════════════ */
+
+/* Sin cursor personalizado en táctil */
+@media (pointer: coarse) {
+    #nil-custom-cursor { display: none !important; }
+}
+
+#nil-custom-cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 80px;
+    height: 80px;
+    margin-left: -40px;
+    margin-top: -40px;
+    border-radius: 50%;
+    border: 1px solid var(--nil-color-accent);
+    background-color: var(--nil-color-accent);
+    pointer-events: none;
+    z-index: 9999;
+    display: none; /* Activado por JS en dispositivos pointer:fine */
+    align-items: center;
+    justify-content: center;
+    will-change: transform, opacity;
+}
+
+/* Cada estado oculto por defecto */
+.nil-cursor-state {
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ── Estado: eye — galería de fotos ── */
+#nil-custom-cursor[data-state="eye"] .nil-cursor-state--eye {
+    display: flex;
+}
+
+/* Ocultar cursor nativo sobre elementos con cursor personalizado */
+@media (pointer: fine) {
+    .nil-gallery-item,
+    #nil-lightbox-overlay { cursor: grab; }
+}
+
+/* ── Estado: drag — lightbox / sliders ── */
+#nil-custom-cursor[data-state="drag"] .nil-cursor-state--drag {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Ambas flechas semitransparentes por defecto */
+#nil-custom-cursor[data-state="drag"] .nil-cursor-arrow {
+    opacity: 0.3;
+    transition: opacity 0.15s ease;
+    display: flex;
+    align-items: center;
+}
+
+/* Flecha activa según dirección del arrastre */
+#nil-custom-cursor[data-state="drag"][data-drag-dir="prev"] .nil-cursor-arrow--prev,
+#nil-custom-cursor[data-state="drag"][data-drag-dir="next"] .nil-cursor-arrow--next {
+    opacity: 1;
+}
+
+/* Iconos Feather dentro del cursor */
+#nil-custom-cursor svg {
+    color: var(--nil-color-white);
+    stroke: var(--nil-color-white);
+    display: block;
+    width: 28px;
+    height: 28px;
+}

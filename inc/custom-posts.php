@@ -218,10 +218,209 @@ function guardar_campos_datos_modelo( $post_id ) {
 add_action( 'add_meta_boxes', 'crear_metabox_datos_modelo' );
 add_action( 'save_post', 'guardar_campos_datos_modelo' );
 
+/*
+ * --------------------------------------------------------------------------
+ * GALERÍA MULTIMEDIA (FOTOS + VIDEOS)
+ * --------------------------------------------------------------------------
+ */
+
+
+// Agregar el metabox para la galería
+function agregar_metabox_galeria() {
+  add_meta_box(
+      'galeria_modelo', // ID único del metabox
+      'Galería del Modelo', // Título del metabox
+      'mostrar_metabox_galeria', // Función que muestra el contenido del metabox
+      'modelos', // Tipo de post al que se aplica el metabox
+      'side', // Contexto donde se muestra el metabox
+      'high' // Prioridad del metabox
+  );
+}
+add_action('add_meta_boxes', 'agregar_metabox_galeria');
+
+// Mostrar los campos del metabox
+function mostrar_metabox_galeria($post) {
+  // Obtener los datos actuales del campo
+  $galeria = get_post_meta($post->ID, '_galeria', true);
+  ?>
+  <p>
+      <label for="galeria"><?php _e('Selecciona imágenes y videos', 'hello-elementor-child'); ?></label>
+  </p>
+  <input type="hidden" id="galeria" name="galeria" value="<?php echo esc_attr($galeria); ?>">
+  <div id="galeria_preview"  style="margin-top:16px;">
+      <?php if ($galeria) : ?>
+          <?php
+          $galeria_ids = explode(',', $galeria);
+          foreach ($galeria_ids as $id) {
+              $attachment = wp_get_attachment_url($id);
+              $mime_type = get_post_mime_type($id);
+              if (strpos($mime_type, 'image') !== false) {
+                  echo '<img src="' . esc_url($attachment) . '" style="object-fit: cover;   width: 25%; aspect-ratio: 1;" />';
+              } elseif (strpos($mime_type, 'video') !== false) {
+                  echo '<video style="object-fit: cover;width: 50%;aspect-ratio: 1/1;" controls>
+                            <source src="' . esc_url($attachment) . '" type="' . esc_attr($mime_type) . '">
+                        </video>';
+              }
+          }
+          ?>
+      <?php endif; ?>
+  </div>
+  <button type="button" class="button" id="cargar_galeria"><?php _e('Agregar', 'hello-elementor-child'); ?></button>
+  <?php
+  // Añadir el script para la selección de archivos
+  ?>
+    <script>
+        jQuery(document).ready(function($) {
+            var frame;
+            var selection = [];
+
+            // Abrir el media frame
+            $('#cargar_galeria').on('click', function(e) {
+                e.preventDefault();
+
+                // Si el frame ya está abierto, solo reabrirlo
+                if (frame) {
+                    frame.open();
+                    return;
+                }
+
+                // Crear un nuevo media frame
+                frame = wp.media({
+                    title: 'Selecciona Imágenes y Videos',
+                    button: {
+                        text: 'Seleccionar',
+                    },
+                    multiple: true
+                });
+
+                // Cargar la selección previa si existe
+                frame.on('open', function() {
+                    var selectedIds = $('#galeria').val().split(',');
+                    var selection = frame.state().get('selection');
+                    
+                    selectedIds.forEach(function(id) {
+                        var attachment = wp.media.attachment(id);
+                        attachment.fetch();
+                        selection.add(attachment ? [attachment] : []);
+                    });
+                });
+
+                // Actualizar el campo y el preview al seleccionar archivos
+                frame.on('select', function() {
+                    var attachments = frame.state().get('selection').toJSON();
+                    var ids = [];
+
+                    $('#galeria_preview').empty(); // Limpiar preview
+                    attachments.forEach(function(attachment) {
+                        ids.push(attachment.id);
+                        var mime_type = attachment.mime;
+                        if (mime_type.indexOf('image') !== -1) {
+                            $('#galeria_preview').append('<img src="' + attachment.url + '" style="object-fit: cover; width: 25%; aspect-ratio: 1;" />');
+                        } else if (mime_type.indexOf('video') !== -1) {
+                            $('#galeria_preview').append('<video style="object-fit: cover;width: 100%;aspect-ratio: 2/1;" controls><source src="' + attachment.url + '" type="' + mime_type + '"></video>');
+                        }
+                    });
+
+                    $('#galeria').val(ids.join(','));
+                });
+
+                frame.open();
+            });
+        });
+    </script>
+  <?php
+}
+
+// Guardar los campos personalizados cuando se guarda el post
+function guardar_metabox_galeria($post_id) {
+  if (isset($_POST['galeria'])) {
+      update_post_meta($post_id, '_galeria', sanitize_text_field($_POST['galeria']));
+  }
+}
+add_action('save_post', 'guardar_metabox_galeria');
+
+
+/*
+ * Fuerza que los metaboxes principales de Modelos siempre sean visibles,
+ * aunque el usuario los haya ocultado desde "Opciones de pantalla".
+ */
 add_filter( 'hidden_meta_boxes', 'nil_force_visible_metaboxes', 10, 2 );
 function nil_force_visible_metaboxes( $hidden, $screen ) {
 	if ( isset( $screen->post_type ) && $screen->post_type === 'modelos' ) {
-		$hidden = array_diff( $hidden, array( 'datos_modelo', 'galeria_fotos', 'galeria_videos' ) );
+		$hidden = array_diff(
+			$hidden,
+			array(
+				'datos_modelo',
+				'galeria_media'
+			)
+		);
 	}
 	return $hidden;
+}
+
+/* Imagen para términos de tipo-modelo */
+add_action( 'tipo-modelo_add_form_fields', 'nil_tipo_modelo_add_image_field' );
+function nil_tipo_modelo_add_image_field() {
+	?>
+	<div class="form-field">
+		<label for="tipo_modelo_image_id"><?php esc_html_e( 'Imagen', 'hello-elementor-child' ); ?></label>
+		<input type="hidden" id="tipo_modelo_image_id" name="tipo_modelo_image_id" value="">
+		<div class="nil-term-image-preview" style="margin-bottom:10px;"></div>
+		<button type="button" class="button nil-upload-term-image"><?php esc_html_e( 'Seleccionar imagen', 'hello-elementor-child' ); ?></button>
+	</div>
+	<?php
+}
+
+add_action( 'tipo-modelo_edit_form_fields', 'nil_tipo_modelo_edit_image_field' );
+function nil_tipo_modelo_edit_image_field( $term ) {
+	$image_id = get_term_meta( $term->term_id, 'image_id', true );
+	?>
+	<tr class="form-field">
+		<th scope="row">
+			<label for="tipo_modelo_image_id"><?php esc_html_e( 'Imagen', 'hello-elementor-child' ); ?></label>
+		</th>
+		<td>
+			<input type="hidden" id="tipo_modelo_image_id" name="tipo_modelo_image_id" value="<?php echo esc_attr( $image_id ); ?>">
+			<div class="nil-term-image-preview"></div>
+			<?php if ( $image_id ) : ?>
+				<div style="margin-bottom:10px;">
+					<?php echo wp_get_attachment_image( $image_id, 'medium', false, array( 'style' => 'max-width:200px;height:auto;' ) ); ?>
+				</div>
+			<?php endif; ?>
+			<button type="button" class="button nil-upload-term-image"><?php esc_html_e( 'Seleccionar imagen', 'hello-elementor-child' ); ?></button>
+		</td>
+	</tr>
+	<?php
+}
+
+add_action( 'created_tipo-modelo', 'nil_save_tipo_modelo_image' );
+add_action( 'edited_tipo-modelo', 'nil_save_tipo_modelo_image' );
+function nil_save_tipo_modelo_image( $term_id ) {
+	if ( isset( $_POST['tipo_modelo_image_id'] ) ) {
+		update_term_meta( $term_id, 'image_id', absint( $_POST['tipo_modelo_image_id'] ) );
+	}
+}
+
+add_action( 'admin_enqueue_scripts', 'nil_tipo_modelo_media_scripts' );
+function nil_tipo_modelo_media_scripts() {
+	$screen = get_current_screen();
+
+	if ( ! $screen || $screen->taxonomy !== 'tipo-modelo' ) {
+		return;
+	}
+
+	wp_enqueue_media();
+
+	wp_add_inline_script( 'jquery-core', "jQuery(function($){
+		$(document).on('click','.nil-upload-term-image',function(e){
+			e.preventDefault();
+			var frame = wp.media({title:'Seleccionar imagen',multiple:false});
+			frame.on('select',function(){
+				var attachment = frame.state().get('selection').first().toJSON();
+				$('#tipo_modelo_image_id').val(attachment.id);
+				$('.nil-term-image-preview').html('<img src=\"'+attachment.url+'\" style=\"max-width:200px;height:auto;\" />');
+			});
+			frame.open();
+		});
+	});" );
 }
