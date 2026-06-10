@@ -8,6 +8,42 @@ html, body {
 }
 
 /* ══════════════════════════════════════════
+   BASE TIPOGRÁFICA Y DE COLOR (CONEXIÓN CON ELEMENTOR)
+══════════════════════════════════════════ */
+
+/* 1. Conectamos el cuerpo del sitio a la fuente "Text" */
+body {
+    font-family: var(--e-global-typography-text-font-family, sans-serif);
+    font-weight: var(--e-global-typography-text-font-weight, 300);
+    color: var(--nil-color-muted); /* Usa tu token mapeado */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* 2. Conectamos los encabezados a la fuente "Primary" */
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6,
+.nil-cat-name {
+    font-family: var(--e-global-typography-primary-font-family, sans-serif);
+    color: var(--nil-color-primary); /* Usa tu token mapeado */
+    margin-top: 0;
+}
+
+/* 3. Conectamos CTAs y enlaces especiales a la fuente "Accent" (Opcional) */
+.nil-cat-cta {
+    font-family: var(--e-global-typography-accent-font-family, sans-serif);
+    font-weight: var(--e-global-typography-accent-font-weight, 500);
+}
+
+/* 4. Reseteo limpio de enlaces para heredar comportamiento */
+a {
+    color: inherit;
+    text-decoration: none;
+}
+a:hover {
+    color: var(--nil-color-accent); /* Usa tu token mapeado */
+}
+/* ══════════════════════════════════════════
    PÁGINA 404 — ESTILO UNIFICADO FLUIDO
 ══════════════════════════════════════════ */
 

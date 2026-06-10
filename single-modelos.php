@@ -115,7 +115,7 @@ $placeholder_svg = 'data:image/svg+xml;charset=utf-8,' . rawurlencode(
                         if ( $is_image ) : 
                             $img_src = wp_get_attachment_image_src( $media_id, 'large' );
                             if ( $img_src ) : ?>
-                                <div class="col-12 col-md-4 mb-md">
+                                <div class="col-12 col-md-4">
                                     <div class="nil-gallery-item overflow-hidden w-100 position-relative cursor-pointer" data-index="<?php echo $index_counter; ?>">
                                         <img src="<?php echo esc_url( $placeholder_svg ); ?>" 
                                              data-src="<?php echo esc_url( $img_src[0] ); ?>" 
@@ -126,7 +126,7 @@ $placeholder_svg = 'data:image/svg+xml;charset=utf-8,' . rawurlencode(
                             <?php $index_counter++; endif; ?>
 
                         <?php elseif ( $is_video ) : ?>
-                            <div class="col-12 col-md-4 mb-md">
+                            <div class="col-12 col-md-4">
                                 <div class="nil-video-item overflow-hidden w-100 position-relative cursor-pointer" data-index="<?php echo $index_counter; ?>">
                                     <div class="nil-video-wrapper w-100 position-relative">
                                         <video class="nil-lazy-media w-100 h-100 d-block object-fit-cover" controls preload="none" data-src="<?php echo esc_url( $media_url ); ?>">

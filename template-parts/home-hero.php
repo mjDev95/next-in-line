@@ -55,11 +55,11 @@ $panels = array_values(
 
                 <a href="<?php echo esc_url( $item->url ); ?>" class="nil-cat-link d-inline-block text-white px-lg px-lg-0" style="text-decoration: none;">
                     
-                    <h2 class="nil-cat-name text-uppercase my-0">
+                    <h2 class="nil-cat-name text-uppercase my-0 text-white fw-normal">
                         <?php echo esc_html( $item->title ); ?>
                     </h2>
                     
-                    <span class="nil-cat-cta d-none d-lg-block text-uppercase mt-sm">
+                    <span class="nil-cat-cta d-none d-lg-block text-uppercase mt-sm ">
                         <?php esc_html_e( 'Ver todos', 'hello-elementor-child' ); ?> &rarr;
                     </span>
 
