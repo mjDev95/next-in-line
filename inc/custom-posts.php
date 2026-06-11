@@ -4,8 +4,6 @@ add_action( 'init', 'nil_post_type' );
 
 function nil_post_type() {
 
-	add_rewrite_tag( '%tipo_modelo%', '([^/]+)', 'tipo-modelo=' );
-
 	$labels_modelos = array(
 		'name'                  => __( 'Modelos', 'hello-elementor-child' ),
 		'singular_name'         => __( 'Modelo', 'hello-elementor-child' ),
@@ -37,7 +35,7 @@ function nil_post_type() {
 		'supports'            => array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'order', 'custom-fields', 'taxonomies' ),
 		'taxonomies'          => array( 'tipo-modelo' ),
 		'show_in_rest'        => true,
-		'rewrite'             => array( 'slug' => '%tipo_modelo%', 'with_front' => false ),
+		'rewrite'             => false,
 	) );
 
 	$labels_tipo_modelo = array(
@@ -115,7 +113,7 @@ function nil_modelos_permalink( $link, $post ) {
 	}
 	$terms = get_the_terms( $post->ID, 'tipo-modelo' );
 	$slug  = ( $terms && ! is_wp_error( $terms ) ) ? $terms[0]->slug : 'modelo';
-	return str_replace( '%tipo_modelo%', $slug, $link );
+	return home_url( '/' . $slug . '/' . $post->post_name . '/' );
 }
 
 add_action( 'created_tipo-modelo', 'nil_flush_modelos_rewrite' );

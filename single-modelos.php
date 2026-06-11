@@ -88,10 +88,7 @@ $has_stats = array_filter( $stats );
 	<?php endif; ?>
 
     <?php
-$nil_galeria_string = get_post_meta( get_the_ID(), '_galeria', true );
-$placeholder_svg = 'data:image/svg+xml;charset=utf-8,' . rawurlencode(
-    '<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1600" viewBox="0 0 1200 1600"><rect width="100%" height="100%" fill="#f5f5f5"/></svg>'
-);
+    $nil_galeria_string = get_post_meta( get_the_ID(), '_galeria', true );
 
     if ( ! empty( $nil_galeria_string ) ) :
         $nil_media_ids = array_filter( explode( ',', $nil_galeria_string ) );
@@ -103,6 +100,9 @@ $placeholder_svg = 'data:image/svg+xml;charset=utf-8,' . rawurlencode(
                     
                     <?php 
                     $index_counter = 0;
+                    // Placeholder transparente super ligero
+                    $placeholder = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
+
                     foreach ( $nil_media_ids as $media_id ) :
                         $media_id = absint( $media_id );
                         $media_url = wp_get_attachment_url( $media_id );
@@ -112,24 +112,30 @@ $placeholder_svg = 'data:image/svg+xml;charset=utf-8,' . rawurlencode(
                         $is_image  = ( strpos( $mime_type, 'image' ) !== false );
                         $is_video  = ( strpos( $mime_type, 'video' ) !== false );
 
+                        // Metadatos
+                        $title_text = get_the_title( $media_id );
+                        $alt_text   = get_post_meta( $media_id, '_wp_attachment_image_alt', true );
+                        if ( empty( $alt_text ) ) $alt_text = $title_text;
+
                         if ( $is_image ) : 
                             $img_src = wp_get_attachment_image_src( $media_id, 'large' );
                             if ( $img_src ) : ?>
-                                <div class="col-12 col-md-4">
+                                <div class="col-12 col-md-4 nil-batch-item opacity-0">
                                     <div class="nil-gallery-item overflow-hidden w-100 position-relative cursor-pointer" data-index="<?php echo $index_counter; ?>">
-                                        <img src="<?php echo esc_url( $placeholder_svg ); ?>" 
+                                        <img src="<?php echo $placeholder; ?>" 
                                              data-src="<?php echo esc_url( $img_src[0] ); ?>" 
-                                             alt="<?php echo esc_attr( get_post_field( 'post_title', $media_id ) ); ?>" 
-                                             class="nil-lazy-media w-100 h-100 d-block object-fit-cover">
+                                             alt="<?php echo esc_attr( $alt_text ); ?>" 
+                                             title="<?php echo esc_attr( $title_text ); ?>"
+                                             class="nil-lazy-media w-100 h-100 d-block object-fit-cover will-change-transform">
                                     </div>
                                 </div>
                             <?php $index_counter++; endif; ?>
 
                         <?php elseif ( $is_video ) : ?>
-                            <div class="col-12 col-md-4">
+                            <div class="col-12 col-md-4 nil-batch-item opacity-0">
                                 <div class="nil-video-item overflow-hidden w-100 position-relative cursor-pointer" data-index="<?php echo $index_counter; ?>">
                                     <div class="nil-video-wrapper w-100 position-relative">
-                                        <video class="nil-lazy-media w-100 h-100 d-block object-fit-cover" controls preload="none" data-src="<?php echo esc_url( $media_url ); ?>">
+                                        <video class="nil-lazy-media w-100 h-100 d-block object-fit-cover will-change-transform" controls preload="none" title="<?php echo esc_attr( $title_text ); ?>" data-src="<?php echo esc_url( $media_url ); ?>">
                                             <source src="" type="<?php echo esc_attr( $mime_type ); ?>">
                                         </video>
                                     </div>
@@ -197,9 +203,9 @@ $placeholder_svg = 'data:image/svg+xml;charset=utf-8,' . rawurlencode(
         ) );
         if ( $related_models ) :
     ?>
-        <section class="nil-related-models container py-lg">
+        <section class="container py-lg">
             <div class="row">
-                <span class="col-12 col-md-3 nil-section-label mb-sm">
+                <span class="col-12 col-md-3 nil-section-label mb-sm h5 text-uppercase">
                     <?php printf(
                         esc_html__( 'Más modelos de %s', 'hello-elementor-child' ),
                         esc_html( $current_term->name )
@@ -220,8 +226,8 @@ $placeholder_svg = 'data:image/svg+xml;charset=utf-8,' . rawurlencode(
                                             alt="<?php echo esc_attr( $rel->post_title ); ?>"
                                             loading="lazy" class="w-100 d-block">
                                     <?php endif; ?>
-                                    <div class="nil-related-model-info mt-sm">
-                                        <h3><?php echo esc_html( $rel->post_title ); ?></h3>
+                                    <div class="nil-related-model-info mt-xs">
+                                        <h3 class="h4 fw-normal text-uppercase"><?php echo esc_html( $rel->post_title ); ?></h3>
                                     </div>
                                 </a>
                             </div>

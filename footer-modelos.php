@@ -36,7 +36,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 				<div class="col-12 col-lg-9 text-lg-end">
 					<p class="mb-0">
-						© <?php echo esc_html( gmdate( 'Y' ) ); ?> Next In Line Management.
+						© <?php echo esc_html( gmdate( 'Y' ) ); ?> <?php esc_html_e( 'Derechos reservados.', 'hello-elementor-child' ); ?>
 					</p>
 				</div>
 			</div>

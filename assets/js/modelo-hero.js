@@ -4,6 +4,7 @@
 
     document.addEventListener("DOMContentLoaded", () => {
         const heroWrapper = document.querySelector(".nil-hero-scroll-wrapper");
+        const heroSection = document.querySelector(".nil-modelo-hero"); // ⚡ Llamamos al contenedor
         const photoTarget = document.querySelector(".nil-modelo-photo-target");
         const innerImg = photoTarget ? photoTarget.querySelector("img") : null;
         const textLeft = document.querySelector(".nil-modelo-hero-left");
@@ -14,6 +15,14 @@
         if (!heroWrapper || !photoTarget || !photoBox) return;
 
         gsap.registerPlugin(ScrollTrigger);
+
+        // ══════════════════════════════════════════════════════════════════
+        // ⚡ BLINDAJE DE ALTURA: Congelar en píxeles absolutos
+        // Esto mata el efecto de "estiramiento" al hacer scroll
+        // ══════════════════════════════════════════════════════════════════
+        if (heroSection) {
+            heroSection.style.height = window.innerHeight + "px";
+        }
 
         // ── SECUESTRO INICIAL DEL HEADER ──
         if (siteBar) {
@@ -39,20 +48,27 @@
             });
         }
 
-        // FUNCIÓN DE RECORTE: Mide la columna real del sistema grid
+        // ⚡ Matemáticas relativas al contenedor (Coordenadas Locales)
         function getClipPathTarget() {
-            const rect = photoBox.getBoundingClientRect();
-            return `inset(${rect.top}px ${window.innerWidth - rect.right}px ${window.innerHeight - rect.bottom}px ${rect.left}px)`;
+            const boxRect = photoBox.getBoundingClientRect();
+            const targetRect = photoTarget.getBoundingClientRect();
+
+            const top = boxRect.top - targetRect.top;
+            const left = boxRect.left - targetRect.left;
+            const right = targetRect.right - boxRect.right;
+            const bottom = targetRect.bottom - boxRect.bottom;
+
+            return `inset(${top}px ${right}px ${bottom}px ${left}px)`;
         }
 
         // ══════════════════════════════════════════════════════════════════
-        // ⚡ 1. INTRO CINEMÁTICA AUTOMÁTICA (Con 1 segundo de Delay)
+        // 1. INTRO CINEMÁTICA AUTOMÁTICA
         // ══════════════════════════════════════════════════════════════════
         const tlIntro = gsap.timeline({
-            delay: 1 // ⚡ CLAVE: La página carga, se mantiene estática 1 segundo y luego despega sola
+            delay: 1 
         });
 
-        // Recorte automático de la foto
+        // Recorte automático de la foto (Fijado)
         tlIntro.to(photoTarget, {
             clipPath: () => getClipPathTarget(), 
             duration: 1.2,
@@ -68,7 +84,7 @@
             }, "start");
         }
 
-        // Subida de textos y contra-zoom automático
+        // Subida de textos
         if (textRight) {
             tlIntro.to(textRight, { y: 0, scale: 1, duration: 0.9, ease: "power3.out" }, "start+=0.2");
         }
@@ -76,16 +92,14 @@
             tlIntro.to(textLeft, { y: 0, scale: 1, duration: 1.0, ease: "power3.out" }, "start+=0.35");
         }
 
-
         // ══════════════════════════════════════════════════════════════════
-        // 2. TRIGGER DEL HEADER (Scroll Natural Libre)
+        // 2. TRIGGER DEL HEADER
         // ══════════════════════════════════════════════════════════════════
         if (siteBar) {
             ScrollTrigger.create({
                 trigger: heroWrapper,
                 start: "bottom top", 
                 invalidateOnRefresh: true,
-                markers: { startColor: "blue", endColor: "orange", fontSize: "14px", label: "Aparición Header" },
                 onEnter: () => gsap.to(siteBar, { yPercent: 0, autoAlpha: 1, duration: 0.6, ease: "power3.out" }),
                 onLeaveBack: () => gsap.to(siteBar, { yPercent: -100, autoAlpha: 0, duration: 0.4, ease: "power2.in" })
             });

@@ -1,57 +1,75 @@
+/* global gsap, ScrollTrigger, Swiper */
 (function ($) {
     'use strict';
 
     document.addEventListener("DOMContentLoaded", () => {
         
-        // ─────────────────────────────────────────
-        // 🏎️ MOTOR FASE 1: LA CUADRÍCULA ASÍNCRONA
-        // ─────────────────────────────────────────
-        const lazyMedia = document.querySelectorAll(".nil-lazy-media");
-
-        if (lazyMedia.length && typeof IntersectionObserver !== "undefined") {
-            const mediaObserver = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const element = entry.target;
-                        const srcTarget = element.getAttribute("data-src");
-
-                        if (!srcTarget) return;
-
-                        if (element.tagName === "IMG") {
-                            element.src = srcTarget;
-                            if (element.complete) {
-                                element.classList.add("nil-media-loaded");
-                            } else {
-                                element.addEventListener("load", () => {
-                                    element.classList.add("nil-media-loaded");
-                                });
-                            }
-                        } else if (element.tagName === "VIDEO") {
-                            const source = element.querySelector("source");
-                            if (source) source.src = srcTarget;
-                            element.src = srcTarget;
-                            element.load(); 
-
-                            if (element.readyState >= 2) {
-                                element.classList.add("nil-media-loaded");
-                            } else {
-                                element.addEventListener("loadeddata", () => {
-                                    element.classList.add("nil-media-loaded");
-                                });
-                            }
-                        }
-                        observer.unobserve(element);
-                    }
-                });
-            }, {
-                rootMargin: "0px 0px 300px 0px" // Anticipación de scroll editorial
-            });
-
-            lazyMedia.forEach(media => mediaObserver.observe(media));
+        if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+            gsap.registerPlugin(ScrollTrigger);
         }
 
         // ─────────────────────────────────────────
-        // 💎 MOTOR FASE 2: LIGHTBOX FERRARI + GSAP
+        // 🏎️ MOTOR FASE 1: ASYNC FETCH + GSAP BATCH
+        // ─────────────────────────────────────────
+        gsap.set(".nil-batch-item", { autoAlpha: 0, y: 40 });
+
+        ScrollTrigger.batch(".nil-batch-item", {
+            interval: 0.1,
+            // Ampliamos el margen para que empiece a descargar un poco antes de que sea visible
+            start: "top 110%", 
+            onEnter: (batch) => {
+                
+                // Recorremos cada tarjeta del lote
+                batch.forEach((card, index) => {
+                    const media = card.querySelector('.nil-lazy-media');
+                    if (!media) return;
+
+                    const srcTarget = media.getAttribute('data-src');
+                    if (!srcTarget) return;
+
+                    // Si es IMAGEN: Descarga asíncrona controlada
+                    if (media.tagName === 'IMG') {
+                        const tempImg = new Image();
+                        tempImg.src = srcTarget; // Inicia la descarga en background
+                        
+                        tempImg.onload = () => {
+                            media.src = srcTarget; // Reemplazamos el pixel transparente por la foto real
+                            media.classList.add('nil-media-loaded');
+                            
+                            // Animamos SOLO cuando ya cargó
+                            gsap.to(card, {
+                                autoAlpha: 1,
+                                y: 0,
+                                delay: index * 0.15, // Stagger manual basado en su posición en el lote
+                                duration: 0.8,
+                                ease: "power3.out",
+                                overwrite: true
+                            });
+                        };
+                    } 
+                    // Si es VIDEO
+                    else if (media.tagName === 'VIDEO') {
+                        media.src = srcTarget;
+                        media.load();
+                        media.classList.add('nil-media-loaded');
+
+                        gsap.to(card, {
+                            autoAlpha: 1,
+                            y: 0,
+                            delay: index * 0.15,
+                            duration: 0.8,
+                            ease: "power3.out",
+                            overwrite: true
+                        });
+                    }
+                });
+            },
+            once: true
+        });
+
+
+        // ─────────────────────────────────────────
+        // 💎 MOTOR FASE 2: LIGHTBOX FERRARI + GSAP (Sigue igual)
         // ─────────────────────────────────────────
         const $overlay = $('#nil-lightbox-overlay');
         const $closeBtn = $('#nil-lightbox-close');
@@ -59,12 +77,11 @@
 
         if (!$overlay.length) return;
 
-// Inyector diferido para el Lightbox (Lector nativo de atributos de datos)
         function cargarMediaLightbox(slide) {
             const $slide = $(slide);
             const $holder = $slide.find('.nil-lightbox-media-holder');
             
-            if ($holder.hasClass('nil-media-processed')) return; // Evitar duplicar cargas
+            if ($holder.hasClass('nil-media-processed')) return;
 
             const mediaUrl = $slide.data('lightbox-src');
             const mediaType = $slide.data('media-type');
@@ -74,11 +91,11 @@
 
             $holder.empty().addClass('nil-media-processed');
 
-            // ── CASO A: IMÁGENES EN EL LIGHTBOX ──
             if (mediaType === 'image') {
                 const $img = $('<img>', {
                     src: mediaUrl,
                     alt: mediaAlt,
+                    title: mediaAlt, 
                     class: 'w-100 h-100 object-fit-contain'
                 });
                 $holder.append($img);
@@ -87,10 +104,6 @@
                     $img.addClass('nil-loaded'); 
                 });
 
-            // ── CASO B: VIDEOS EN EL LIGHTBOX ──
-            // El <video> nativo captura todos los eventos, bloqueando el drag de Swiper.
-            // Solución: overlay transparente encima que deja burbujear los eventos a Swiper
-            // y detecta taps cortos para play/pause.
             } else if (mediaType === 'video') {
                 const $wrap  = $('<div>', { class: 'nil-video-lb-wrap' });
                 const $video = $('<video>', {
@@ -99,12 +112,10 @@
                     autoplay: true,
                     playsinline: true,
                     preload: 'metadata'
-                    // Sin 'controls': el overlay maneja la interacción
                 });
                 const $overlay = $('<div>', { class: 'nil-video-lb-overlay' });
                 const $hint    = $('<div>', { class: 'nil-video-lb-hint' });
 
-                // Tap corto → play / pause
                 let _tapX, _tapY, _tapT;
                 $overlay
                     .on('pointerdown', function (e) {
@@ -139,7 +150,6 @@
             }
         }
 
-        // Inicializador de Swiper
         function initSwiperLightbox(initialIndex) {
             swiperInstance = new Swiper('.nil-lightbox-swiper', {
                 slidesPerView: 1,
@@ -170,12 +180,10 @@
             });
         }
 
-        // Disparador de Apertura
         $('[data-index]').on('click', function(e) {
             e.preventDefault();
             const startIndex = parseInt($(this).data('index'), 10);
 
-            // Inyectamos la clase de estado al body para desaparecer el header de inmediato
             $('body').addClass('nil-lightbox-active').css('overflow', 'hidden'); 
 
             $overlay.removeClass('d-none');
@@ -186,9 +194,7 @@
             if (window.NilCursor) NilCursor.show('drag');
         });
 
-        // Disparador de Cierre (Sincronizado)
         function cerrarLightbox() {
-            // Liberamos el scroll nativo, pero dejamos la clase del header intacta
             $('body').css('overflow', '');
 
             gsap.to($overlay, { 
@@ -196,9 +202,7 @@
                 duration: 0.4, 
                 ease: 'power2.inOut', 
                 onComplete: function() {
-                    // ⚡ CLAVE: El header se revela HASTA QUE el overlay es 100% invisible
                     $('body').removeClass('nil-lightbox-active');
-                    
                     $overlay.addClass('d-none');
                     if (swiperInstance) {
                         swiperInstance.destroy(true, true);
@@ -213,7 +217,6 @@
 
         $closeBtn.on('click', cerrarLightbox);
 
-        // ── DETECCIÓN DE DIRECCIÓN DE ARRASTRE ──
         let dragStartX = null;
         $overlay.on('pointerdown', function (e) {
             if ($(e.target).closest('#nil-lightbox-close, video').length) return;
@@ -231,7 +234,6 @@
             if (window.NilCursor) NilCursor.setDragDir(null);
         });
 
-        // Clic navegable por cuadrantes laterales
         $overlay.on('click', function(e) {
             if ($(e.target).closest('#nil-lightbox-close, video, controls').length || !swiperInstance) return;
 

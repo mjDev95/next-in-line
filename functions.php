@@ -18,7 +18,8 @@ function nil_theme_setup() {
 	) );
 	register_nav_menus( array(
 		'nil-fullscreen-menu' => __( 'Menú Pantalla Completa (Header)', 'hello-elementor-child' ),
-	) );
+		'nil-social-menu' => __( 'Menú Social (Footer)', 'hello-elementor-child' ),
+    ) );
 }
 /**
  * Script crítico en <head>:
