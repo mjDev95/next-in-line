@@ -19,35 +19,20 @@
 		<div class="nil-pt-rounded"></div>
 	</div>
 	<div class="nil-pt-logo" aria-hidden="true">
-		<?php
-		$pt_logo_id  = (int) get_option( 'nil_header_logo_id', 0 );
-		$pt_logo_src = $pt_logo_id ? wp_get_attachment_image_url( $pt_logo_id, 'full' ) : '';
-		if ( $pt_logo_src ) : ?>
-			<img src="<?php echo esc_url( $pt_logo_src ); ?>" alt="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>">
-		<?php else : ?>
-			<!-- Placeholder SVG — reemplazar con logo real -->
-			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34 46" fill="none" aria-hidden="true">
-				<path d="M4 6 L4 40 L30 6 L30 40" stroke="white" stroke-width="5"
-				      stroke-linecap="round" stroke-linejoin="round"/>
-			</svg>
-		<?php endif; ?>
+        <img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/logos/nil-light.svg" alt="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>">
 	</div>
 </div>
 
 <?php if ( ! is_front_page() ) : ?>
 <!-- ── Site bar ─────────────────────────────────────────────────────────── -->
 <header class="nil-site-bar" role="banner">
-	<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="nil-bar-brand" aria-label="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>">
-		<?php
-		$logo_id = (int) get_option( 'nil_header_logo_id', 0 );
-		$logo_src = $logo_id ? wp_get_attachment_image_url( $logo_id, 'full' ) : '';
-		if ( $logo_src ) :
-		?>
-			<img src="<?php echo esc_url( $logo_src ); ?>" alt="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>">
-		<?php else : ?>
-			<span><?php bloginfo( 'name' ); ?></span>
-		<?php endif; ?>
-	</a>
+	<?php
+		if ( function_exists( 'the_custom_logo' ) && has_custom_logo() ) {
+			the_custom_logo();
+		} else {
+			bloginfo( 'name' );
+		}
+	?>
 
 	<button
 		class="nil-hamburger"

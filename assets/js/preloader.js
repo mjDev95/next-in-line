@@ -4,14 +4,24 @@
 
     var preloader = document.getElementById( 'nil-preloader' );
 
-    // Abortamos si no existe el preloader o si GSAP no está cargado
     if ( ! preloader || typeof gsap === 'undefined' ) { return; }
 
     var bottomArc = preloader.querySelector( '.nil-pl-rounded-wrap.bottom' );
     var logoEl    = preloader.querySelector( '.nil-pl-logo' );
     var ARC_HEIGHT = window.innerWidth > 540 ? '10vh' : '5vh';
 
-    // ⚡ Bandera de estado de carga de la red
+    // ⚡ 1. INICIALIZACIÓN ABSOLUTA DE GSAP
+    // Le decimos a GSAP que cuelgue la curva por debajo de la pantalla (99%)
+    // Esto evita cualquier bug de lectura de matrices CSS.
+    if ( bottomArc ) {
+        gsap.set( bottomArc, { 
+            height: ARC_HEIGHT, 
+            yPercent: 99, 
+            scaleY: 1, 
+            transformOrigin: "top center" 
+        });
+    }
+
     var isPageLoaded = false;
 
     window.addEventListener( 'load', function() {
@@ -22,13 +32,10 @@
         isPageLoaded = true;
     }
 
-    // ── Salida del preloader y Vuelo del Logo ────────────────────────────────
-
-	function exitPreloader() {
+    function exitPreloader() {
         var plLogoImg = preloader.querySelector( 'img' ) || preloader.querySelector( 'svg' );
         var headerLogoImg = document.querySelector( '.nil-home-logo img' );
 
-        // ⚡ 1. Agregamos el mismo micro-retraso que tiene page-transition
         var exitTl = gsap.timeline( {
             delay: 0.05, 
             onComplete: function () {
@@ -86,15 +93,10 @@
             }, 0 ); 
         }
 
-		if ( bottomArc ) {
-            // Forzamos el origin a 'top center' para que GSAP no lo encoja desde el medio.
-            exitTl.set( bottomArc, { 
-                height: ARC_HEIGHT, 
-                scaleY: 1, 
-                transformOrigin: "top center" 
-            }, 0 );
-            
-            // Física idéntica a tu page-transition
+        // ⚡ 2. LA CURVA SE APLANA
+        if ( bottomArc ) {
+            // Ya no usamos "set" aquí porque lo hicimos al inicio. 
+            // Solo animamos la escala a 0 exactamente como en page-transition.
             exitTl.to( bottomArc, { scaleY: 0, duration: 0.85, ease: 'power3.inOut' }, 0.2 );
         }
 
@@ -105,9 +107,6 @@
         );
     }
 
-    // ── Motor de Espera ──────────────────────────────────────────────────────
-
-    // Animación de respiración mientras la red descarga las fotos editoriales
     if ( logoEl ) {
         gsap.fromTo( logoEl, 
             { opacity: 0.35 }, 
@@ -115,7 +114,6 @@
         );
     }
 
-    // Loop de comprobación
     function checkLoadState() {
         if ( isPageLoaded ) {
             exitPreloader();
@@ -124,7 +122,6 @@
         }
     }
 
-    // ⚡ Forzamos la presencia de marca por 1 segundo mínimo
     setTimeout( checkLoadState, 1000 );
 
 } )();

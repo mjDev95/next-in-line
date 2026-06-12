@@ -12,7 +12,6 @@
 	align-items: center;
 	justify-content: space-between;
 	padding: 28px 40px;
-	pointer-events: none; /* children re-enable */
 	background: white;
 }
 

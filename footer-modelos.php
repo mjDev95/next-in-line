@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<div class="container py-sm">
 			<div class="row align-items-center">
 				<div class="col-6 col-lg-3 mb-md">
-					<div class="nil-footer-logo">
+					<div class="nil-footer-logo img-fluid">
 						<?php
 						if ( function_exists( 'the_custom_logo' ) && has_custom_logo() ) {
 							the_custom_logo();

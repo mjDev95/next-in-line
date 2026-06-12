@@ -750,3 +750,11 @@
 .overflow-y-hidden  { overflow-y: hidden !important; }
 .overflow-y-visible { overflow-y: visible !important; }
 .overflow-y-scroll  { overflow-y: scroll !important; }
+
+/* ─────────────────────────────────────────
+   ⚡ IMAGE UTILITIES (Responsive Media)
+   ───────────────────────────────────────── */
+.img-fluid {
+    max-width: 100%;
+    height: auto;
+}

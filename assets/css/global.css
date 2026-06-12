@@ -6,7 +6,12 @@ html, body {
     overflow-x: hidden;
     width: 100%;
 }
-
+footer img.custom-logo,
+header img.custom-logo {
+    width: 100%;
+    height: auto;
+    max-width: 200px;
+}
 /* ══════════════════════════════════════════
    BASE TIPOGRÁFICA Y DE COLOR (CONEXIÓN CON ELEMENTOR)
 ══════════════════════════════════════════ */

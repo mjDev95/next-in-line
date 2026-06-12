@@ -31,7 +31,6 @@ html.nil-preloader-active .nil-home-logo img {
 
 .nil-pl-rounded-wrap.bottom {
     bottom: 0;
-    transform: translateY(99%) scaleY(1);
     transform-origin: top center;
 }
 

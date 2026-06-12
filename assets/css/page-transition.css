@@ -85,15 +85,16 @@ body.admin-bar #nil-page-transition {
 /* ── Logo dentro del overlay ── */
 .nil-pt-logo {
 	position: absolute;
-	left: 40px;
-	top: 28px;
+	top: 50%;
+    left: 50%;
+	transform: translate(-50%, -50%);
 	z-index: 2;
 }
 
 .nil-pt-logo img,
 .nil-pt-logo svg {
-	height: 36px;
-	width: auto;
+	width: clamp(180px, 30vw, 400px);
+	height: auto;
 	display: block;
 }
 
