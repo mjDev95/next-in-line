@@ -33,20 +33,10 @@ $panels = array_values(
 
     <div class="nil-categories-hero position-relative z-index-2 w-100 h-100 d-flex flex-column justify-content-between p-md p-lg-0">
 
-        <div class="nil-home-logo position-relative w-100 z-index-10 text-center text-lg-start mb-auto">
-            <?php
-            $_nil_custom_logo_id = (int) get_theme_mod( 'custom_logo', 0 );
-            $_nil_logo_id        = $_nil_custom_logo_id ?: (int) get_option( 'nil_header_logo_id', 0 );
-            $_nil_logo_url       = $_nil_logo_id ? wp_get_attachment_image_url( $_nil_logo_id, 'full' ) : '';
-            if ( $_nil_logo_url ) : ?>
-                <a href="<?php echo esc_url( home_url( '/' ) ); ?>" aria-label="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>" class="d-inline-block">
-                    <img src="<?php echo esc_url( $_nil_logo_url ); ?>" alt="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>" style="height: clamp(50px, 10vw, 78px); width: auto;">
-                </a>
-            <?php else : ?>
-                <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="text-white text-uppercase" style="font-size: 0.75rem; letter-spacing: 0.25em; text-decoration: none;">
-                    <?php bloginfo( 'name' ); ?>
-                </a>
-            <?php endif; ?>
+        <div class="nil-home-logo position-relative w-100 z-index-10 text-center text-lg-start mb-auto" style="padding: 40px 0;"> 
+            <a href="<?php echo esc_url( home_url( '/' ) ); ?>" aria-label="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>" class="d-inline-block">
+                <img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/logos/nil-light.svg" alt="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>" style="height: clamp(50px, 10vw, 78px); width: auto;">
+            </a>
         </div>
 
         <?php foreach ( $panels as $item ) : ?>

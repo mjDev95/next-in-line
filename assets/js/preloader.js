@@ -1,93 +1,130 @@
 /* global gsap */
 ( function () {
-	'use strict';
+    'use strict';
 
-	var preloader = document.getElementById( 'nil-preloader' );
+    var preloader = document.getElementById( 'nil-preloader' );
 
-	// No existe (visita previa ocultó el div) o GSAP no está disponible
-	if ( ! preloader || typeof gsap === 'undefined' ) { return; }
+    // Abortamos si no existe el preloader o si GSAP no está cargado
+    if ( ! preloader || typeof gsap === 'undefined' ) { return; }
 
-	var wordEl    = preloader.querySelector( '.nil-pl-word' );
-	var bottomArc = preloader.querySelector( '.nil-pl-rounded-wrap.bottom' );
-	var ARC_HEIGHT = window.innerWidth > 540 ? '10vh' : '5vh';
+    var bottomArc = preloader.querySelector( '.nil-pl-rounded-wrap.bottom' );
+    var logoEl    = preloader.querySelector( '.nil-pl-logo' );
+    var ARC_HEIGHT = window.innerWidth > 540 ? '10vh' : '5vh';
 
-	if ( ! wordEl ) { return; }
+    // ⚡ Bandera de estado de carga de la red
+    var isPageLoaded = false;
 
-	// Palabras de la secuencia — ajustar a gusto
-	var WORDS = [ 'NEXT', 'IN', 'LINE', 'MANAGEMENT' ];
+    window.addEventListener( 'load', function() {
+        isPageLoaded = true;
+    } );
 
-	// ── Salida del preloader ─────────────────────────────────────────────────
+    if ( document.readyState === 'complete' ) {
+        isPageLoaded = true;
+    }
+
+    // ── Salida del preloader y Vuelo del Logo ────────────────────────────────
 
 	function exitPreloader() {
-		var exitTl = gsap.timeline( {
-			onComplete: function () {
-				// Notificar primero para que page-transition.js fije el inline transform
-				// antes de que removamos la clase (evita flash del overlay)
-				document.dispatchEvent( new CustomEvent( 'nil:preloaderDone' ) );
+        var plLogoImg = preloader.querySelector( 'img' ) || preloader.querySelector( 'svg' );
+        var headerLogoImg = document.querySelector( '.nil-home-logo img' );
 
-				// Quitar clase que bloqueaba el page-transition overlay
-				document.documentElement.classList.remove( 'nil-preloader-active' );
+        // ⚡ 1. Agregamos el mismo micro-retraso que tiene page-transition
+        var exitTl = gsap.timeline( {
+            delay: 0.05, 
+            onComplete: function () {
+                if (headerLogoImg) { gsap.set(headerLogoImg, { opacity: 1, visibility: 'visible' }); }
+                if (plLogoImg) { gsap.set(plLogoImg, { visibility: 'hidden' }); }
 
-				// Limpiar DOM
-				if ( preloader.parentNode ) {
-					preloader.parentNode.removeChild( preloader );
-				}
-			},
-		} );
+                document.dispatchEvent( new CustomEvent( 'nil:preloaderDone' ) );
+                document.documentElement.classList.remove( 'nil-preloader-active' );
+
+                if ( preloader.parentNode ) {
+                    preloader.parentNode.removeChild( preloader );
+                }
+                
+                if ( plLogoImg && plLogoImg.parentNode === document.body ) {
+                    plLogoImg.parentNode.removeChild( plLogoImg );
+                }
+            },
+        } );
+
+        if ( logoEl ) { 
+            gsap.killTweensOf( logoEl ); 
+            gsap.set( logoEl, { opacity: 1 } );
+        }
+
+        if ( plLogoImg && headerLogoImg ) {
+            var plRect = plLogoImg.getBoundingClientRect();
+            var headRect = headerLogoImg.getBoundingClientRect();
+
+            document.body.appendChild( plLogoImg );
+            
+            gsap.set( plLogoImg, {
+                position: 'fixed',
+                top: plRect.top,
+                left: plRect.left,
+                width: plRect.width,
+                height: plRect.height,
+                margin: 0,
+                zIndex: 10001,
+                x: 0,
+                y: 0,
+                scale: 1,
+                transformOrigin: "top left"
+            });
+
+            var moveX = headRect.left - plRect.left;
+            var moveY = headRect.top - plRect.top;
+            var scaleTarget = headRect.width / plRect.width;
+
+            exitTl.to( plLogoImg, {
+                x: moveX,
+                y: moveY,
+                scale: scaleTarget,
+                duration: 0.8,
+                ease: 'power3.inOut'
+            }, 0 ); 
+        }
 
 		if ( bottomArc ) {
-			exitTl.set( bottomArc, { height: ARC_HEIGHT, scaleY: 1 }, 0 );
-		}
+            // Forzamos el origin a 'top center' para que GSAP no lo encoja desde el medio.
+            exitTl.set( bottomArc, { 
+                height: ARC_HEIGHT, 
+                scaleY: 1, 
+                transformOrigin: "top center" 
+            }, 0 );
+            
+            // Física idéntica a tu page-transition
+            exitTl.to( bottomArc, { scaleY: 0, duration: 0.85, ease: 'power3.inOut' }, 0.2 );
+        }
 
-		exitTl.to(
-			preloader,
-			{ yPercent: -100, duration: 0.8, ease: 'power4.inOut' },
-			0.1
-		);
+        exitTl.to(
+            preloader,
+            { yPercent: -100, duration: 0.8, ease: 'power3.inOut' },
+            0 
+        );
+    }
 
-		if ( bottomArc ) {
-			exitTl.to(
-				bottomArc,
-				{ scaleY: 0, duration: 1, ease: 'power4.inOut' },
-				0.1
-			);
-		}
-	}
+    // ── Motor de Espera ──────────────────────────────────────────────────────
 
-	// ── Secuencia de texto ───────────────────────────────────────────────────
+    // Animación de respiración mientras la red descarga las fotos editoriales
+    if ( logoEl ) {
+        gsap.fromTo( logoEl, 
+            { opacity: 0.35 }, 
+            { opacity: 1, duration: 1.2, yoyo: true, repeat: -1, ease: 'power1.inOut' } 
+        );
+    }
 
-	var textTl = gsap.timeline( { onComplete: exitPreloader } );
+    // Loop de comprobación
+    function checkLoadState() {
+        if ( isPageLoaded ) {
+            exitPreloader();
+        } else {
+            setTimeout( checkLoadState, 100 );
+        }
+    }
 
-	WORDS.forEach( function ( word, i ) {
-		var offset = i * 0.62;
-
-		// Cambiar contenido del span
-		textTl.set( wordEl, { innerText: word }, offset );
-
-		// Entrar: desenfoque → nitidez
-		textTl.fromTo(
-			wordEl,
-			{ opacity: 0, filter: 'blur(14px)' },
-			{ opacity: 1, filter: 'blur(0px)', duration: 0.22, ease: 'power2.out' },
-			offset
-		);
-
-		// Salir: nitidez → desenfoque
-		var exitOffset = offset + 0.42;
-		if ( i < WORDS.length - 1 ) {
-			textTl.to(
-				wordEl,
-				{ opacity: 0, filter: 'blur(10px)', duration: 0.18, ease: 'power2.in' },
-				exitOffset
-			);
-		} else {
-			// Última palabra: se apaga suavemente antes del exit
-			textTl.to(
-				wordEl,
-				{ opacity: 0, filter: 'blur(6px)', duration: 0.28, ease: 'power2.in' },
-				exitOffset
-			);
-		}
-	} );
+    // ⚡ Forzamos la presencia de marca por 1 segundo mínimo
+    setTimeout( checkLoadState, 1000 );
 
 } )();

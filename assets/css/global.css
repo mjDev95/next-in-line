@@ -44,6 +44,14 @@ a:hover {
     color: var(--e-global-color-accent); /* Usa tu token mapeado */
 }
 /* ══════════════════════════════════════════
+    LOGO EN HOME: INVERTIDO AUTOMÁTICO
+    Si el logo es oscuro, se invierte para que resalte sobre el fondo claro.
+══════════════════════════════════════════ */
+.nil-home-logo img {
+    filter: brightness(0) invert(1);
+}
+
+/* ══════════════════════════════════════════
    PÁGINA 404 — ESTILO UNIFICADO FLUIDO
 ══════════════════════════════════════════ */
 
@@ -162,27 +170,4 @@ a:hover {
     display: block;
     width: 28px;
     height: 28px;
-}
-
-/* ── Menú de Redes Sociales Inline (Fluid Edition) ── */
-.nil-social-nav {
-    gap: var(--nil-s-md); 
-    list-style: none;
-}
-
-.nil-social-nav a {
-    font-family: var(--e-global-typography-accent-font-family, sans-serif);
-    font-weight: var(--e-global-typography-accent-font-weight, 500);
-    font-size: clamp(0.75rem, 1vw, 0.85rem);
-    
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    text-decoration: none;
-    
-    color: var(--nil-color-muted); 
-    transition: color 0.3s ease;
-}
-
-.nil-social-nav a:hover {
-    color: var(--nil-color-primary); 
 }

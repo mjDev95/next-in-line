@@ -74,16 +74,23 @@
 
 .nil-fullscreen-nav {
 	position: fixed;
-	inset: 0;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	width: auto;
+	height: 100dvh;
 	z-index: 250;
 	background: #0c0c0c;
 	display: flex;
 	align-items: stretch;
-
-	/* GSAP controls visibility via clip-path */
 	clip-path: inset(0 100% 0 0);
 	visibility: hidden;
 	pointer-events: none;
+	overflow-x: hidden;
+	overflow-y: auto;
+	overscroll-behavior: contain;
+	-webkit-overflow-scrolling: touch;
 }
 
 .nil-fn-inner {
@@ -92,6 +99,9 @@
 	justify-content: space-between;
 	width: 100%;
 	padding: 80px 10vw 60px;
+	min-height: 100%;
+	box-sizing: border-box;
+	flex-shrink: 0;
 }
 
 /* ── Menu items ── */
@@ -220,7 +230,7 @@
 	justify-content: space-between;
 	flex-wrap: wrap;
 	gap: 16px;
-	padding-top: 40px;
+	padding: 40px 0 40px 0;
 	border-top: 1px solid rgba(255, 255, 255, .1);
 }
 
@@ -290,7 +300,32 @@
 		margin-left: calc(clamp(2.2rem, 5vw, 5rem) * .45 + 14px);
 	}
 }
+/* ── Menú de Redes Sociales Inline (Fluid Edition) ── */
+.nil-social-nav {
+    /* Usamos tu escala de espaciado fluido para separar los enlaces */
+    gap: var(--nil-s-md); 
+    list-style: none;
+}
 
+.nil-social-nav a {
+    /* Conectamos a la fuente Accent de Elementor para los enlaces */
+    font-family: var(--e-global-typography-accent-font-family, sans-serif);
+    font-weight: var(--e-global-typography-accent-font-weight, 500);
+    font-size: clamp(0.75rem, 1vw, 0.85rem);
+    
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    text-decoration: none;
+    
+    /* Usamos tu paleta híbrida */
+    color: var(--nil-color-muted); 
+    transition: color 0.3s ease;
+}
+
+.nil-social-nav a:hover {
+    /* Al hacer hover, se enciende con el negro absoluto o el color principal */
+    color: var(--nil-color-primary); 
+}
 /* ══════════════════════════════════════════
    ADMIN BAR COMPATIBILITY
    WP adds `html { margin-top: 32px }` when

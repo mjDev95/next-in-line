@@ -23,6 +23,23 @@
 			return;
 		}
 
+		function lockScroll() {
+			var scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+
+			document.documentElement.style.overflow = 'hidden';
+			document.body.style.overflow = 'hidden';
+
+			if ( scrollbarWidth > 0 ) {
+				document.body.style.paddingRight = scrollbarWidth + 'px';
+			}
+		}
+
+		function unlockScroll() {
+			document.documentElement.style.overflow = '';
+			document.body.style.overflow = '';
+			document.body.style.paddingRight = '';
+		}
+
 		// ── GSAP timeline ───────────────────────────────────────────────────────
 
 		var pendingUrl = null;
@@ -35,14 +52,14 @@
 				nav.style.visibility    = 'visible';
 				nav.style.pointerEvents = 'all';
 				nav.setAttribute( 'aria-hidden', 'false' );
-				document.body.style.overflow = 'hidden';
+				
 			},
 
 			onReverseComplete: function () {
 				nav.style.visibility    = 'hidden';
 				nav.style.pointerEvents = 'none';
 				nav.setAttribute( 'aria-hidden', 'true' );
-				document.body.style.overflow = '';
+				
 				if ( pendingUrl ) {
 					var url = pendingUrl;
 					pendingUrl = null;
@@ -61,6 +78,13 @@
 			{ clipPath: 'inset(0 100% 0 0)' },
 			{ clipPath: 'inset(0 0% 0 0)', duration: 0.65, ease: 'power3.inOut' }
 		);
+
+		// Ejecutar lock al avanzar y unlock al reproducir en reversa.
+		tl.to( {}, {
+			duration: 0,
+			onComplete: lockScroll,
+			onReverseComplete: unlockScroll,
+		}, 0.58 );
 
 		// 2. Top-level menu items stagger in from left
 		if ( topItems.length ) {
@@ -117,9 +141,9 @@
 			tl.restart();
 		}
 
-		// Cierre: reproducción inversa del timeline de apertura
 		function closeMenu() {
 			if ( ! isOpen ) { return; }
+
 			isOpen = false;
 			btn.setAttribute( 'aria-expanded', 'false' );
 			btn.classList.remove( 'is-open' );
