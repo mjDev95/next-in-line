@@ -565,7 +565,8 @@ body.nil-lightbox-active #site-header {
 }
 
 .nil-modelo-photo-box {
-    height: min(72vh, 720px);
+    width: 100%;
+    aspect-ratio: 480 / 720;
     visibility: hidden;
     pointer-events: none;
 }
