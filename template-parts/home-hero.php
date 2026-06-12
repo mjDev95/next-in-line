@@ -43,7 +43,7 @@ $panels = array_values(
 
             <div class="nil-cat-panel d-flex flex-column justify-content-center justify-content-lg-end text-center">
 
-                <a href="<?php echo esc_url( $item->url ); ?>" class="nil-cat-link d-inline-block text-white px-lg px-lg-0" style="text-decoration: none;">
+                <a href="<?php echo esc_url( $item->url ); ?>" class="nil-cat-link d-inline-block text-white text-decoration-none" >
                     
                     <h2 class="nil-cat-name text-uppercase my-0 text-white fw-normal">
                         <?php echo esc_html( $item->title ); ?>

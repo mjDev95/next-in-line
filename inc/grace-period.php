@@ -152,11 +152,11 @@ function nil_run_grace_period_check() {
 		'meta_query'     => array(
 			'relation' => 'OR',
 			array(
-				'key'     => 'galeria_fotos',
+				'key'     => '_galeria',
 				'compare' => 'NOT EXISTS',
 			),
 			array(
-				'key'     => 'galeria_fotos',
+				'key'     => '_galeria',
 				'value'   => '',
 				'compare' => '=',
 			),
@@ -187,7 +187,7 @@ function nil_grace_period_admin_notice() {
 		return;
 	}
 
-	$ids_string = get_post_meta( $post->ID, 'galeria_fotos', true );
+	$ids_string = get_post_meta( $post->ID, '_galeria', true );
 	if ( ! empty( $ids_string ) ) {
 		return; // Tiene fotos: sin aviso.
 	}

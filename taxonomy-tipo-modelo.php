@@ -87,6 +87,9 @@ $GLOBALS['wp_query'] = new WP_Query( array(
 		'taxonomy'   => 'tipo-modelo',
 		'hide_empty' => true,
 		'exclude'    => $term->term_id,
+		'orderby'    => 'name',
+		'order'      => 'ASC',
+		'number'     => 4,
 	) );
 
 	if ( ! is_wp_error( $other_terms ) && ! empty( $other_terms ) ) :
@@ -96,7 +99,7 @@ $GLOBALS['wp_query'] = new WP_Query( array(
 
 		<h3 class="nil-related-cats-title h6 text-center text-uppercase mb-lg"><?php esc_html_e( 'Descubre otras divisiones', 'hello-elementor-child' ); ?></h3>
 
-		<div class="nil-related-cats-grid d-flex">
+		<div class="nil-related-cats-grid row">
 			<?php foreach ( $other_terms as $other ) :
 
 				$image_id = get_term_meta( $other->term_id, 'image_id', true );
@@ -108,13 +111,14 @@ $GLOBALS['wp_query'] = new WP_Query( array(
 				}
 			?>
 
-				<a href="<?php echo esc_url( get_term_link( $other ) ); ?>"
-				   class="nil-related-cat-card position-relative overflow-hidden text-decoration-none"
-				   title="<?php echo esc_attr( sprintf(
-				   		/* translators: %s: nombre de la categoría */
-				   		__( 'Modelos %s', 'hello-elementor-child' ),
-				   		$other->name
-				   ) ); ?>">
+				<div class="col-6 col-md-4 col-lg-3">
+					<a href="<?php echo esc_url( get_term_link( $other ) ); ?>"
+					   class="nil-related-cat-card position-relative overflow-hidden text-decoration-none d-block"
+					   title="<?php echo esc_attr( sprintf(
+					   		/* translators: %s: nombre de la categoría */
+					   		__( 'Modelos %s', 'hello-elementor-child' ),
+					   		$other->name
+					   ) ); ?>">
 
 					<?php if ( $bg_url ) : ?>
 						<div class="nil-cat-bg" style="background-image:url('<?php echo esc_url( $bg_url ); ?>')"></div>
@@ -124,7 +128,8 @@ $GLOBALS['wp_query'] = new WP_Query( array(
 						<span class="nil-related-cat-name h5 text-uppercase"><?php echo esc_html( strtoupper( $other->name ) ); ?></span>
 					</div>
 
-				</a>
+					</a>
+				</div>
 
 			<?php endforeach; ?>
 		</div>
