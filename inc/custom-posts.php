@@ -142,75 +142,93 @@ function crear_metabox_datos_modelo() {
 }
 
 function mostrar_metabox_datos_modelo( $post ) {
-	$height = get_post_meta( $post->ID, 'height', true );
-	$suit   = get_post_meta( $post->ID, 'suit', true );
-	$collar = get_post_meta( $post->ID, 'collar', true );
-	$waist  = get_post_meta( $post->ID, 'waist', true );
-	$inseam = get_post_meta( $post->ID, 'inseam', true );
-	$shoe   = get_post_meta( $post->ID, 'shoe', true );
-	$hair   = get_post_meta( $post->ID, 'hair', true );
-	$eyes   = get_post_meta( $post->ID, 'eyes', true );
-	?>
-	<p>
-		<label><?php _e( 'HEIGHT', 'hello-elementor-child' ); ?></label><br>
-		<input type="text" name="height" value="<?php echo esc_attr( $height ); ?>" style=" width: 100%; ">
-	</p>
-	<p>
-		<label><?php _e( 'SUIT', 'hello-elementor-child' ); ?></label><br>
-		<input type="text" name="suit" value="<?php echo esc_attr( $suit ); ?>" style=" width: 100%; ">
-	</p>
-	<p>
-		<label><?php _e( 'COLLAR', 'hello-elementor-child' ); ?></label><br>
-		<input type="text" name="collar" value="<?php echo esc_attr( $collar ); ?>" style=" width: 100%; ">
-	</p>
-	<p>
-		<label><?php _e( 'WAIST', 'hello-elementor-child' ); ?></label><br>
-		<input type="text" name="waist" value="<?php echo esc_attr( $waist ); ?>" style=" width: 100%; ">
-	</p>
-	<p>
-		<label><?php _e( 'INSEAM', 'hello-elementor-child' ); ?></label><br>
-		<input type="text" name="inseam" value="<?php echo esc_attr( $inseam ); ?>" style=" width: 100%; ">
-	</p>
-	<p>
-		<label><?php _e( 'SHOE', 'hello-elementor-child' ); ?></label><br>
-		<input type="text" name="shoe" value="<?php echo esc_attr( $shoe ); ?>" style=" width: 100%; ">
-	</p>
-	<p>
-		<label><?php _e( 'HAIR', 'hello-elementor-child' ); ?></label><br>
-		<input type="text" name="hair" value="<?php echo esc_attr( $hair ); ?>" style=" width: 100%; ">
-	</p>
-	<p>
-		<label><?php _e( 'EYES', 'hello-elementor-child' ); ?></label><br>
-		<input type="text" name="eyes" value="<?php echo esc_attr( $eyes ); ?>" style=" width: 100%; ">
-	</p>
-	<?php
+    // 1. Recuperamos los valores de la base de datos
+    $height = get_post_meta( $post->ID, 'height', true );
+    $bust   = get_post_meta( $post->ID, 'bust', true );
+    $waist  = get_post_meta( $post->ID, 'waist', true );
+    $hips   = get_post_meta( $post->ID, 'hips', true );
+    $suit   = get_post_meta( $post->ID, 'suit', true );
+    $shirt  = get_post_meta( $post->ID, 'shirt', true );
+    $pants  = get_post_meta( $post->ID, 'pants', true );
+    $shoe   = get_post_meta( $post->ID, 'shoe', true );
+    $hair   = get_post_meta( $post->ID, 'hair', true );
+    $eyes   = get_post_meta( $post->ID, 'eyes', true );
+    ?>
+    <p>
+        <label><strong><?php _e( 'ALTURA', 'hello-elementor-child' ); ?></strong></label><br>
+        <input type="text" name="height" value="<?php echo esc_attr( $height ); ?>" style="width: 100%;" placeholder="<?php esc_attr_e( 'Ej. 1.75', 'hello-elementor-child' ); ?>">
+    </p>
+    <p>
+        <label><strong><?php _e( 'BUSTO', 'hello-elementor-child' ); ?></strong></label><br>
+        <input type="text" name="bust" value="<?php echo esc_attr( $bust ); ?>" style="width: 100%;" placeholder="<?php esc_attr_e( 'Ej. 90', 'hello-elementor-child' ); ?>">
+    </p>
+    <p>
+        <label><strong><?php _e( 'CINTURA', 'hello-elementor-child' ); ?></strong></label><br>
+        <input type="text" name="waist" value="<?php echo esc_attr( $waist ); ?>" style="width: 100%;" placeholder="<?php esc_attr_e( 'Ej. 64', 'hello-elementor-child' ); ?>">
+    </p>
+    <p>
+        <label><strong><?php _e( 'CADERA', 'hello-elementor-child' ); ?></strong></label><br>
+        <input type="text" name="hips" value="<?php echo esc_attr( $hips ); ?>" style="width: 100%;" placeholder="<?php esc_attr_e( 'Ej. 94', 'hello-elementor-child' ); ?>">
+    </p>
+    <p>
+        <label><strong><?php _e( 'SACO', 'hello-elementor-child' ); ?></strong></label><br>
+        <input type="text" name="suit" value="<?php echo esc_attr( $suit ); ?>" style="width: 100%;" placeholder="<?php esc_attr_e( 'Ej. 40R', 'hello-elementor-child' ); ?>">
+    </p>
+    <p>
+        <label><strong><?php _e( 'CAMISA', 'hello-elementor-child' ); ?></strong></label><br>
+        <input type="text" name="shirt" value="<?php echo esc_attr( $shirt ); ?>" style="width: 100%;" placeholder="<?php esc_attr_e( 'Ej. 40', 'hello-elementor-child' ); ?>">
+    </p>
+    <p>
+        <label><strong><?php _e( 'PANTALÓN', 'hello-elementor-child' ); ?></strong></label><br>
+        <input type="text" name="pants" value="<?php echo esc_attr( $pants ); ?>" style="width: 100%;" placeholder="<?php esc_attr_e( 'Ej. 34', 'hello-elementor-child' ); ?>">
+    </p>
+    <p>
+        <label><strong><?php _e( 'ZAPATO', 'hello-elementor-child' ); ?></strong></label><br>
+        <input type="text" name="shoe" value="<?php echo esc_attr( $shoe ); ?>" style="width: 100%;" placeholder="<?php esc_attr_e( 'Ej. 26', 'hello-elementor-child' ); ?>">
+    </p>
+    <p>
+        <label><strong><?php _e( 'CABELLO', 'hello-elementor-child' ); ?></strong></label><br>
+        <input type="text" name="hair" value="<?php echo esc_attr( $hair ); ?>" style="width: 100%;" placeholder="<?php esc_attr_e( 'Ej. Castaño Claro', 'hello-elementor-child' ); ?>">
+    </p>
+    <p>
+        <label><strong><?php _e( 'OJOS', 'hello-elementor-child' ); ?></strong></label><br>
+        <input type="text" name="eyes" value="<?php echo esc_attr( $eyes ); ?>" style="width: 100%;" placeholder="<?php esc_attr_e( 'Ej. Verdes', 'hello-elementor-child' ); ?>">
+    </p>
+    <?php
 }
 
 function guardar_campos_datos_modelo( $post_id ) {
-	if ( isset( $_POST['height'] ) ) {
-		update_post_meta( $post_id, 'height', sanitize_text_field( $_POST['height'] ) );
-	}
-	if ( isset( $_POST['suit'] ) ) {
-		update_post_meta( $post_id, 'suit', sanitize_text_field( $_POST['suit'] ) );
-	}
-	if ( isset( $_POST['collar'] ) ) {
-		update_post_meta( $post_id, 'collar', sanitize_text_field( $_POST['collar'] ) );
-	}
-	if ( isset( $_POST['waist'] ) ) {
-		update_post_meta( $post_id, 'waist', sanitize_text_field( $_POST['waist'] ) );
-	}
-	if ( isset( $_POST['inseam'] ) ) {
-		update_post_meta( $post_id, 'inseam', sanitize_text_field( $_POST['inseam'] ) );
-	}
-	if ( isset( $_POST['shoe'] ) ) {
-		update_post_meta( $post_id, 'shoe', sanitize_text_field( $_POST['shoe'] ) );
-	}
-	if ( isset( $_POST['hair'] ) ) {
-		update_post_meta( $post_id, 'hair', sanitize_text_field( $_POST['hair'] ) );
-	}
-	if ( isset( $_POST['eyes'] ) ) {
-		update_post_meta( $post_id, 'eyes', sanitize_text_field( $_POST['eyes'] ) );
-	}
+    // 2. Guardamos todos los campos unificados
+    if ( isset( $_POST['height'] ) ) {
+        update_post_meta( $post_id, 'height', sanitize_text_field( $_POST['height'] ) );
+    }
+    if ( isset( $_POST['bust'] ) ) {
+        update_post_meta( $post_id, 'bust', sanitize_text_field( $_POST['bust'] ) );
+    }
+    if ( isset( $_POST['waist'] ) ) {
+        update_post_meta( $post_id, 'waist', sanitize_text_field( $_POST['waist'] ) );
+    }
+    if ( isset( $_POST['hips'] ) ) {
+        update_post_meta( $post_id, 'hips', sanitize_text_field( $_POST['hips'] ) );
+    }
+    if ( isset( $_POST['suit'] ) ) {
+        update_post_meta( $post_id, 'suit', sanitize_text_field( $_POST['suit'] ) );
+    }
+    if ( isset( $_POST['shirt'] ) ) {
+        update_post_meta( $post_id, 'shirt', sanitize_text_field( $_POST['shirt'] ) );
+    }
+    if ( isset( $_POST['pants'] ) ) {
+        update_post_meta( $post_id, 'pants', sanitize_text_field( $_POST['pants'] ) );
+    }
+    if ( isset( $_POST['shoe'] ) ) {
+        update_post_meta( $post_id, 'shoe', sanitize_text_field( $_POST['shoe'] ) );
+    }
+    if ( isset( $_POST['hair'] ) ) {
+        update_post_meta( $post_id, 'hair', sanitize_text_field( $_POST['hair'] ) );
+    }
+    if ( isset( $_POST['eyes'] ) ) {
+        update_post_meta( $post_id, 'eyes', sanitize_text_field( $_POST['eyes'] ) );
+    }
 }
 
 add_action( 'add_meta_boxes', 'crear_metabox_datos_modelo' );
