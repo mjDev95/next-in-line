@@ -4,7 +4,7 @@
 
     document.addEventListener("DOMContentLoaded", () => {
         const heroWrapper = document.querySelector(".nil-hero-scroll-wrapper");
-        const heroSection = document.querySelector(".nil-modelo-hero"); // ⚡ Llamamos al contenedor
+        const heroSection = document.querySelector(".nil-modelo-hero"); 
         const photoTarget = document.querySelector(".nil-modelo-photo-target");
         const innerImg = photoTarget ? photoTarget.querySelector("img") : null;
         const textLeft = document.querySelector(".nil-modelo-hero-left");
@@ -12,54 +12,46 @@
         const siteBar = document.querySelector(".nil-site-bar");
         const photoBox = document.querySelector(".nil-modelo-photo-box");
 
-        if (!heroWrapper || !photoTarget || !photoBox) return;
+        if (!heroWrapper || !photoTarget || !photoBox || !heroSection) return;
 
         gsap.registerPlugin(ScrollTrigger);
 
-        // ══════════════════════════════════════════════════════════════════
-        // ⚡ BLINDAJE DE ALTURA: Congelar en píxeles absolutos
-        // Esto mata el efecto de "estiramiento" al hacer scroll
-        // ══════════════════════════════════════════════════════════════════
-        if (heroSection) {
-            heroSection.style.height = window.innerHeight + "px";
-        }
+        // ── BLINDAJE DE ALTURA ──
+        heroSection.style.height = window.innerHeight + "px";
 
         // ── SECUESTRO INICIAL DEL HEADER ──
         if (siteBar) {
             gsap.set(siteBar, { yPercent: -100, autoAlpha: 0 });
         }
 
-        // ⚡ ESTADO INICIAL (Visibles abajo con zoom masivo editorial)
+        // ── ESTADO INICIAL DE TEXTOS (Visibles abajo con zoom editorial) ──
         if (textLeft) {
-            gsap.set(textLeft, { 
-                y: "32vh", 
-                scale: 1.4,             
-                transformOrigin: "left bottom", 
-                opacity: 1  
-            });
+            gsap.set(textLeft, { y: "32vh", scale: 1.4, transformOrigin: "left bottom", opacity: 1 });
         }
-
         if (textRight) {
-            gsap.set(textRight, { 
-                y: "32vh", 
-                scale: 1.25,            
-                transformOrigin: "right bottom", 
-                opacity: 1  
-            });
+            gsap.set(textRight, { y: "32vh", scale: 1.25, transformOrigin: "right bottom", opacity: 1 });
         }
 
-        // ⚡ Matemáticas relativas al contenedor (Coordenadas Locales)
-        function getClipPathTarget() {
-            const boxRect = photoBox.getBoundingClientRect();
-            const targetRect = photoTarget.getBoundingClientRect();
+        // ══════════════════════════════════════════════════════════════════
+        // ⚡ CÁLCULO DE GEOMETRÍA PARA LA OPCIÓN B (Encogimiento Real)
+        // Mide el molde central con respecto al contenedor padre absoluto
+        // ══════════════════════════════════════════════════════════════════
+        const heroRect = heroSection.getBoundingClientRect();
+        const boxRect = photoBox.getBoundingClientRect();
 
-            const top = boxRect.top - targetRect.top;
-            const left = boxRect.left - targetRect.left;
-            const right = targetRect.right - boxRect.right;
-            const bottom = targetRect.bottom - boxRect.bottom;
+        const targetTop    = boxRect.top - heroRect.top;
+        const targetLeft   = boxRect.left - heroRect.left;
+        const targetWidth  = boxRect.width;
+        const targetHeight = boxRect.height;
 
-            return `inset(${top}px ${right}px ${bottom}px ${left}px)`;
-        }
+        // Aseguramos el estado inicial a pantalla completa antes de arrancar
+        gsap.set(photoTarget, {
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%"
+        });
 
         // ══════════════════════════════════════════════════════════════════
         // 1. INTRO CINEMÁTICA AUTOMÁTICA
@@ -68,23 +60,26 @@
             delay: 1 
         });
 
-        // Recorte automático de la foto (Fijado)
+        // ⚡ ENCOGIMIENTO REAL: Animamos las propiedades físicas del contenedor
         tlIntro.to(photoTarget, {
-            clipPath: () => getClipPathTarget(), 
+            top: targetTop,
+            left: targetLeft,
+            width: targetWidth,
+            height: targetHeight,
             duration: 1.2,
             ease: "power4.inOut"
         }, "start");
         
+        // Suavizamos la escala interna de la imagen para acompañar el encogimiento
         if (innerImg) {
             tlIntro.to(innerImg, {
-                yPercent: -8,   
-                scale: 1.0,     
+                scale: 1.0, // Regresa a su escala natural
                 duration: 1.2,
                 ease: "power4.inOut"
             }, "start");
         }
 
-        // Subida de textos
+        // Subida y reescalado de textos de los costados
         if (textRight) {
             tlIntro.to(textRight, { y: 0, scale: 1, duration: 0.9, ease: "power3.out" }, "start+=0.2");
         }
@@ -92,9 +87,7 @@
             tlIntro.to(textLeft, { y: 0, scale: 1, duration: 1.0, ease: "power3.out" }, "start+=0.35");
         }
 
-        // ══════════════════════════════════════════════════════════════════
-        // 2. TRIGGER DEL HEADER
-        // ══════════════════════════════════════════════════════════════════
+        // ── TRIGGER DEL HEADER ──
         if (siteBar) {
             ScrollTrigger.create({
                 trigger: heroWrapper,
