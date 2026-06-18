@@ -271,21 +271,22 @@
 /* Estado latente pre-carga (Fase 1: Scroll) */
 .nil-lazy-media {
     opacity: 0;
-    transform: scale(1.01); /* Micro-zoom estructural */
+    transform: scale(1.1); /* Aumentado para el nuevo efecto de carga */
     transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
     will-change: opacity, transform;
+    transition: all 0.5s ease-in-out;
 }
 
 /* Gatillado por JavaScript al confirmar descarga */
 .nil-lazy-media.nil-media-loaded {
     opacity: 1;
-    transform: scale(1);
+    transform: scale(1.2); /* Estado inicial: ampliado */
 }
 
 /* Comportamiento Hover Premium en las tarjetas cargadas */
 .nil-gallery-item:hover .nil-lazy-media.nil-media-loaded,
 .nil-video-item:hover .nil-lazy-media.nil-media-loaded {
-    transform: scale(1.03); /* Zoom sutil de alta costura */
+    transform: scale(1); /* Estado hover: escala normal */
 }
 
 
