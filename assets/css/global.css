@@ -119,9 +119,6 @@ a:hover {
     margin-left: -40px;
     margin-top: -40px;
     border-radius: 50%;
-    background-color: color-mix(in srgb, var(--nil-color-primary) 25%, transparent);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
     pointer-events: none;
     z-index: 9999;
     display: none; /* Activado por JS en dispositivos pointer:fine */
@@ -157,8 +154,7 @@ a:hover {
 
 /* Ambas flechas semitransparentes por defecto */
 #nil-custom-cursor[data-state="drag"] .nil-cursor-arrow {
-    opacity: 0.3;
-    transition: opacity 0.15s ease;
+    transition: transform 0.15s ease;
     display: flex;
     align-items: center;
 }
@@ -166,14 +162,22 @@ a:hover {
 /* Flecha activa según dirección del arrastre */
 #nil-custom-cursor[data-state="drag"][data-drag-dir="prev"] .nil-cursor-arrow--prev,
 #nil-custom-cursor[data-state="drag"][data-drag-dir="next"] .nil-cursor-arrow--next {
+    transform: scale(1.5);
     opacity: 1;
 }
 
 /* Iconos Feather dentro del cursor */
 #nil-custom-cursor svg {
-    color: var(--nil-color-white);
-    stroke: var(--nil-color-white);
+    color: var(--nil-color-primary);
+    stroke: var(--nil-color-primary);
     display: block;
     width: 28px;
     height: 28px;
+}
+/* Iconos Feather dentro del cursor */
+#nil-custom-cursor .nil-cursor-arrow--prev svg,
+#nil-custom-cursor .nil-cursor-arrow--next svg {
+    color: var(--nil-color-white);
+    stroke: var(--nil-color-white);
+
 }

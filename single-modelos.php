@@ -178,10 +178,7 @@ $has_stats = array_filter( $stats );
         <section class="container py-lg">
             <div class="row">
                 <span class="col-12 col-md-3 nil-section-label mb-sm h5 text-uppercase">
-                    <?php printf(
-                        esc_html__( 'Más modelos de %s', 'hello-elementor-child' ),
-                        esc_html( $current_term->name )
-                    ); ?>
+                    <?php esc_html_e( 'Más Talento', 'hello-elementor-child' ); ?>
                 </span>
                 
                 <div class="col-12 col-md-9">
@@ -199,7 +196,7 @@ $has_stats = array_filter( $stats );
                                             loading="lazy" class="w-100 d-block">
                                     <?php endif; ?>
                                     <div class="nil-related-model-info mt-xs">
-                                        <h3 class="h4 fw-normal text-uppercase"><?php echo esc_html( $rel->post_title ); ?></h3>
+                                        <h3 class="h5 fw-normal text-uppercase"><?php echo esc_html( $rel->post_title ); ?></h3>
                                     </div>
                                 </a>
                             </div>

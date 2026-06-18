@@ -100,7 +100,7 @@ $GLOBALS['wp_query'] = new WP_Query( array(
 	if ( ! is_wp_error( $other_terms ) && ! empty( $other_terms ) ) :
 	?>
 
-	<section class="nil-related-cats py-xl mt-xl" aria-label="<?php esc_attr_e( 'Otras divisiones de modelos', 'hello-elementor-child' ); ?>">
+	<section class="nil-related-cats py-xl mt-xl" aria-label="<?php esc_attr_e( 'Otras divisiones', 'hello-elementor-child' ); ?>">
 
 		<p class="nil-related-cats-title h6 text-center text-uppercase mb-md"><?php esc_html_e( 'Descubre otras divisiones', 'hello-elementor-child' ); ?></p>
 
