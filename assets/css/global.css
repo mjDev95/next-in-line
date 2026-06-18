@@ -119,8 +119,9 @@ a:hover {
     margin-left: -40px;
     margin-top: -40px;
     border-radius: 50%;
-    border: 1px solid var(--e-global-color-accent, #f52727);
-    background-color: var(--e-global-color-accent, #f52727);
+    background-color: color-mix(in srgb, var(--nil-color-primary) 25%, transparent);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     pointer-events: none;
     z-index: 9999;
     display: none; /* Activado por JS en dispositivos pointer:fine */

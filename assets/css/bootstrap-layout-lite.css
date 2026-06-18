@@ -16,6 +16,23 @@
     --nil-col-gap: clamp(0.75rem, 2.5vw, 2.5rem);
     --nil-row-gap: clamp(1rem, 3vw, 3rem);
 
+    /* ─────────────────────────────────────────
+       LAYOUT DENSITY MODES (global system)
+       normal = default (current system)
+    ───────────────────────────────────────── */
+
+    /* COMPACT MODE (dense UI) */
+    [data-layout="compact"] {
+        --nil-col-gap: clamp(0.5rem, 1.5vw, 1.25rem);
+        --nil-row-gap: clamp(0.75rem, 2vw, 1.5rem);
+    }
+
+    /* AIRY MODE (spacious / editorial) */
+    [data-layout="airy"] {
+        --nil-col-gap: clamp(1.25rem, 3vw, 3.5rem);
+        --nil-row-gap: clamp(1.5rem, 4vw, 5rem);
+    }
+
     /* Ancho máximo del contenedor */
     --nil-max-width: 1360px;
 
@@ -76,6 +93,61 @@
     grid-column: span 12; /* Por defecto ocupan toda la pantalla en móvil */
 }
 
+/* ─────────────────────────────────────────
+   GAP UTILITIES (Bootstrap-like g-*, gx-*, gy-*)
+   ───────────────────────────────────────── */
+
+/* Base gap reset */
+.g-0 {
+    --nil-col-gap: 0;
+    --nil-row-gap: 0;
+}
+
+/* Column + row combined gaps */
+.g-1 {
+    --nil-col-gap: var(--nil-s-xs);
+    --nil-row-gap: var(--nil-s-xs);
+}
+.g-2 {
+    --nil-col-gap: var(--nil-s-sm);
+    --nil-row-gap: var(--nil-s-sm);
+}
+.g-3 {
+    --nil-col-gap: var(--nil-s-md);
+    --nil-row-gap: var(--nil-s-md);
+}
+.g-4 {
+    --nil-col-gap: var(--nil-s-lg);
+    --nil-row-gap: var(--nil-s-lg);
+}
+.g-5 {
+    --nil-col-gap: var(--nil-s-xl);
+    --nil-row-gap: var(--nil-s-xl);
+}
+
+/* Horizontal gap only (columns) */
+.gx-0 { --nil-col-gap: 0; }
+.gx-1 { --nil-col-gap: var(--nil-s-xs); }
+.gx-2 { --nil-col-gap: var(--nil-s-sm); }
+.gx-3 { --nil-col-gap: var(--nil-s-md); }
+.gx-4 { --nil-col-gap: var(--nil-s-lg); }
+.gx-5 { --nil-col-gap: var(--nil-s-xl); }
+
+/* Vertical gap only (rows) */
+.gy-0 { --nil-row-gap: 0; }
+.gy-1 { --nil-row-gap: var(--nil-s-xs); }
+.gy-2 { --nil-row-gap: var(--nil-s-sm); }
+.gy-3 { --nil-row-gap: var(--nil-s-md); }
+.gy-4 { --nil-row-gap: var(--nil-s-lg); }
+.gy-5 { --nil-row-gap: var(--nil-s-xl); }
+
+
+.gap-0 { gap: 0 !important; }
+.gap-1 { gap: var(--nil-s-xs) !important; }
+.gap-2 { gap: var(--nil-s-sm) !important; }
+.gap-3 { gap: var(--nil-s-md) !important; }
+.gap-4 { gap: var(--nil-s-lg) !important; }
+.gap-5 { gap: var(--nil-s-xl) !important; }
 /* ─────────────────────────────────────────
    COLUMNS FLUIDAS (Sintaxis Bootstrap)
    ───────────────────────────────────────── */
@@ -185,7 +257,67 @@
     .col-xxl-11   { grid-column: span 11; }
     .col-xxl-12   { grid-column: span 12; }
 }
+/* ─────────────────────────────────────────
+   FILAS DE COLUMNAS EXACTAS (ROW-COLS 1, 2, 3, 4, 6)
+   ───────────────────────────────────────── */
 
+/* 📱 Por defecto en móvil */
+.row-cols-1 { grid-template-columns: repeat(1, 1fr); } .row-cols-1 > * { grid-column: span 1 !important; }
+.row-cols-2 { grid-template-columns: repeat(2, 1fr); } .row-cols-2 > * { grid-column: span 1 !important; }
+.row-cols-3 { grid-template-columns: repeat(3, 1fr); } .row-cols-3 > * { grid-column: span 1 !important; }
+.row-cols-4 { grid-template-columns: repeat(4, 1fr); } .row-cols-4 > * { grid-column: span 1 !important; }
+.row-cols-5 { grid-template-columns: repeat(5, 1fr); } .row-cols-5 > * { grid-column: span 1 !important; }
+.row-cols-6 { grid-template-columns: repeat(6, 1fr); } .row-cols-6 > * { grid-column: span 1 !important; }
+
+/* 📱 Breakpoint SM (>= 576px) */
+@media (min-width: 576px) {
+    .row-cols-sm-1 { grid-template-columns: repeat(1, 1fr); } .row-cols-sm-1 > * { grid-column: span 1 !important; }
+    .row-cols-sm-2 { grid-template-columns: repeat(2, 1fr); } .row-cols-sm-2 > * { grid-column: span 1 !important; }
+    .row-cols-sm-3 { grid-template-columns: repeat(3, 1fr); } .row-cols-sm-3 > * { grid-column: span 1 !important; }
+    .row-cols-sm-4 { grid-template-columns: repeat(4, 1fr); } .row-cols-sm-4 > * { grid-column: span 1 !important; }
+    .row-cols-sm-5 { grid-template-columns: repeat(5, 1fr); } .row-cols-sm-5 > * { grid-column: span 1 !important; }
+    .row-cols-sm-6 { grid-template-columns: repeat(6, 1fr); } .row-cols-sm-6 > * { grid-column: span 1 !important; }
+}
+
+/* 💻 Breakpoint MD (>= 768px) */
+@media (min-width: 768px) {
+    .row-cols-md-1 { grid-template-columns: repeat(1, 1fr); } .row-cols-md-1 > * { grid-column: span 1 !important; }
+    .row-cols-md-2 { grid-template-columns: repeat(2, 1fr); } .row-cols-md-2 > * { grid-column: span 1 !important; }
+    .row-cols-md-3 { grid-template-columns: repeat(3, 1fr); } .row-cols-md-3 > * { grid-column: span 1 !important; }
+    .row-cols-md-4 { grid-template-columns: repeat(4, 1fr); } .row-cols-md-4 > * { grid-column: span 1 !important; }
+    .row-cols-md-5 { grid-template-columns: repeat(5, 1fr); } .row-cols-md-5 > * { grid-column: span 1 !important; }
+    .row-cols-md-6 { grid-template-columns: repeat(6, 1fr); } .row-cols-md-6 > * { grid-column: span 1 !important; }
+}
+
+/* 🖥️ Breakpoint LG (>= 992px) */
+@media (min-width: 992px) {
+    .row-cols-lg-1 { grid-template-columns: repeat(1, 1fr); } .row-cols-lg-1 > * { grid-column: span 1 !important; }
+    .row-cols-lg-2 { grid-template-columns: repeat(2, 1fr); } .row-cols-lg-2 > * { grid-column: span 1 !important; }
+    .row-cols-lg-3 { grid-template-columns: repeat(3, 1fr); } .row-cols-lg-3 > * { grid-column: span 1 !important; }
+    .row-cols-lg-4 { grid-template-columns: repeat(4, 1fr); } .row-cols-lg-4 > * { grid-column: span 1 !important; }
+    .row-cols-lg-5 { grid-template-columns: repeat(5, 1fr); } .row-cols-lg-5 > * { grid-column: span 1 !important; }
+    .row-cols-lg-6 { grid-template-columns: repeat(6, 1fr); } .row-cols-lg-6 > * { grid-column: span 1 !important; }
+}
+
+/* 📺 Breakpoint XL (>= 1200px) */
+@media (min-width: 1200px) {
+    .row-cols-xl-1 { grid-template-columns: repeat(1, 1fr); } .row-cols-xl-1 > * { grid-column: span 1 !important; }
+    .row-cols-xl-2 { grid-template-columns: repeat(2, 1fr); } .row-cols-xl-2 > * { grid-column: span 1 !important; }
+    .row-cols-xl-3 { grid-template-columns: repeat(3, 1fr); } .row-cols-xl-3 > * { grid-column: span 1 !important; }
+    .row-cols-xl-4 { grid-template-columns: repeat(4, 1fr); } .row-cols-xl-4 > * { grid-column: span 1 !important; }
+    .row-cols-xl-5 { grid-template-columns: repeat(5, 1fr); } .row-cols-xl-5 > * { grid-column: span 1 !important; }
+    .row-cols-xl-6 { grid-template-columns: repeat(6, 1fr); } .row-cols-xl-6 > * { grid-column: span 1 !important; }
+}
+
+/* 🎥 Breakpoint XXL (>= 1400px) */
+@media (min-width: 1400px) {
+    .row-cols-xxl-1 { grid-template-columns: repeat(1, 1fr); } .row-cols-xxl-1 > * { grid-column: span 1 !important; }
+    .row-cols-xxl-2 { grid-template-columns: repeat(2, 1fr); } .row-cols-xxl-2 > * { grid-column: span 1 !important; }
+    .row-cols-xxl-3 { grid-template-columns: repeat(3, 1fr); } .row-cols-xxl-3 > * { grid-column: span 1 !important; }
+    .row-cols-xxl-4 { grid-template-columns: repeat(4, 1fr); } .row-cols-xxl-4 > * { grid-column: span 1 !important; }
+    .row-cols-xxl-5 { grid-template-columns: repeat(5, 1fr); } .row-cols-xxl-5 > * { grid-column: span 1 !important; }
+    .row-cols-xxl-6 { grid-template-columns: repeat(6, 1fr); } .row-cols-xxl-6 > * { grid-column: span 1 !important; }
+}
 /* ─────────────────────────────────────────
    OFFSETS FLUIDOS (Desplazamientos)
    ───────────────────────────────────────── */
@@ -233,6 +365,7 @@
    FLEX UTILITIES & DISPLAY UTILITIES
    ───────────────────────────────────────── */
 .d-flex                  { display: flex !important; }
+.flex-1 { flex: 1 1 0%; }
 .flex-column             { flex-direction: column !important; }
 .flex-row                { flex-direction: row !important; }
 .flex-wrap               { flex-wrap: wrap !important; }
@@ -249,6 +382,7 @@
 
 .d-block        { display: block !important; }
 .d-inline       { display: inline !important; }
+.d-inline-flex  { display: inline-flex !important; }
 .d-inline-block { display: inline-block !important; }
 .d-none         { display: none !important; }
 
@@ -365,11 +499,26 @@
 .px-lg { padding-inline: var(--nil-s-lg); }
 
 .py-0 { padding: 0 !important; }
-.py-xs { padding-block: var(--nil-s-xs); }
-.py-sm { padding-block: var(--nil-s-sm); }
-.py-md { padding-block: var(--nil-s-md); }
-.py-lg { padding-block: var(--nil-s-lg); }
-.py-xl { padding-block: var(--nil-s-xl); }
+.py-xs { 
+    padding-top: var(--nil-s-xs); 
+    padding-bottom: var(--nil-s-xs); 
+}
+.py-sm { 
+    padding-top: var(--nil-s-sm); 
+    padding-bottom: var(--nil-s-sm); 
+}
+.py-md { 
+    padding-top: var(--nil-s-md); 
+    padding-bottom: var(--nil-s-md); 
+}
+.py-lg { 
+    padding-top: var(--nil-s-lg); 
+    padding-bottom: var(--nil-s-lg); 
+}
+.py-xl { 
+    padding-top: var(--nil-s-xl); 
+    padding-bottom: var(--nil-s-xl); 
+}
 
 .my-0 {  
     margin-top: 0;
@@ -377,9 +526,14 @@
     margin-block-end: 0;
     margin-block-start: 0;
 }
+.my-sm { 
+    margin-top: var(--nil-s-sm); 
+    margin-bottom: var(--nil-s-sm); 
+}
 .mt-sm { margin-top: var(--nil-s-sm); }
 .mt-md { margin-top: var(--nil-s-md); }
 .mt-lg { margin-top: var(--nil-s-lg); }
+.mb-0 { margin-bottom: 0; }
 .mb-sm { margin-bottom: var(--nil-s-sm); }
 .mb-md { margin-bottom: var(--nil-s-md); }
 .mb-lg { margin-bottom: var(--nil-s-lg); }
@@ -638,11 +792,13 @@
 /* ─────────────────────────────────────────
    LINE HEIGHT UTILITIES
    ───────────────────────────────────────── */
-
+.lh-xs   { line-height: 0.9 !important; }
+.lh-0    { line-height: 0 !important; }
 .lh-1    { line-height: 1 !important; }
 .lh-sm   { line-height: 1.25 !important; }
 .lh-base { line-height: 1.5 !important; }
 .lh-lg   { line-height: 2 !important; }
+.lh-xl   { line-height: 2.5 !important; }
 
 /* ─────────────────────────────────────────
    LIST UTILITIES

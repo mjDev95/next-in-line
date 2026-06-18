@@ -67,7 +67,7 @@
     /* Configura las columnas verticales */
     .nil-cat-panel {
         flex: 1; 
-        padding: var(--nil-s-lg); 
+        padding: var(--nil-s-sm); 
         border-right: 1px solid rgba(255, 255, 255, 0.1); 
     }
     .nil-cat-panel:last-child {
@@ -176,48 +176,32 @@
 .nil-model-card:hover .nil-model-overlay {
 	opacity: 1;
 }
-/*info de modelos al hover*/
-.nil-model-card{
-	aspect-ratio: 3/4;
+/* ══════════════════════════════════════════
+   INFO DE MODELOS AL HOVER (FULL OVERLAY BLUR)
+══════════════════════════════════════════ */
+.nil-model-card {
+    aspect-ratio: 2/3;
 }
 
-.nil-model-card-meta{
-	left:1rem;
-	right:1rem;
-	bottom:1rem;
-
-	display:grid;
-	grid-template-columns:repeat(2,1fr);
-	gap:.75rem;
-
-	padding:1rem;
-
-	background:rgba(0,0,0,.55);
-	backdrop-filter:blur(10px);
-
-	opacity:0;
-	transform:translateY(12px);
-	transition:all .35s ease;
+.nil-model-card-meta {
+    inset: 0; /* Equivale a top:0, right:0, bottom:0, left:0 */
+    gap: 1.5rem 0.5rem;    /* Espaciado entre las medidas */
+    background: rgba(0, 0, 0, 0.5); /* Fondo negro semi-transparente */
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px); /* Soporte para Safari */
+    opacity: 0;
+    transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.nil-model-card:hover .nil-model-card-meta{
-	opacity:1;
-	transform:translateY(0);
+/* El gatillo de la animación */
+.nil-model-card:hover .nil-model-card-meta {
+    opacity: 1;
 }
 
-.nil-model-card-meta span{
-	display:block;
-	font-size:.7rem;
-	text-transform:uppercase;
-	letter-spacing:.15em;
-	color:rgba(255,255,255,.7);
-}
-
-.nil-model-card-meta strong{
-	display:block;
-	font-size:.95rem;
-	font-weight:600;
-	color:#fff;
+.nil-model-card-meta span {
+    letter-spacing: 0.15em;
+    color: rgb(255, 255, 255);
+    margin-bottom: 0.2rem;
 }
 /* ══════════════════════════════════════════
    TAXONOMY — related categories (interlinking)
@@ -225,7 +209,6 @@
 
 .nil-related-cats-title{
 	letter-spacing:.32em;
-	color:#aaa;
 }
 
 .nil-related-cats-grid{
@@ -563,7 +546,9 @@ body.nil-lightbox-active #site-header {
     z-index: 2;
     pointer-events: none;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
+    padding-top: 15vh;
+    box-sizing: border-box;
 }
 
 .nil-modelo-photo-box {
@@ -598,7 +583,18 @@ body.nil-lightbox-active #site-header {
     margin: 0;
 }
 
+.nil-hero-stats-wrapper {
+    pointer-events: auto;
+    margin-top: var(--nil-s-lg);
+    opacity: 0;
+    transform: translateY(20px);
+    will-change: opacity, transform;
+}
+
 @media (max-width: 767px) {
+    .nil-modelo-hero-layout {
+        padding-top: 10vh;
+    }
     .nil-modelo-photo-box {
         height: min(55vh, 480px);
     }
@@ -621,17 +617,9 @@ body.nil-lightbox-active #site-header {
 
 /* Tu etiqueta (ej: Height) */
 .nil-spec-label {
-    font-size: 1.22rem;
+    font-size: 1rem;
     text-transform: uppercase;
-    font-weight: 600;
-    color: #aaa;
-}
-
-/* Tu valor (ej: 187 cm) */
-.nil-spec-value {
-    font-size: 1.1rem;
-    font-weight: 600;
+    font-weight: 500;
     color: #111;
-    text-align: right; 
-	text-transform: uppercase;
+    letter-spacing: 0.1em;
 }

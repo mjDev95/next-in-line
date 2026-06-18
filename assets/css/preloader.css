@@ -17,7 +17,7 @@ html.nil-preloader-active .nil-home-logo img {
 /* ── Logo ── */
 .nil-pl-logo img,
 .nil-pl-logo svg {
-    width: clamp(250px, 30vw, 400px);
+    width: clamp(180px, 40vw, 600px);
     height: auto;
 }
 

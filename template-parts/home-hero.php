@@ -45,8 +45,26 @@ $panels = array_values(
 
                 <a href="<?php echo esc_url( $item->url ); ?>" class="nil-cat-link d-inline-block text-white text-decoration-none" >
                     
-                    <h2 class="nil-cat-name text-uppercase my-0 text-white fw-normal">
-                        <?php echo esc_html( $item->title ); ?>
+                    <h2 class="nil-cat-name text-uppercase lh-xs my-0 text-white fw-bold">
+                        <?php
+                            $title = $item->title;
+
+                            if ( stripos( $title, 'next' ) !== false ) {
+                                // Split around the word "next" (case-insensitive), only first occurrence
+                                $parts = preg_split( '/next/i', $title, 2 );
+
+                                $after = isset( $parts[1] ) ? trim( $parts[1] ) : '';
+
+                                echo 'Next<br>';
+
+                                if ( $after !== '' ) {
+                                    echo '<span>' . wp_kses_post( $after ) . '</span>';
+                                }
+
+                            } else {
+                                echo wp_kses_post( $title );
+                            }
+                        ?>
                     </h2>
                     
                     <span class="nil-cat-cta d-none d-lg-block text-uppercase mt-sm ">

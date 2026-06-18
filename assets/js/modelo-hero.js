@@ -11,6 +11,7 @@
         const textRight = document.querySelector(".nil-modelo-hero-right");
         const siteBar = document.querySelector(".nil-site-bar");
         const photoBox = document.querySelector(".nil-modelo-photo-box");
+        const statsWrapper = document.querySelector(".nil-hero-stats-wrapper");
 
         if (!heroWrapper || !photoTarget || !photoBox || !heroSection) return;
 
@@ -85,6 +86,11 @@
         }
         if (textLeft) {
             tlIntro.to(textLeft, { y: 0, scale: 1, duration: 1.0, ease: "power3.out" }, "start+=0.35");
+        }
+
+        // Aparición de las estadísticas
+        if (statsWrapper) {
+            tlIntro.to(statsWrapper, { opacity: 1, y: 0, duration: 1.0, ease: "power3.out" }, "start+=0.5");
         }
 
         // ── TRIGGER DEL HEADER ──

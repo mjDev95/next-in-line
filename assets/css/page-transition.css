@@ -85,7 +85,7 @@ body.admin-bar #nil-page-transition {
 
 .nil-pl-logo img,
 .nil-pl-logo svg {
-	width: clamp(250px, 30vw, 400px);
+	width: clamp(180px, 40vw, 600px);
 	height: auto;
 	display: block;
 }

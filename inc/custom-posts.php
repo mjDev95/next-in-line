@@ -158,38 +158,47 @@ function mostrar_metabox_datos_modelo( $post ) {
         <label><strong><?php _e( 'ALTURA', 'hello-elementor-child' ); ?></strong></label><br>
         <input type="text" name="height" value="<?php echo esc_attr( $height ); ?>" style="width: 100%;" placeholder="<?php esc_attr_e( 'Ej. 1.75', 'hello-elementor-child' ); ?>">
     </p>
+
     <p>
         <label><strong><?php _e( 'BUSTO', 'hello-elementor-child' ); ?></strong></label><br>
         <input type="text" name="bust" value="<?php echo esc_attr( $bust ); ?>" style="width: 100%;" placeholder="<?php esc_attr_e( 'Ej. 90', 'hello-elementor-child' ); ?>">
     </p>
+
     <p>
         <label><strong><?php _e( 'CINTURA', 'hello-elementor-child' ); ?></strong></label><br>
         <input type="text" name="waist" value="<?php echo esc_attr( $waist ); ?>" style="width: 100%;" placeholder="<?php esc_attr_e( 'Ej. 64', 'hello-elementor-child' ); ?>">
     </p>
+
     <p>
         <label><strong><?php _e( 'CADERA', 'hello-elementor-child' ); ?></strong></label><br>
         <input type="text" name="hips" value="<?php echo esc_attr( $hips ); ?>" style="width: 100%;" placeholder="<?php esc_attr_e( 'Ej. 94', 'hello-elementor-child' ); ?>">
     </p>
+
     <p>
         <label><strong><?php _e( 'SACO', 'hello-elementor-child' ); ?></strong></label><br>
         <input type="text" name="suit" value="<?php echo esc_attr( $suit ); ?>" style="width: 100%;" placeholder="<?php esc_attr_e( 'Ej. 40R', 'hello-elementor-child' ); ?>">
     </p>
+
     <p>
         <label><strong><?php _e( 'CAMISA', 'hello-elementor-child' ); ?></strong></label><br>
         <input type="text" name="shirt" value="<?php echo esc_attr( $shirt ); ?>" style="width: 100%;" placeholder="<?php esc_attr_e( 'Ej. 40', 'hello-elementor-child' ); ?>">
     </p>
+
     <p>
         <label><strong><?php _e( 'PANTALÓN', 'hello-elementor-child' ); ?></strong></label><br>
         <input type="text" name="pants" value="<?php echo esc_attr( $pants ); ?>" style="width: 100%;" placeholder="<?php esc_attr_e( 'Ej. 34', 'hello-elementor-child' ); ?>">
     </p>
+
     <p>
         <label><strong><?php _e( 'ZAPATO', 'hello-elementor-child' ); ?></strong></label><br>
         <input type="text" name="shoe" value="<?php echo esc_attr( $shoe ); ?>" style="width: 100%;" placeholder="<?php esc_attr_e( 'Ej. 26', 'hello-elementor-child' ); ?>">
     </p>
+
     <p>
         <label><strong><?php _e( 'CABELLO', 'hello-elementor-child' ); ?></strong></label><br>
         <input type="text" name="hair" value="<?php echo esc_attr( $hair ); ?>" style="width: 100%;" placeholder="<?php esc_attr_e( 'Ej. Castaño Claro', 'hello-elementor-child' ); ?>">
     </p>
+
     <p>
         <label><strong><?php _e( 'OJOS', 'hello-elementor-child' ); ?></strong></label><br>
         <input type="text" name="eyes" value="<?php echo esc_attr( $eyes ); ?>" style="width: 100%;" placeholder="<?php esc_attr_e( 'Ej. Verdes', 'hello-elementor-child' ); ?>">

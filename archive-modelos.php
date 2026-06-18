@@ -3,7 +3,7 @@
 <main class="nil-archive-modelos">
 
 	<header class="nil-archive-header">
-		<h1 class="nil-archive-title"><?php post_type_archive_title(); ?></h1>
+		<h1 class="nil-archive-title fw-bold"><?php post_type_archive_title(); ?></h1>
 	</header>
 
 	<div class="nil-models-grid">

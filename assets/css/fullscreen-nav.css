@@ -133,7 +133,7 @@
 	padding: 6px 0;
 }
 
-.nil-fn-menu > .menu-item > a::before {
+/*.nil-fn-menu > .menu-item > a::before {
 	content: counter(fn-item, decimal-leading-zero);
 	font-size: .45em;
 	letter-spacing: .25em;
@@ -141,7 +141,7 @@
 	font-weight: 300;
 	flex-shrink: 0;
 	transition: color .25s ease;
-}
+}*/
 
 .nil-fn-menu > .menu-item > a:hover {
 	color: #fff;
@@ -261,16 +261,6 @@
 
 .nil-fn-footer-social a:hover {
 	color: rgba(255, 255, 255, .85);
-}
-
-/* ══════════════════════════════════════════
-   PAGE OFFSET (content below fixed bar)
-══════════════════════════════════════════ */
-
-/* Explicit targets only — never touch #wpadminbar or anything else */
-.nil-archive-modelos,
-.nil-single-modelo {
-	padding-top: 96px;
 }
 
 /* ══════════════════════════════════════════

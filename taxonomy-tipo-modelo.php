@@ -15,7 +15,7 @@ $GLOBALS['wp_query'] = new WP_Query( array(
 ) );
 ?>
 
-<main class="nil-archive-modelos nil-taxonomy-modelos">
+<main class="nil-archive-modelos nil-taxonomy-modelos" data-layout="compact">
 
 	<header class="nil-archive-header">
 		<p class="nil-breadcrumb">
@@ -23,55 +23,60 @@ $GLOBALS['wp_query'] = new WP_Query( array(
 			<span>&nbsp;/&nbsp;</span>
 			<span><?php echo esc_html( $term->name ); ?></span>
 		</p>
-		<h1 class="nil-archive-title text-uppercase"><?php echo esc_html( strtoupper( $term->name ) ); ?></h1>
+		<h1 class="nil-archive-title text-uppercase fw-bold"><?php echo esc_html( strtoupper( $term->name ) ); ?></h1>
 		<?php if ( $term->description ) : ?>
 			<p class="nil-archive-desc"><?php echo esc_html( $term->description ); ?></p>
 		<?php endif; ?>
 	</header>
 
     <div class="container-fluid mb-lg">
-        <div class="row">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-5">
             
             <?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
 
                 <?php
                 $model_meta = array(
-                	'Estatura' => get_post_meta( get_the_ID(), 'height', true ),
-                	'Traje'    => get_post_meta( get_the_ID(), 'suit', true ),
-                	'Cuello'   => get_post_meta( get_the_ID(), 'collar', true ),
-                	'Cintura'  => get_post_meta( get_the_ID(), 'waist', true ),
-                	'Entrepierna' => get_post_meta( get_the_ID(), 'inseam', true ),
-                	'Calzado'  => get_post_meta( get_the_ID(), 'shoe', true ),
-                	'Cabello'  => get_post_meta( get_the_ID(), 'hair', true ),
-                	'Ojos'     => get_post_meta( get_the_ID(), 'eyes', true ),
+				    __( 'Altura', 'hello-elementor-child' )   => get_post_meta( get_the_ID(), 'height', true ),
+					__( 'Busto', 'hello-elementor-child' )    => get_post_meta( get_the_ID(), 'bust', true ),
+					__( 'Cintura', 'hello-elementor-child' )  => get_post_meta( get_the_ID(), 'waist', true ),
+					__( 'Cadera', 'hello-elementor-child' )   => get_post_meta( get_the_ID(), 'hips', true ),
+					__( 'Saco', 'hello-elementor-child' )     => get_post_meta( get_the_ID(), 'suit', true ),
+					__( 'Camisa', 'hello-elementor-child' )   => get_post_meta( get_the_ID(), 'shirt', true ),
+					__( 'Pantalón', 'hello-elementor-child' ) => get_post_meta( get_the_ID(), 'pants', true ),
+					__( 'Zapato', 'hello-elementor-child' )   => get_post_meta( get_the_ID(), 'shoe', true ),
+					__( 'Cabello', 'hello-elementor-child' )  => get_post_meta( get_the_ID(), 'hair', true ),
+					__( 'Ojos', 'hello-elementor-child' )     => get_post_meta( get_the_ID(), 'eyes', true ),
                 );
+				
                 ?>
 
-                <div class="col-12 col-md-6 col-lg-4 col-xl-3">
-                    <a href="<?php the_permalink(); ?>" class="position-relative overflow-hidden w-100 h-100 nil-model-card d-block text-decoration-none">
+                <div class="d-flex flex-column">
+                    <a href="<?php the_permalink(); ?>" class="nil-model-card position-relative overflow-hidden w-100 d-flex flex-column flex-1 text-decoration-none">
 
                         <?php if ( has_post_thumbnail() ) : ?>
                             <?php the_post_thumbnail( 'large', array( 'class' => 'w-100 h-100 d-block object-fit-cover' ) ); ?>
                         <?php endif; ?>
 
-                        <div class="nil-model-card-meta position-absolute">
+                        <div class="nil-model-card-meta position-absolute d-flex align-items-center justify-content-center flex-column text-center">
+                            		<div class="d-flex flex-column align-items-center justify-content-center w-100 h-100">
 
                             <?php foreach ( $model_meta as $label => $value ) : ?>
 
                             	<?php if ( ! empty( $value ) ) : ?>
-                            		<div>
-                            			<span><?php echo esc_html( $label ); ?></span>
-                            			<strong><?php echo esc_html( $value ); ?></strong>
-                            		</div>
+									<p class="text-uppercase d-flex align-items-center my-0 w-100 justify-content-center gap-2 h6">
+                            			<span class="d-block flex-1 w-100 text-end"><?php echo esc_html( $label ); ?></span>
+                            			<span class="d-block flex-1 w-100 text-start"><?php echo esc_html( $value ); ?></span>
+                            		</p>
                             	<?php endif; ?>
 
                             <?php endforeach; ?>
+                            		</div>
 
                         </div>
 
                     </a>
-					<a href="<?php the_permalink(); ?>" class="mt-xs text-start">
-                        <h2 class="text-uppercase my-0 h5"><?php the_title(); ?></h2>
+					<a href="<?php the_permalink(); ?>" class="py-xs text-start">
+                        <h2 class="text-uppercase h5 text-center mb-0"><?php the_title(); ?></h2>
 					</a>
                 </div>
 
@@ -97,7 +102,7 @@ $GLOBALS['wp_query'] = new WP_Query( array(
 
 	<section class="nil-related-cats py-xl mt-xl" aria-label="<?php esc_attr_e( 'Otras divisiones de modelos', 'hello-elementor-child' ); ?>">
 
-		<h3 class="nil-related-cats-title h6 text-center text-uppercase mb-lg"><?php esc_html_e( 'Descubre otras divisiones', 'hello-elementor-child' ); ?></h3>
+		<p class="nil-related-cats-title h6 text-center text-uppercase mb-md"><?php esc_html_e( 'Descubre otras divisiones', 'hello-elementor-child' ); ?></p>
 
 		<div class="nil-related-cats-grid row">
 			<?php foreach ( $other_terms as $other ) :
@@ -125,7 +130,9 @@ $GLOBALS['wp_query'] = new WP_Query( array(
 					<?php endif; ?>
 					<div class="nil-cat-overlay position-absolute"></div>
 					<div class="nil-related-cat-info position-absolute">
-						<span class="nil-related-cat-name h5 text-uppercase"><?php echo esc_html( strtoupper( $other->name ) ); ?></span>
+						<h3>
+							<span class="nil-related-cat-name h5 text-uppercase fw-bold"><?php echo esc_html( strtoupper( $other->name ) ); ?></span>
+						</h3>
 					</div>
 
 					</a>

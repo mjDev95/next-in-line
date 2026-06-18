@@ -27,14 +27,14 @@ function nil_modelos_register_settings() {
 	) );
 	register_setting( 'nil_modelos_settings_group', 'nil_modelos_hero_animation', array(
 		'type'              => 'string',
-		'default'           => 'none',
+		'default'           => 'text-left-image-center', // Nuevo valor por defecto
 		'sanitize_callback' => 'nil_sanitize_modelos_hero_animation',
 	) );
 }
 
 function nil_sanitize_modelos_hero_animation( $value ) {
 	$value = sanitize_key( $value );
-	return in_array( $value, array( 'none', 'scroll', 'timelapse' ), true ) ? $value : 'none';
+	return in_array( $value, array( 'text-left-image-center', 'name-surname-image-center', 'text-left-image-right' ), true ) ? $value : 'text-left-image-center';
 }
 
 function nil_modelos_settings_page() {
@@ -75,16 +75,16 @@ function nil_modelos_settings_page() {
 						</label>
 					</th>
 					<td>
-						<?php $hero_animation = get_option( 'nil_modelos_hero_animation', 'none' ); ?>
+						<?php $hero_animation = get_option( 'nil_modelos_hero_animation', 'text-left-image-center' ); ?>
 						<select id="nil_modelos_hero_animation" name="nil_modelos_hero_animation">
-							<option value="none" <?php selected( $hero_animation, 'none' ); ?>>
-								<?php esc_html_e( 'Sin animación', 'hello-elementor-child' ); ?>
+							<option value="text-left-image-center" <?php selected( $hero_animation, 'text-left-image-center' ); ?>>
+								<?php esc_html_e( 'Nombre completo izquierda, imagen centro', 'hello-elementor-child' ); ?>
 							</option>
-							<option value="scroll" <?php selected( $hero_animation, 'scroll' ); ?>>
-								<?php esc_html_e( 'Por scroll', 'hello-elementor-child' ); ?>
+							<option value="name-surname-image-center" <?php selected( $hero_animation, 'name-surname-image-center' ); ?>>
+								<?php esc_html_e( 'Nombre izquierda, imagen centro, apellidos derecha', 'hello-elementor-child' ); ?>
 							</option>
-							<option value="timelapse" <?php selected( $hero_animation, 'timelapse' ); ?>>
-								<?php esc_html_e( 'Automática', 'hello-elementor-child' ); ?>
+							<option value="text-left-image-right" <?php selected( $hero_animation, 'text-left-image-right' ); ?>>
+								<?php esc_html_e( 'Nombre completo izquierda, imagen derecha', 'hello-elementor-child' ); ?>
 							</option>
 						</select>
 						<p class="description">

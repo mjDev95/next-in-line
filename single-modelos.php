@@ -2,28 +2,31 @@
 get_header();
 the_post();
 
-$nil_hero_animation = get_option( 'nil_modelos_hero_animation', 'scroll' );
-if ( ! in_array( $nil_hero_animation, array( 'scroll', 'timelapse' ), true ) ) {
-	$nil_hero_animation = 'scroll';
+$nil_hero_animation = get_option( 'nil_modelos_hero_animation', 'text-left-image-center' );
+if ( ! in_array( $nil_hero_animation, array( 'text-left-image-center', 'name-surname-image-center', 'text-left-image-right' ), true ) ) {
+	$nil_hero_animation = 'text-left-image-center'; // Nuevo valor por defecto
 }
 
 $nil_terms = get_the_terms( get_the_ID(), 'tipo-modelo' );
 $nil_model_category = ( $nil_terms && ! is_wp_error( $nil_terms ) ) ? $nil_terms[0]->name : '';
 
 $stats = array(
-	__( 'Altura', 'hello-elementor-child' )      => get_post_meta( get_the_ID(), 'height', true ),
-	__( 'Traje', 'hello-elementor-child' )       => get_post_meta( get_the_ID(), 'suit', true ),
-	__( 'Cuello', 'hello-elementor-child' )      => get_post_meta( get_the_ID(), 'collar', true ),
-	__( 'Cintura', 'hello-elementor-child' )     => get_post_meta( get_the_ID(), 'waist', true ),
-	__( 'Entrepierna', 'hello-elementor-child' ) => get_post_meta( get_the_ID(), 'inseam', true ),
-	__( 'Calzado', 'hello-elementor-child' )     => get_post_meta( get_the_ID(), 'shoe', true ),
-	__( 'Cabello', 'hello-elementor-child' )     => get_post_meta( get_the_ID(), 'hair', true ),
-	__( 'Ojos', 'hello-elementor-child' )        => get_post_meta( get_the_ID(), 'eyes', true ),
+    __( 'Altura', 'hello-elementor-child' )   => get_post_meta( get_the_ID(), 'height', true ),
+    __( 'Busto', 'hello-elementor-child' )    => get_post_meta( get_the_ID(), 'bust', true ),
+    __( 'Cintura', 'hello-elementor-child' )  => get_post_meta( get_the_ID(), 'waist', true ),
+    __( 'Cadera', 'hello-elementor-child' )   => get_post_meta( get_the_ID(), 'hips', true ),
+    __( 'Saco', 'hello-elementor-child' )     => get_post_meta( get_the_ID(), 'suit', true ),
+    __( 'Camisa', 'hello-elementor-child' )   => get_post_meta( get_the_ID(), 'shirt', true ),
+    __( 'Pantalón', 'hello-elementor-child' ) => get_post_meta( get_the_ID(), 'pants', true ),
+    __( 'Zapato', 'hello-elementor-child' )   => get_post_meta( get_the_ID(), 'shoe', true ),
+    __( 'Cabello', 'hello-elementor-child' )  => get_post_meta( get_the_ID(), 'hair', true ),
+    __( 'Ojos', 'hello-elementor-child' )     => get_post_meta( get_the_ID(), 'eyes', true ),
 );
 $has_stats = array_filter( $stats );
 ?>
 
-<main class="nil-single-modelo nil-modelo-hero-mode-<?php echo esc_attr( $nil_hero_animation ); ?>">
+<main class="nil-single-modelo nil-modelo-hero-mode-<?php echo esc_attr( $nil_hero_animation ); ?>"  data-layout="compact">
+
 
 	<nav class="nil-breadcrumb d-none" aria-label="<?php esc_attr_e( 'Ruta de navegación', 'hello-elementor-child' ); ?>">
 		<?php if ( function_exists( 'yoast_breadcrumb' ) ) :
@@ -44,48 +47,17 @@ $has_stats = array_filter( $stats );
 	</nav>
 
 	<div class="nil-hero-scroll-wrapper">
-
-		<section class="nil-modelo-hero" data-hero-mode="<?php echo esc_attr( $nil_hero_animation ); ?>">
-
-			<div class="nil-modelo-photo nil-modelo-photo-target">
-				<?php if ( has_post_thumbnail() ) : the_post_thumbnail( 'full' ); endif; ?>
-			</div>
-
-			<div class="nil-modelo-hero-layout">
-				<div class="container">
-					<div class="row align-items-center">
-
-						<div class="col-md-4 nil-modelo-hero-text nil-modelo-hero-left">
-							<h1 class="nil-modelo-name"><?php the_title(); ?></h1>
-						</div>
-
-						<div class="col-md-4 nil-modelo-photo-box"></div>
-
-						<?php if ( $nil_model_category ) : ?>
-							<div class="col-md-4 nil-modelo-hero-text nil-modelo-hero-right">
-							</div>
-						<?php endif; ?>
-
-					</div>
-				</div>
-			</div>
-
-		</section>
-
+		<?php
+        $hero_args = array(
+            'nil_model_category' => $nil_model_category,
+            'stats'              => $stats,
+            'has_stats'          => $has_stats,
+        );
+		// Carga el template part correspondiente a la opción de hero seleccionada.
+		// Los archivos se encuentran en /template-parts/hero-layouts/
+		get_template_part( 'template-parts/hero-layouts/' . $nil_hero_animation, null, $hero_args );
+        ?>
 	</div>
-
-	<?php if ( $has_stats ) : ?>
-		<div class="container  mb-lg d-flex flex-wrap justify-content-center">
-				<?php foreach ( $stats as $label => $value ) :
-					if ( ! $value ) continue; 
-				?>
-						<div class="nil-spec-item px-sm">
-								<span class="nil-spec-label me-2"><?php echo esc_html( $label ); ?></span>
-								<span class="nil-spec-value"><?php echo esc_html( $value ); ?></span>
-						</div>
-				<?php endforeach; ?>
-		</div>
-	<?php endif; ?>
 
     <?php
     $nil_galeria_string = get_post_meta( get_the_ID(), '_galeria', true );
@@ -95,7 +67,7 @@ $has_stats = array_filter( $stats );
         
         if ( ! empty( $nil_media_ids ) ) : ?>
             
-            <section class="container py-lg">
+            <section class="container py-sm">
                 <div class="row nil-gallery-grid-trigger" data-gallery-group="<?php echo esc_attr( $nil_galeria_string ); ?>">
                     
                     <?php 
@@ -157,7 +129,7 @@ $has_stats = array_filter( $stats );
             <?php _e('Close —', 'nil'); ?>
         </button>
 
-        <div class="nil-lightbox-pagination position-absolute text-white h2 font-light z-index-2" style="bottom: var(--nil-s-md); left: var(--nil-s-md);"></div>
+        <div class="nil-lightbox-pagination position-absolute text-white h2 font-light z-index-2 d-none" style="bottom: var(--nil-s-md); left: var(--nil-s-md);"></div>
 
         <div class="swiper nil-lightbox-swiper w-100 h-100">
             <div class="swiper-wrapper">
