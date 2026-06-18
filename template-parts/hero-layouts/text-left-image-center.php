@@ -21,7 +21,7 @@
 			<div class="row align-items-center">
 
 				<div class="col-md-5 nil-modelo-hero-text nil-modelo-hero-left">
-					<h1 class="nil-modelo-name"><?php the_title(); ?></h1>
+					<h1 class="nil-modelo-name fw-bold"><?php the_title(); ?></h1>
 				</div>
 
 				<div class="col-md-4 nil-modelo-photo-box"></div>

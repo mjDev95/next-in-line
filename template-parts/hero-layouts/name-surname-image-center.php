@@ -8,7 +8,7 @@
 	$name_parts = explode( ' ', $full_name, 2 );
 	$first_name = $name_parts[0] ?? '';
 	$last_name  = $name_parts[1] ?? '';
-	
+
 	$nil_model_category = isset( $args['nil_model_category'] ) ? $args['nil_model_category'] : '';
 	$stats              = isset( $args['stats'] ) ? $args['stats'] : array();
 	$has_stats          = isset( $args['has_stats'] ) ? $args['has_stats'] : array();
@@ -23,11 +23,11 @@
 		<div class="container">
 			<div class="row align-items-center">
 				<div class="col-md-4 nil-modelo-hero-text nil-modelo-hero-left">
-					<h1 class="nil-modelo-name"><?php echo esc_html( $first_name ); ?></h1>
+					<h1 class="nil-modelo-name fw-bold"><?php echo esc_html( $first_name ); ?></h1>
 				</div>
 				<div class="col-md-4 nil-modelo-photo-box"></div>
 				<div class="col-md-4 nil-modelo-hero-text nil-modelo-hero-right text-start">
-					<h1 class="nil-modelo-name"><?php echo esc_html( $last_name ); ?></h1>
+					<h1 class="nil-modelo-name fw-bold"><?php echo esc_html( $last_name ); ?></h1>
 				</div>
 			</div>
 			<?php if ( ! empty( $has_stats ) ) : ?>
