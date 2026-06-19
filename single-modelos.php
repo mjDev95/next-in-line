@@ -188,8 +188,7 @@ $has_stats = array_filter( $stats );
                         ?>
                             <div class="col-12 col-md-4 mb-sm">
                                 <a href="<?php echo esc_url( get_permalink( $rel->ID ) ); ?>"
-                                class="nil-related-model-card d-block"
-                                title="<?php echo esc_attr( $rel->post_title ); ?>">
+                                class="nil-related-model-card d-block">
                                     <?php if ( $thumb ) : ?>
                                         <img src="<?php echo esc_url( $thumb[0] ); ?>"
                                             alt="<?php echo esc_attr( $rel->post_title ); ?>"
