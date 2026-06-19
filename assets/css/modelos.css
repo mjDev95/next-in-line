@@ -488,7 +488,6 @@ body.nil-lightbox-active #site-header {
 /* ══════════════════════════════════════════
    SINGLE — Perfil del Modelo (Estructura Base)
 ══════════════════════════════════════════ */
-
 .nil-single-modelo {
     width: 100%;
 }
@@ -507,48 +506,50 @@ body.nil-lightbox-active #site-header {
     width: 100%;
 }
 
-/* El Hero como contenedor maestro de las dos capas (Foto y Textos) */
+/* ⚡ EL HERO: Ahora crece según el contenido, pero mide al menos la pantalla */
 .nil-modelo-hero-mode-scroll .nil-modelo-hero,
-.nil-modelo-hero-mode-timelapse .nil-modelo-hero {
+.nil-modelo-hero-mode-timelapse .nil-modelo-hero,
+.nil-modelo-hero { /* Aplicado general por seguridad */
     position: relative;
     width: 100%;
-    height: 100vh;
-    overflow: hidden;
+    min-height: 100svh; /* Ocupa mínimo la pantalla ignorando barras móviles */
+    height: auto;       /* Permite crecer si los textos son muy largos */
+    display: flex;
+    align-items: center; /* Centra el contenido verticalmente en desktop */
+    overflow: hidden;    /* Contiene la foto gigante del fondo */
 }
 
 /* ─────────────────────────────────────────
    CAPA 1: La Foto Absoluta (Lienzo Inicial)
    ───────────────────────────────────────── */
 .nil-modelo-hero-mode-scroll .nil-modelo-photo-target,
-.nil-modelo-hero-mode-timelapse .nil-modelo-photo-target {
+.nil-modelo-hero-mode-timelapse .nil-modelo-photo-target,
+.nil-modelo-photo-target {
     position: absolute;
-    /* ⚡ Dejamos que el JS tome el control de inset, width y height */
+    top: 0; left: 0; width: 100%; height: 100%; /* Estado base para JS */
     z-index: 1;
     overflow: hidden;
-    /* BORRADO: clip-path de aquí */
-    
-    /* Optimizamos el renderizado del navegador para cambios de tamaño */
     will-change: top, left, width, height;
 }
 
 .nil-modelo-photo-target img {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* ⚡ Crucial: hace que la imagen se re-encuadre sola mientras el contenedor se achica */
-    scale: 1.15;
+    object-fit: cover; 
+    transform: scale(1.15); /* Más seguro en navegadores antiguos que usar solo 'scale' */
     will-change: transform;
 }
+
 /* ─────────────────────────────────────────
    CAPA 2: El Layout de Columnas (Sobre la foto)
    ───────────────────────────────────────── */
 .nil-modelo-hero-layout {
-    position: absolute;
-    inset: 0;
+    position: relative; /* ⚡ CRUCIAL: Vuelve al flujo normal y empuja hacia abajo */
+    width: 100%;
     z-index: 2;
     pointer-events: none;
-    display: flex;
-    align-items: flex-start;
-    padding-top: 15vh;
+    padding-top: max(15vh, 120px); /* Protege que no se meta bajo el menú fijo */
+    padding-bottom: 60px; /* Aire al final antes de la galería */
     box-sizing: border-box;
 }
 
@@ -564,7 +565,6 @@ body.nil-lightbox-active #site-header {
 .nil-modelo-hero-mode-timelapse .nil-modelo-hero-left,
 .nil-modelo-hero-mode-timelapse .nil-modelo-hero-right {
     pointer-events: auto;
-    /* ⚡ Esencial para que el zoom suavice los bordes tipográficos vectoriales */
     will-change: transform, opacity; 
 }
 
@@ -587,17 +587,21 @@ body.nil-lightbox-active #site-header {
 .nil-hero-stats-wrapper {
     pointer-events: auto;
     margin-top: var(--nil-s-lg);
-    opacity: 0;
+    opacity: 0; /* JS se encarga de mostrarlo */
     transform: translateY(20px);
     will-change: opacity, transform;
 }
 
+/* Ajustes responsivos para evitar desbordes */
 @media (max-width: 767px) {
     .nil-modelo-hero-layout {
-        padding-top: 7vh;
+        padding-top: 7vh; /* Menos espacio en móvil pero suficiente para el header */
+        padding-bottom: 7vh;
     }
     .nil-modelo-photo-box {
-        height: min(55vh, 480px);
+        /* Permite que la foto central tenga un alto decente en móvil para el encogimiento */
+        height: min(55vh, 480px); 
+        aspect-ratio: auto; /* Anulamos el ratio para que mande el height */
     }
 }
 /* ══════════════════════════════════════════

@@ -17,25 +17,16 @@
 
         gsap.registerPlugin(ScrollTrigger);
 
-        // ── SOLUCIÓN 1: BLINDAJE DE ALTURA RESPONSIVO ──
-        // En escritorio forzamos el alto. En móvil usamos minHeight para que el contenido no se encime.
-        if (window.innerWidth > 768) {
-            heroSection.style.height = window.innerHeight + "px";
-        } else {
-            // 100svh respeta la barra de navegación dinámica en iOS/Android
-            heroSection.style.minHeight = "100svh"; 
-        }
-
         // ── SECUESTRO INICIAL DEL HEADER ──
         if (siteBar) {
             gsap.set(siteBar, { yPercent: -100, autoAlpha: 0 });
         }
 
-        // Capturamos los H1 para animar el color sin afectar los transforms del contenedor padre
+        // Capturamos los H1
         const h1Left = textLeft ? textLeft.querySelector("h1") : null;
         const h1Right = textRight ? textRight.querySelector("h1") : null;
 
-        // ── SOLUCIÓN 2: ESTADO INICIAL DE TEXTOS (Visibles abajo, con zoom y en BLANCO) ──
+        // ── ESTADO INICIAL DE TEXTOS (Visibles abajo, con zoom y en BLANCO) ──
         if (textLeft) {
             gsap.set(textLeft, { y: "32vh", scale: 1.4, transformOrigin: "left bottom", opacity: 1 });
             if (h1Left) gsap.set(h1Left, { color: "#ffffff" });
@@ -45,39 +36,35 @@
             if (h1Right) gsap.set(h1Right, { color: "#ffffff" });
         }
 
-        // ══════════════════════════════════════════════════════════════════
-        // ⚡ CÁLCULO DE GEOMETRÍA PARA LA OPCIÓN B (Encogimiento Real)
-        // ══════════════════════════════════════════════════════════════════
-        const heroRect = heroSection.getBoundingClientRect();
-        const boxRect = photoBox.getBoundingClientRect();
-
-        const targetTop    = boxRect.top - heroRect.top;
-        const targetLeft   = boxRect.left - heroRect.left;
-        const targetWidth  = boxRect.width;
-        const targetHeight = boxRect.height;
-
-        // Aseguramos el estado inicial a pantalla completa antes de arrancar
+        // La foto SIEMPRE debe ser absoluta para iniciar
         gsap.set(photoTarget, {
             position: "absolute",
             top: 0,
             left: 0,
             width: "100%",
-            height: "100%"
+            height: "100%",
+            zIndex: 1 
         });
+
+        // ══════════════════════════════════════════════════════════════════
+        // ⚡ CÁLCULO DE GEOMETRÍA DINÁMICO (Funciones en lugar de valores estáticos)
+        // ══════════════════════════════════════════════════════════════════
+        const getTargetTop    = () => photoBox.getBoundingClientRect().top - heroSection.getBoundingClientRect().top;
+        const getTargetLeft   = () => photoBox.getBoundingClientRect().left - heroSection.getBoundingClientRect().left;
+        const getTargetWidth  = () => photoBox.getBoundingClientRect().width;
+        const getTargetHeight = () => photoBox.getBoundingClientRect().height;
 
         // ══════════════════════════════════════════════════════════════════
         // 1. INTRO CINEMÁTICA AUTOMÁTICA
         // ══════════════════════════════════════════════════════════════════
-        const tlIntro = gsap.timeline({
-            delay: 1 
-        });
+        const tlIntro = gsap.timeline({ delay: 1 });
 
-        // ⚡ ENCOGIMIENTO REAL
+        // ⚡ ENCOGIMIENTO REAL (Pasamos las funciones para que lea los valores actuales)
         tlIntro.to(photoTarget, {
-            top: targetTop,
-            left: targetLeft,
-            width: targetWidth,
-            height: targetHeight,
+            top: getTargetTop,
+            left: getTargetLeft,
+            width: getTargetWidth,
+            height: getTargetHeight,
             duration: 1.2,
             ease: "power4.inOut"
         }, "start");
@@ -90,7 +77,7 @@
             }, "start");
         }
 
-        // Subida, reescalado de textos y TRANSICIÓN DE COLOR a negro
+        // Subida, reescalado y transiciones de color
         if (textRight) {
             tlIntro.to(textRight, { y: 0, scale: 1, duration: 0.9, ease: "power3.out" }, "start+=0.2");
             if (h1Right) {
@@ -104,7 +91,7 @@
             }
         }
 
-        // Aparición de las estadísticas
+        // Aparición de estadísticas
         if (statsWrapper) {
             tlIntro.to(statsWrapper, { opacity: 1, y: 0, duration: 1.0, ease: "power3.out" }, "start+=0.5");
         }
@@ -119,5 +106,28 @@
                 onLeaveBack: () => gsap.to(siteBar, { yPercent: -100, autoAlpha: 0, duration: 0.4, ease: "power2.in" })
             });
         }
+
+        // ══════════════════════════════════════════════════════════════════
+        // 🛠️ ADAPTACIÓN RESPONSIVA AL CAMBIAR TAMAÑO DE PANTALLA
+        // ══════════════════════════════════════════════════════════════════
+
+        let resizeTimer;
+        window.addEventListener("resize", () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                if (tlIntro.progress() === 1) {
+                    // ⚡ CAMBIO: Usamos gsap.to en lugar de gsap.set para interpolar suavemente
+                    gsap.to(photoTarget, {
+                        top: getTargetTop(),
+                        left: getTargetLeft(),
+                        width: getTargetWidth(),
+                        height: getTargetHeight(),
+                        duration: 0.5,        // Medio segundo de transición
+                        ease: "power3.out"    // Curva suave que frena al llegar
+                    });
+                }
+            }, 150);
+        });
+
     });
 })();
