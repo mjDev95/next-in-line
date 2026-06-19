@@ -96,8 +96,7 @@ $has_stats = array_filter( $stats );
                                     <div class="nil-gallery-item overflow-hidden w-100 position-relative cursor-pointer" data-index="<?php echo $index_counter; ?>">
                                         <img src="<?php echo $placeholder; ?>" 
                                              data-src="<?php echo esc_url( $img_src[0] ); ?>" 
-                                             alt="<?php echo esc_attr( $alt_text ); ?>" 
-                                             title="<?php echo esc_attr( $title_text ); ?>"
+                                             alt="<?php echo esc_attr( $alt_text ); ?>"
                                              class="nil-lazy-media w-100 h-100 d-block object-fit-cover will-change-transform">
                                     </div>
                                 </div>
