@@ -17,25 +17,36 @@
 
         gsap.registerPlugin(ScrollTrigger);
 
-        // ── BLINDAJE DE ALTURA ──
-        heroSection.style.height = window.innerHeight + "px";
+        // ── SOLUCIÓN 1: BLINDAJE DE ALTURA RESPONSIVO ──
+        // En escritorio forzamos el alto. En móvil usamos minHeight para que el contenido no se encime.
+        if (window.innerWidth > 768) {
+            heroSection.style.height = window.innerHeight + "px";
+        } else {
+            // 100svh respeta la barra de navegación dinámica en iOS/Android
+            heroSection.style.minHeight = "100svh"; 
+        }
 
         // ── SECUESTRO INICIAL DEL HEADER ──
         if (siteBar) {
             gsap.set(siteBar, { yPercent: -100, autoAlpha: 0 });
         }
 
-        // ── ESTADO INICIAL DE TEXTOS (Visibles abajo con zoom editorial) ──
+        // Capturamos los H1 para animar el color sin afectar los transforms del contenedor padre
+        const h1Left = textLeft ? textLeft.querySelector("h1") : null;
+        const h1Right = textRight ? textRight.querySelector("h1") : null;
+
+        // ── SOLUCIÓN 2: ESTADO INICIAL DE TEXTOS (Visibles abajo, con zoom y en BLANCO) ──
         if (textLeft) {
             gsap.set(textLeft, { y: "32vh", scale: 1.4, transformOrigin: "left bottom", opacity: 1 });
+            if (h1Left) gsap.set(h1Left, { color: "#ffffff" });
         }
         if (textRight) {
             gsap.set(textRight, { y: "32vh", scale: 1.25, transformOrigin: "right bottom", opacity: 1 });
+            if (h1Right) gsap.set(h1Right, { color: "#ffffff" });
         }
 
         // ══════════════════════════════════════════════════════════════════
         // ⚡ CÁLCULO DE GEOMETRÍA PARA LA OPCIÓN B (Encogimiento Real)
-        // Mide el molde central con respecto al contenedor padre absoluto
         // ══════════════════════════════════════════════════════════════════
         const heroRect = heroSection.getBoundingClientRect();
         const boxRect = photoBox.getBoundingClientRect();
@@ -61,7 +72,7 @@
             delay: 1 
         });
 
-        // ⚡ ENCOGIMIENTO REAL: Animamos las propiedades físicas del contenedor
+        // ⚡ ENCOGIMIENTO REAL
         tlIntro.to(photoTarget, {
             top: targetTop,
             left: targetLeft,
@@ -71,21 +82,26 @@
             ease: "power4.inOut"
         }, "start");
         
-        // Suavizamos la escala interna de la imagen para acompañar el encogimiento
         if (innerImg) {
             tlIntro.to(innerImg, {
-                scale: 1.0, // Regresa a su escala natural
+                scale: 1.0, 
                 duration: 1.2,
                 ease: "power4.inOut"
             }, "start");
         }
 
-        // Subida y reescalado de textos de los costados
+        // Subida, reescalado de textos y TRANSICIÓN DE COLOR a negro
         if (textRight) {
             tlIntro.to(textRight, { y: 0, scale: 1, duration: 0.9, ease: "power3.out" }, "start+=0.2");
+            if (h1Right) {
+                tlIntro.to(h1Right, { color: "#000000", duration: 0.9, ease: "power3.out" }, "start+=0.2");
+            }
         }
         if (textLeft) {
             tlIntro.to(textLeft, { y: 0, scale: 1, duration: 1.0, ease: "power3.out" }, "start+=0.35");
+            if (h1Left) {
+                tlIntro.to(h1Left, { color: "#000000", duration: 1.0, ease: "power3.out" }, "start+=0.35");
+            }
         }
 
         // Aparición de las estadísticas

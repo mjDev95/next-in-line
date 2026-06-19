@@ -594,7 +594,7 @@ body.nil-lightbox-active #site-header {
 
 @media (max-width: 767px) {
     .nil-modelo-hero-layout {
-        padding-top: 5vh;
+        padding-top: 7vh;
     }
     .nil-modelo-photo-box {
         height: min(55vh, 480px);
