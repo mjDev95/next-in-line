@@ -548,7 +548,7 @@ body.nil-lightbox-active #site-header {
     pointer-events: none;
     display: flex;
     align-items: flex-start;
-    padding-top: 18vh;
+    padding-top: 15vh;
     box-sizing: border-box;
 }
 
