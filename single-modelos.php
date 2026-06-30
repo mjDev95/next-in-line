@@ -180,12 +180,12 @@ $has_stats = array_filter( $stats );
                     <?php printf( esc_html__( 'Más Talento %s', 'hello-elementor-child' ), esc_html( $current_term->name ) ); ?>
                 </span>
                 
-                <div class="col-12 col-md-3">
+                <div class="col-12 col-md-9">
                     <div class="row">
                         <?php foreach ( $related_models as $rel ) :
                             $thumb = wp_get_attachment_image_src( get_post_thumbnail_id( $rel->ID ), 'medium_large' );
                         ?>
-                            <div class="col-12 col-md-4 mb-sm">
+                            <div class="col-12 col-md-3 mb-sm">
                                 <a href="<?php echo esc_url( get_permalink( $rel->ID ) ); ?>"
                                 class="nil-related-model-card d-block">
                                     <?php if ( $thumb ) : ?>
