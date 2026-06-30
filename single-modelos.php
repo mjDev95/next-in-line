@@ -173,11 +173,17 @@ $has_stats = array_filter( $stats );
             ) ),
         ) );
         if ( $related_models ) :
+            $related_models = array_slice( $related_models, 0, 4 );
     ?>
         <section class="container py-lg">
             <div class="row">
                 <span class="col-12 col-md-3 nil-section-label mb-sm h5 text-uppercase">
-                    <?php printf( esc_html__( 'Más Talento %s', 'hello-elementor-child' ), esc_html( $current_term->name ) ); ?>
+                    <?php
+                    printf(
+                        esc_html__( 'Más Talento %s', 'hello-elementor-child' ),
+                        esc_html( trim( str_ireplace( 'Next', '', $current_term->name ) ) )
+                    );
+                    ?>
                 </span>
                 
                 <div class="col-12 col-md-9">
