@@ -569,6 +569,7 @@
     .mt-sm-sm { margin-top: var(--nil-s-sm) !important; }
     .mt-sm-md { margin-top: var(--nil-s-md) !important; }
     .mt-sm-lg { margin-top: var(--nil-s-lg) !important; }
+    .mb-sm-0 { margin-bottom: 0 !important; }
     .mb-sm-sm { margin-bottom: var(--nil-s-sm) !important; }
     .mb-sm-md { margin-bottom: var(--nil-s-md) !important; }
     .mb-sm-lg { margin-bottom: var(--nil-s-lg) !important; }
@@ -601,6 +602,7 @@
     .mt-md-sm { margin-top: var(--nil-s-sm) !important; }
     .mt-md-md { margin-top: var(--nil-s-md) !important; }
     .mt-md-lg { margin-top: var(--nil-s-lg) !important; }
+    .mb-md-0 { margin-bottom: 0 !important; }
     .mb-md-sm { margin-bottom: var(--nil-s-sm) !important; }
     .mb-md-md { margin-bottom: var(--nil-s-md) !important; }
     .mb-md-lg { margin-bottom: var(--nil-s-lg) !important; }
@@ -635,6 +637,7 @@
     .mt-lg-sm { margin-top: var(--nil-s-sm) !important; }
     .mt-lg-md { margin-top: var(--nil-s-md) !important; }
     .mt-lg-lg { margin-top: var(--nil-s-lg) !important; }
+    .mb-lg-0 { margin-bottom: 0 !important; }
     .mb-lg-sm { margin-bottom: var(--nil-s-sm) !important; }
     .mb-lg-md { margin-bottom: var(--nil-s-md) !important; }
     .mb-lg-lg { margin-bottom: var(--nil-s-lg) !important; }
@@ -667,6 +670,7 @@
     .mt-xl-sm { margin-top: var(--nil-s-sm) !important; }
     .mt-xl-md { margin-top: var(--nil-s-md) !important; }
     .mt-xl-lg { margin-top: var(--nil-s-lg) !important; }
+    .mb-xl-0 { margin-bottom: 0 !important; }
     .mb-xl-sm { margin-bottom: var(--nil-s-sm) !important; }
     .mb-xl-md { margin-bottom: var(--nil-s-md) !important; }
     .mb-xl-lg { margin-bottom: var(--nil-s-lg) !important; }
@@ -699,6 +703,7 @@
     .mt-xxl-sm { margin-top: var(--nil-s-sm) !important; }
     .mt-xxl-md { margin-top: var(--nil-s-md) !important; }
     .mt-xxl-lg { margin-top: var(--nil-s-lg) !important; }
+    .mb-xxl-0 { margin-bottom: 0 !important; }
     .mb-xxl-sm { margin-bottom: var(--nil-s-sm) !important; }
     .mb-xxl-md { margin-bottom: var(--nil-s-md) !important; }
     .mb-xxl-lg { margin-bottom: var(--nil-s-lg) !important; }
@@ -747,7 +752,7 @@
 .fw-light   { font-weight: 300 !important; }
 .fw-lighter { font-weight: lighter !important; }
 .fw-normal  { font-weight: 400 !important; }
-.fw-bold    { font-weight: 700 !important; }
+.fw-bold    { font-weight: 900 !important; }
 .fw-bolder  { font-weight: bolder !important; }
 
 .fst-normal { font-style: normal !important; }

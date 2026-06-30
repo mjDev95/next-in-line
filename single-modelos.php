@@ -177,10 +177,10 @@ $has_stats = array_filter( $stats );
         <section class="container py-lg">
             <div class="row">
                 <span class="col-12 col-md-3 nil-section-label mb-sm h5 text-uppercase">
-                    <?php esc_html_e( 'Más Talento', 'hello-elementor-child' ); ?>
+                    <?php printf( esc_html__( 'Más Talento %s', 'hello-elementor-child' ), esc_html( $current_term->name ) ); ?>
                 </span>
                 
-                <div class="col-12 col-md-9">
+                <div class="col-12 col-md-3">
                     <div class="row">
                         <?php foreach ( $related_models as $rel ) :
                             $thumb = wp_get_attachment_image_src( get_post_thumbnail_id( $rel->ID ), 'medium_large' );

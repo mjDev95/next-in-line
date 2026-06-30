@@ -13,30 +13,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 	<footer id="site-footer-modelos" class="nil-footer-modelos">
-		<div class="container py-sm">
+		<div class="py-sm">
 			<div class="row align-items-center">
-				<div class="col-6 col-lg-3 mb-md">
-					<div class="nil-footer-logo img-fluid">
-						<?php
-						if ( function_exists( 'the_custom_logo' ) && has_custom_logo() ) {
-							the_custom_logo();
-						} else {
-							?>
-							<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="nil-footer-logo-link">
-								<?php bloginfo( 'name' ); ?>
-							</a>
-							<?php
-						}
-						?>
-					</div>
-					<p class="mb-0 d-none">
-						<?php esc_html_e( 'Agencia internacional de modelos y talento.', 'hello-elementor-child' ); ?>
-					</p>
+				<div class="col-md-3 col-lg-3">
+					<button onclick="history.back()" class="nil-btn-back"><?php esc_html_e( 'Regresar', 'hello-elementor-child' ); ?></button>
 				</div>
 
-				<div class="col-12 col-lg-9 text-lg-end">
+				<div class="col-md-9 text-lg-end">
 					<p class="mb-0">
-						© <?php echo esc_html( gmdate( 'Y' ) ); ?> <?php esc_html_e( 'Derechos reservados.', 'hello-elementor-child' ); ?>
+						&copy; <?php echo esc_html( gmdate( 'Y' ) ); ?> <?php echo esc_html( get_bloginfo( 'name' ) ); ?>. <?php esc_html_e( 'Todos los derechos reservados.', 'hello-elementor-child' ); ?>
 					</p>
 				</div>
 			</div>
