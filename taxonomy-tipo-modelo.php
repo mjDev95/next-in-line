@@ -113,7 +113,6 @@ $GLOBALS['wp_query'] = new WP_Query( array(
 		'exclude'    => $term->term_id,
 		'orderby'    => 'name',
 		'order'      => 'ASC',
-		'number'     => 4,
 	) );
 
 	if ( ! is_wp_error( $other_terms ) && ! empty( $other_terms ) ) :
