@@ -179,7 +179,11 @@ a:hover {
 }
 .nil-page__content p { margin-bottom: var(--nil-s-md); }
 .nil-page__content p:last-child { margin-bottom: 0; }
-
+.nil-page--quienes-somos p, .nil-page--contacto p {
+    font-size: clamp(0.95rem, 1.5vw, 1.2rem) !important;
+    line-height: 1.3;
+    color: var(--e-global-color-primary);
+}
 /* ══════════════════════════════════════════
    CURSOR PERSONALIZADO GLOBAL
    Estilos base + estados. La lógica vive en assets/js/nil-cursor.js.
