@@ -604,26 +604,7 @@ body.nil-lightbox-active #site-header {
         aspect-ratio: auto; /* Anulamos el ratio para que mande el height */
     }
 }
-/* ══════════════════════════════════════════
-   FOOTER MODELOS — BOTÓN REGRESAR
-══════════════════════════════════════════ */
-.nil-btn-back {
-    display: inline-block;
-    background-color: var(--nil-color-primary);
-    color: var(--nil-color-white);
-    padding: var(--nil-s-xs) var(--nil-s-md);
-    text-decoration: none;
-    text-transform: uppercase;
-    font-size: .75rem;
-    letter-spacing: .15em;
-    border: none;
-    cursor: pointer;
-    transition: opacity 0.3s ease;
-}
-.nil-btn-back:hover {
-    opacity: 0.85;
-    color: var(--nil-color-white);
-}
+
 /* ══════════════════════════════════════════
    ESPECIFICACIONES — REDUCCIÓN POR GRID
 ══════════════════════════════════════════ */
