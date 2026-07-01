@@ -23,7 +23,7 @@
 }
 
 .nil-bar-brand span {
-	color: #111;
+	color: var(--nil-color-primary);
 	font-size: .72rem;
 	font-weight: 400;
 	letter-spacing: .4em;
@@ -34,9 +34,6 @@
 
 .nil-hamburger {
 	pointer-events: all;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
 	gap: 8px;
 	background: none;
 	border: none;
@@ -50,14 +47,14 @@
 	display: block;
 	width: 36px;
 	height: 2px;
-	background: #111;
+	background: var(--nil-color-primary);
 	transform-origin: center;
 	transition: background 0.3s ease;
 }
 
 /* When menu is open, lines go white (nav bg is dark) */
 .nil-hamburger.is-open .nil-ham-line {
-	background: #fff;
+	background: var(--nil-color-white);
 }
 /* ══════════════════════════════════════════
    FOOTER MODELOS — BOTÓN REGRESAR
@@ -103,7 +100,6 @@
 /* ── Menu items ── */
 .nil-fn-menu > .menu-item {
 	counter-increment: fn-item;
-	overflow: hidden; /* clip per-item for future reveal variant */
 	margin-bottom: 4px;
 }
 
@@ -118,17 +114,9 @@
 	letter-spacing: .08em;
 	text-transform: uppercase;
 	line-height: 1.15;
-	transition: color .25s ease;
 	padding: 6px 0;
-}
-
-
-.nil-fn-menu > .menu-item > a:hover {
-	color: #fff;
-}
-
-.nil-fn-menu > .menu-item > a:hover::before {
-	color: rgba(255, 255, 255, .6);
+	opacity: 0.8;
+	transition: transform .35s cubic-bezier(0.25, 1, 0.5, 1), opacity .35s ease;
 }
 
 /* ── Sub-menu ── */
@@ -151,11 +139,12 @@
 	letter-spacing: .3em;
 	text-transform: uppercase;
 	padding: 4px 0;
-	transition: color .25s ease;
+	transition: transform .3s cubic-bezier(0.25, 1, 0.5, 1), filter .3s ease;
 }
 
 .nil-fn-menu .sub-menu .menu-item a:hover {
-	color: rgba(255, 255, 255, .85);
+	transform: translateX(6px);
+	filter: brightness(2.2);
 }
 
 /* ── Close button (×) ── */
@@ -173,9 +162,11 @@
 	height: 36px;
 	padding: 0;
 	z-index: 10;
-	display: flex;
-	align-items: center;
-	justify-content: center;
+	transition: opacity .25s ease;
+}
+
+.nil-fn-close:hover {
+	opacity: 0.5;
 }
 
 .nil-fn-close::before,
@@ -185,7 +176,6 @@
 	width: 28px;
 	height: 1px;
 	background: rgba(255, 255, 255, .55);
-	transition: background 0.25s ease;
 }
 
 .nil-fn-close::before {
@@ -196,11 +186,6 @@
 	transform: rotate(-45deg);
 }
 
-.nil-fn-close:hover::before,
-.nil-fn-close:hover::after {
-	background: #fff;
-}
-
 /* ── Footer ── */
 
 .nil-fn-footer {
@@ -209,38 +194,22 @@
 
 .nil-fn-footer-brand {
 	color: rgba(255, 255, 255, .4);
-	text-decoration: none;
 	font-size: .62rem;
 	letter-spacing: .45em;
-	text-transform: uppercase;
-	transition: color .25s ease;
+	transition: opacity .25s ease;
 }
 
 .nil-fn-footer-brand:hover {
-	color: rgba(255, 255, 255, .75);
-}
-
-.nil-fn-footer-social {
-	display: flex;
-	gap: 20px;
+	opacity: 0.65;
 }
 
 .nil-fn-social-link {
-	color: rgb(255, 255, 255);
-	display: flex;
-	align-items: center;
-	text-decoration: none;
-	transition: color .25s ease;
+	color: var(--nil-color-white);
 	gap: var(--nil-s-2xs);
 	font-family: var(--e-global-typography-accent-font-family, sans-serif);
-    font-weight: var(--e-global-typography-accent-font-weight, 500);
-    font-size: clamp(0.75rem, 1vw, 0.85rem);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-}
-
-.nil-fn-social-link:hover {
-	color: rgba(255, 255, 255, .85);
+	font-weight: var(--e-global-typography-accent-font-weight, 500);
+	font-size: clamp(0.75rem, 1vw, 0.85rem);
+	transition: transform .3s cubic-bezier(0.25, 1, 0.5, 1), opacity .3s ease;
 }
 
 .nil-fn-social-link svg {
@@ -248,27 +217,56 @@
 	height: 18px;
 }
 /* ══════════════════════════════════════════
-   CORP MENU
+   CORP COLUMN — two-zone layout
 ══════════════════════════════════════════ */
-.nil-corp-menu a {
-    font-size: 1.1rem;
-    letter-spacing: 0.25em;
-    transition: color 0.3s ease, transform 0.3s ease;
-    display: inline-block;
-    color: var(--nil-color-secondary);
-    text-transform: uppercase;
-    text-decoration: none;
+
+/* On desktop the corp col stretches to match the main menu height
+   and gets a fine left border acting as a column separator. */
+.nil-fn-corp-inner {
+    padding-left: var(--nil-s-lg);
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
 }
+
+/* Eyebrow label above the corp items */
+.nil-fn-corp-label {
+    letter-spacing: 0.45em;
+    color: var(--nil-color-white);
+    margin-top: 0;
+}
+
+/* Corp menu list items */
+.nil-fn-corp-menu {
+    margin: 0;
+}
+
+.nil-fn-corp-menu > .menu-item {
+    overflow: hidden;
+    margin-bottom: 2px;
+}
+
+.nil-fn-corp-menu > .menu-item > a {
+    display: block;
+    text-decoration: none;
+    font-size: clamp(1rem, 2.2vw, 1.4rem);
+    letter-spacing: 0.2em;
+    line-height: 1.4;
+	color: var(--nil-color-white);
+    padding: 6px 0;
+    transition: transform .35s cubic-bezier(0.25, 1, 0.5, 1), filter .35s ease;
+}
+
+/* Hover effect for menu items */
+.nil-fn-corp-menu > .menu-item > a:hover, .nil-fn-menu > .menu-item > a:hover, .nil-fn-social-link:hover  {
+    transform: translateX(8px);
+    filter: brightness(2);
+	opacity: 1;
+	color: var(--nil-color-white);
+}
+
 /* ══════════════════════════════════════════
    RESPONSIVE
 ══════════════════════════════════════════ */
-@media (min-width: 768px) {
-    .nil-corp-menu a:hover {
-        color: var(--nil-color-white) !important;
-        transform: translateX(-8px); 
-    }
-} 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
 	.nil-site-bar {
 		padding: 20px 24px;
 	}
@@ -289,15 +287,39 @@
 	.nil-fn-menu .sub-menu {
 		margin-left: calc(clamp(2.2rem, 5vw, 5rem) * .45 + 14px);
 	}
-	.nil-corp-menu {
-        margin-top: var(--nil-s-xl); 
-    }
-    
-    .nil-corp-menu a:hover {
-        color: var(--nil-color-white) !important;
-        transform: translateX(8px);
-    }
+
+	/* On mobile: swap vertical border for a top border */
+	.nil-fn-corp-inner {
+		padding-left: 0;
+		padding-top: var(--nil-s-lg);
+		border-left: none;
+		border-top: 1px solid rgba(255, 255, 255, 0.1);
+	}
 }
+/* ══════════════════════════════════════════
+   FULLSCREEN NAV — BOTÓN REGRESAR EN FOOTER
+══════════════════════════════════════════ */
+.nil-fn-footer-btn {
+	position: static !important;
+	background: transparent;
+	border: none;
+	padding: 0;
+	width: auto;
+	height: auto;
+	cursor: pointer;
+	color: var(--nil-color-white);
+	font-family: var(--e-global-typography-accent-font-family, sans-serif);
+	font-weight: var(--e-global-typography-accent-font-weight, 500);
+	font-size: clamp(0.75rem, 1vw, 0.85rem);
+	text-transform: uppercase;
+	letter-spacing: 0.1em;
+	transition: transform .3s cubic-bezier(0.25, 1, 0.5, 1), opacity .3s ease;
+}
+.nil-fn-footer-btn:hover {
+	transform: translateX(-6px);
+	opacity: 0.7;
+}
+
 /* ── Menú de Redes Sociales Inline (Fluid Edition) ── */
 .nil-social-nav {
     /* Usamos tu escala de espaciado fluido para separar los enlaces */
@@ -321,8 +343,8 @@
 }
 
 .nil-social-nav a:hover {
-    /* Al hacer hover, se enciende con el negro absoluto o el color principal */
-    color: var(--nil-color-primary); 
+    transform: translateX(4px);
+    filter: brightness(0.6);
 }
 /* ══════════════════════════════════════════
    ADMIN BAR COMPATIBILITY

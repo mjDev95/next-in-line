@@ -8,6 +8,8 @@
 		var nav      = document.getElementById( 'nil-fullscreen-nav' );
 		var topItems = nav ? nav.querySelectorAll( '.nil-fn-menu > .menu-item' ) : [];
 		var subItems = nav ? nav.querySelectorAll( '.nil-fn-menu .sub-menu .menu-item' ) : [];
+		var corpLabel = nav ? nav.querySelector( '.nil-fn-corp-label' ) : null;
+		var corpItems = nav ? nav.querySelectorAll( '.nil-fn-corp-menu > .menu-item' ) : [];
 		var footer   = nav ? nav.querySelector( '.nil-fn-footer' ) : null;
 
 		// ── Admin bar offset (read actual height from DOM) ──────────────────────
@@ -106,7 +108,27 @@
 			);
 		}
 
-		// 4. Footer fades up
+		// 4. Corp label fades up alongside sub-items
+		if ( corpLabel ) {
+			tl.fromTo(
+				corpLabel,
+				{ opacity: 0, y: 10 },
+				{ opacity: 1, y: 0, duration: 0.35, ease: 'power2.out' },
+				'-=0.35'
+			);
+		}
+
+		// 5. Corp items stagger up after the label
+		if ( corpItems.length ) {
+			tl.fromTo(
+				corpItems,
+				{ y: 18, opacity: 0 },
+				{ y: 0, opacity: 1, duration: 0.4, stagger: 0.07, ease: 'power2.out' },
+				'-=0.2'
+			);
+		}
+
+		// 6. Footer fades up
 		if ( footer ) {
 			tl.fromTo(
 				footer,
@@ -135,6 +157,8 @@
 			// Pre-posicionar en estado invisible antes de que el nav se vuelva visible (evita parpadeo)
 			gsap.set( topItems, { x: -70, opacity: 0 } );
 			gsap.set( subItems, { x: -30, opacity: 0 } );
+			if ( corpLabel ) { gsap.set( corpLabel, { opacity: 0, y: 10 } ); }
+			if ( corpItems.length ) { gsap.set( corpItems, { y: 18, opacity: 0 } ); }
 			if ( footer ) { gsap.set( footer, { opacity: 0, y: 18 } ); }
 			btn.setAttribute( 'aria-expanded', 'true' );
 			btn.classList.add( 'is-open' );
@@ -174,7 +198,7 @@
 		} );
 
 		// Close (with reverse animation) when a nav link is followed
-		nav.querySelectorAll( '.nil-fn-menu a' ).forEach( function ( link ) {
+		nav.querySelectorAll( '.nil-fn-menu a, .nil-fn-corp-menu a' ).forEach( function ( link ) {
 			link.addEventListener( 'click', function ( e ) {
 				var href = this.getAttribute( 'href' );
 				// Let browser handle modifier-key clicks, anchor-only links, empty hrefs

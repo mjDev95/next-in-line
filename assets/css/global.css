@@ -99,6 +99,88 @@ a:hover {
 }
 
 /* ══════════════════════════════════════════
+   PÁGINAS INTERNAS (Contacto, Quiénes Somos)
+   Componente: .nil-page  +  modificadores BEM
+══════════════════════════════════════════ */
+
+/* Eyebrow label: pequeño texto de agencia sobre el título */
+.nil-page__eyebrow {
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--nil-color-muted);
+    font-weight: 500;
+}
+
+/* Divisor horizontal principal */
+.nil-page__divider {
+    border: none;
+    border-top: 1px solid currentColor;
+    opacity: 0.15;
+}
+
+/* Divisor horizontal ligero (entre items) */
+.nil-page__divider--light {
+    border: none;
+    border-top: 1px solid currentColor;
+    opacity: 0.08;
+}
+
+/* Línea vertical separadora (desktop) */
+.nil-page__vline {
+    width: 1px;
+    height: 100%;
+    background-color: currentColor;
+    opacity: 0.1;
+}
+
+/* Texto introductorio */
+.nil-page__intro {
+    font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+    line-height: 1.7;
+    color: var(--nil-color-muted);
+    font-weight: 300;
+}
+
+/* Etiqueta de nombre de contacto */
+.nil-page__label {
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    color: var(--nil-color-primary);
+    font-weight: 600;
+    margin-bottom: 0;
+}
+
+/* Email / enlace de contacto */
+.nil-page__email {
+    font-size: clamp(0.8rem, 1.3vw, 0.95rem);
+    color: var(--nil-color-muted);
+    transition: color 0.2s ease;
+}
+.nil-page__email:hover {
+    color: var(--nil-color-primary);
+}
+
+/* Enlace social */
+.nil-page__social {
+    color: var(--nil-color-muted);
+    transition: color 0.2s ease;
+}
+.nil-page__social:hover {
+    color: var(--nil-color-primary);
+}
+
+/* Contenido de página editorial */
+.nil-page__content {
+    font-size: clamp(0.95rem, 1.5vw, 1.05rem);
+    line-height: 1.8;
+    color: var(--nil-color-muted);
+    font-weight: 300;
+}
+.nil-page__content p { margin-bottom: var(--nil-s-md); }
+.nil-page__content p:last-child { margin-bottom: 0; }
+
+/* ══════════════════════════════════════════
    CURSOR PERSONALIZADO GLOBAL
    Estilos base + estados. La lógica vive en assets/js/nil-cursor.js.
    Para añadir un nuevo estado: agrega una regla

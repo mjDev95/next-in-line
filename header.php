@@ -35,7 +35,7 @@
 	?>
 
 	<button
-		class="nil-hamburger"
+		class="nil-hamburger d-flex flex-column justify-content-center"
 		id="nil-hamburger-btn"
 		aria-label="<?php esc_attr_e( 'Abrir menú', 'hello-elementor-child' ); ?>"
 		aria-expanded="false"
@@ -56,40 +56,53 @@
 	aria-label="<?php esc_attr_e( 'Menú principal', 'hello-elementor-child' ); ?>"
 	aria-hidden="true"
 >
-	<button class="nil-fn-close" aria-label="<?php esc_attr_e( 'Cerrar menú', 'hello-elementor-child' ); ?>"></button>
+	<button class="nil-fn-close d-flex align-items-center justify-content-center" aria-label="<?php esc_attr_e( 'Cerrar menú', 'hello-elementor-child' ); ?>"></button>
 
 	<div class="nil-fn-inner d-flex flex-column justify-content-between w-100 h-100">
 
 		<div class="nil-fn-body flex-1 d-flex flex-column justify-content-center">
-			<?php
-				wp_nav_menu( array(
-					'theme_location' => 'nil-fullscreen-menu',
-					'container'      => false,
-					'menu_class'     => 'nil-fn-menu ps-0',
-					'fallback_cb'    => '__return_false',
-					'depth'          => 2,
-				) );
-			?>
-				
-			<?php
-			if ( has_nav_menu( 'nil-corp-menu' ) ) {
-				wp_nav_menu( array(
-					'theme_location' => 'nil-corp-menu',
-					'container'      => false,
-					'menu_class'     => 'nil-fn-menu mt-lg ps-0',
-					'fallback_cb'    => '__return_false',
-					'depth'          => 1,
-				) );
-			}
-			?>
+			<div class="row">
+
+				<!-- Main navigation -->
+				<div class="col-12 col-md-7">
+					<?php
+						wp_nav_menu( array(
+							'theme_location' => 'nil-fullscreen-menu',
+							'container'      => false,
+							'menu_class'     => 'nil-fn-menu ps-0 list-unstyled',
+							'fallback_cb'    => '__return_false',
+							'depth'          => 2,
+						) );
+					?>
+				</div>
+
+				<!-- Corp / secondary navigation -->
+				<?php if ( has_nav_menu( 'nil-corp-menu' ) ) : ?>
+				<div class="col-12 col-md-4 nil-fn-corp-col">
+					<div class="nil-fn-corp-inner d-flex flex-column justify-content-md-end h-100">
+						<p class="nil-fn-corp-label text-uppercase mb-md small"><?php esc_html_e( '¿Buscas representación? Escríbenos.', 'hello-elementor-child' ); ?></p>
+						<?php
+							wp_nav_menu( array(
+								'theme_location' => 'nil-corp-menu',
+								'container'      => false,
+								'menu_class'     => 'nil-fn-corp-menu list-unstyled text-uppercase ',
+								'fallback_cb'    => '__return_false',
+								'depth'          => 1,
+							) );
+						?>
+					</div>
+				</div>
+				<?php endif; ?>
+
+			</div>
 		</div>
 
 		<div class="nil-fn-footer d-flex align-items-center justify-content-between flex-wrap gap-3 py-lg">
-            <div class="nil-fn-footer-brand">
+            <div class="nil-fn-footer-brand text-uppercase">
               	<button class="nil-fn-footer-btn nil-js-close-trigger h5" aria-label="<?php esc_attr_e( 'Regresar', 'hello-elementor-child' ); ?>"><?php esc_html_e( 'Regresar', 'hello-elementor-child' ); ?></button>
             </div>
-            <div class="nil-fn-footer-social">
-                <a href="https://www.instagram.com/nextinlinemanagement" target="_blank" rel="noopener noreferrer" class="nil-fn-social-link">
+            <div class="nil-fn-footer-social d-flex">
+                <a href="https://www.instagram.com/nextinlinemanagement" target="_blank" rel="noopener noreferrer" class="nil-fn-social-link d-flex align-items-center text-decoration-none text-uppercase">
                     <i data-feather="instagram"></i>
                     <span>@nextinlinemanagement</span>
                 </a>
