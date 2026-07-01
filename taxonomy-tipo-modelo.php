@@ -3,6 +3,7 @@
 <?php $term = get_queried_object(); ?>
 <?php
 $card_hover_style = get_option( 'nil_modelos_card_hover_style', 'centered' );
+$archive_layout   = get_option( 'nil_modelos_archive_layout', 'compact' );
 
 $GLOBALS['wp_query'] = new WP_Query( array(
 	'post_type'      => 'modelos',
@@ -17,7 +18,7 @@ $GLOBALS['wp_query'] = new WP_Query( array(
 ) );
 ?>
 
-<main class="nil-archive-modelos nil-taxonomy-modelos" data-layout="compact">
+<main class="nil-archive-modelos nil-taxonomy-modelos pb-lg" data-layout="<?php echo esc_attr( $archive_layout ); ?>">
 
 	<header class="nil-archive-header">
 		<p class="nil-breadcrumb">
@@ -118,44 +119,16 @@ $GLOBALS['wp_query'] = new WP_Query( array(
 	if ( ! is_wp_error( $other_terms ) && ! empty( $other_terms ) ) :
 	?>
 
-	<section class="nil-related-cats py-xl mt-xl" aria-label="<?php esc_attr_e( 'Otras divisiones', 'hello-elementor-child' ); ?>">
+	<section class="nil-related-cats py-lg mt-xl" aria-label="<?php esc_attr_e( 'Otras divisiones', 'hello-elementor-child' ); ?>">
 
 		<p class="nil-related-cats-title h6 text-center text-uppercase mb-md"><?php esc_html_e( 'Descubre otras divisiones', 'hello-elementor-child' ); ?></p>
 
-		<div class="nil-related-cats-grid row">
-			<?php foreach ( $other_terms as $other ) :
-
-				$image_id = get_term_meta( $other->term_id, 'image_id', true );
-				$bg_url   = '';
-
-				if ( $image_id ) {
-					$img    = wp_get_attachment_image_src( $image_id, 'medium_large' );
-					$bg_url = $img ? $img[0] : '';
-				}
-			?>
-
-				<div class="col-6 col-md-4 col-lg-3">
-					<a href="<?php echo esc_url( get_term_link( $other ) ); ?>"
-					   class="nil-related-cat-card position-relative overflow-hidden text-decoration-none d-block"
-					   title="<?php echo esc_attr( sprintf(
-					   		/* translators: %s: nombre de la categoría */
-					   		__( 'Modelos %s', 'hello-elementor-child' ),
-					   		$other->name
-					   ) ); ?>">
-
-					<?php if ( $bg_url ) : ?>
-						<div class="nil-cat-bg" style="background-image:url('<?php echo esc_url( $bg_url ); ?>')"></div>
-					<?php endif; ?>
-					<div class="nil-cat-overlay position-absolute"></div>
-					<div class="nil-related-cat-info position-absolute">
-						<h3>
-							<span class="nil-related-cat-name h5 text-uppercase fw-bold"><?php echo esc_html( strtoupper( $other->name ) ); ?></span>
-						</h3>
-					</div>
-
-					</a>
-				</div>
-
+		<div class="nil-related-cats-btns d-flex flex-wrap justify-content-center gap-3">
+			<?php foreach ( $other_terms as $other ) : ?>
+				<a href="<?php echo esc_url( get_term_link( $other ) ); ?>"
+				   class="nil-cat-btn text-uppercase text-decoration-none">
+					<?php echo esc_html( $other->name ); ?>
+				</a>
 			<?php endforeach; ?>
 		</div>
 

@@ -137,10 +137,6 @@
    ARCHIVE — grid de modelos
 ══════════════════════════════════════════ */
 
-.nil-archive-modelos {
-	padding-bottom: 80px;
-}
-
 .nil-archive-header {
 	text-align: center;
 	padding: 100px 20px 70px;
@@ -207,52 +203,33 @@
    TAXONOMY — related categories (interlinking)
 ══════════════════════════════════════════ */
 
-.nil-related-cats-title{
-	letter-spacing:.32em;
+.nil-related-cats-title {
+	letter-spacing: .32em;
 }
 
-.nil-related-cats-grid{
-	gap:3px;
+/* ── Category buttons ── */
+.nil-cat-btn {
+	display: inline-block;
+	padding: var(--nil-s-sm) var(--nil-s-lg);
+	color: var(--nil-color-white);
+	font-size: clamp(0.7rem, 1.2vw, 0.82rem);
+	font-weight: 400;
+	letter-spacing: .28em;
+	line-height: 1;
+	transition: opacity .3s ease, transform .35s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-.nil-related-cat-card{
-	flex:1;
-	height:300px;
+.nil-cat-btn:nth-child(odd) {
+	background: var(--nil-color-primary);
 }
 
-.nil-cat-bg{
-	position:absolute;
-	inset:0;
-	background-size:cover;
-	background-position:center top;
-	transition:transform .6s ease;
+.nil-cat-btn:nth-child(even) {
+	background: color-mix(in srgb, var(--nil-color-primary) 55%, var(--nil-color-white));
 }
 
-.nil-related-cat-card:hover .nil-cat-bg{
-	transform:scale(1.05);
-}
-
-.nil-cat-overlay{
-	inset:0;
-	background:rgba(0,0,0,.42);
-	transition:background .4s ease;
-}
-
-.nil-related-cat-card:hover .nil-cat-overlay{
-	background:rgba(0,0,0,.22);
-}
-
-.nil-related-cat-info{
-	left:24px;
-	bottom:24px;
-	z-index:2;
-}
-
-.nil-related-cat-name{
-	color:#fff;
-	letter-spacing:.3em;
-	font-size:.82rem;
-	font-weight:400;
+.nil-cat-btn:hover {
+	opacity: 0.75;
+	transform: translateY(-2px);
 }
 /* ══════════════════════════════════════════
    1. LA CUADRÍCULA ASÍNCRONA (GRID GENERAL)

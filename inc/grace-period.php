@@ -35,6 +35,11 @@ function nil_modelos_register_settings() {
 		'default'           => 'centered',
 		'sanitize_callback' => 'nil_sanitize_modelos_card_hover_style',
 	) );
+	register_setting( 'nil_modelos_settings_group', 'nil_modelos_archive_layout', array(
+		'type'              => 'string',
+		'default'           => 'compact',
+		'sanitize_callback' => 'nil_sanitize_modelos_archive_layout',
+	) );
 }
 
 function nil_sanitize_modelos_hero_animation( $value ) {
@@ -45,6 +50,11 @@ function nil_sanitize_modelos_hero_animation( $value ) {
 function nil_sanitize_modelos_card_hover_style( $value ) {
 	$value = sanitize_key( $value );
 	return in_array( $value, array( 'centered', 'left-aligned' ), true ) ? $value : 'centered';
+}
+
+function nil_sanitize_modelos_archive_layout( $value ) {
+	$value = sanitize_key( $value );
+	return in_array( $value, array( 'normal', 'compact', 'airy' ), true ) ? $value : 'compact';
 }
 
 function nil_modelos_settings_page() {
@@ -120,6 +130,30 @@ function nil_modelos_settings_page() {
 						</select>
 						<p class="description">
 							<?php esc_html_e( 'Controla cómo se muestran las medidas del modelo al pasar el cursor sobre su tarjeta en las páginas de archivo.', 'hello-elementor-child' ); ?>
+						</p>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row">
+						<label for="nil_modelos_archive_layout">
+							<?php esc_html_e( 'Densidad de layout en archivo', 'hello-elementor-child' ); ?>
+						</label>
+					</th>
+					<td>
+						<?php $archive_layout = get_option( 'nil_modelos_archive_layout', 'compact' ); ?>
+						<select id="nil_modelos_archive_layout" name="nil_modelos_archive_layout">
+							<option value="normal" <?php selected( $archive_layout, 'normal' ); ?>>
+								<?php esc_html_e( 'Normal — espaciado estándar', 'hello-elementor-child' ); ?>
+							</option>
+							<option value="compact" <?php selected( $archive_layout, 'compact' ); ?>>
+								<?php esc_html_e( 'Compact — UI densa, más tarjetas visibles', 'hello-elementor-child' ); ?>
+							</option>
+							<option value="airy" <?php selected( $archive_layout, 'airy' ); ?>>
+								<?php esc_html_e( 'Airy — editorial, más espacio entre tarjetas', 'hello-elementor-child' ); ?>
+							</option>
+						</select>
+						<p class="description">
+							<?php esc_html_e( 'Controla el espaciado entre tarjetas y columnas en las páginas de archivo (taxonomy).', 'hello-elementor-child' ); ?>
 						</p>
 					</td>
 				</tr>
