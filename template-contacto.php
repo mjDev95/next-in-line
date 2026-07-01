@@ -11,7 +11,7 @@ get_header();
 <main class="nil-simple-page-wrapper py-xl">
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-12 col-lg-8 text-center">
+            <div class="col-12 text-center">
                 
                 <h1 class="h2 text-uppercase text-center mb-lg"><?php esc_html_e( 'Contacto', 'hello-elementor-child' ); ?></h1>
 
