@@ -19,6 +19,7 @@ function nil_theme_setup() {
 	register_nav_menus( array(
 		'nil-fullscreen-menu' => __( 'Menú Pantalla Completa (Header)', 'hello-elementor-child' ),
 		'nil-social-menu' => __( 'Menú Social (Footer)', 'hello-elementor-child' ),
+		'nil-corp-menu'       => __( 'Menú Corporativo (Pantalla Completa)', 'hello-elementor-child' ),
     ) );
 }
 /**

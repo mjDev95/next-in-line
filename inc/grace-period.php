@@ -30,11 +30,21 @@ function nil_modelos_register_settings() {
 		'default'           => 'text-left-image-center', // Nuevo valor por defecto
 		'sanitize_callback' => 'nil_sanitize_modelos_hero_animation',
 	) );
+	register_setting( 'nil_modelos_settings_group', 'nil_modelos_card_hover_style', array(
+		'type'              => 'string',
+		'default'           => 'centered',
+		'sanitize_callback' => 'nil_sanitize_modelos_card_hover_style',
+	) );
 }
 
 function nil_sanitize_modelos_hero_animation( $value ) {
 	$value = sanitize_key( $value );
 	return in_array( $value, array( 'text-left-image-center', 'name-surname-image-center', 'text-left-image-right' ), true ) ? $value : 'text-left-image-center';
+}
+
+function nil_sanitize_modelos_card_hover_style( $value ) {
+	$value = sanitize_key( $value );
+	return in_array( $value, array( 'centered', 'left-aligned' ), true ) ? $value : 'centered';
 }
 
 function nil_modelos_settings_page() {
@@ -89,6 +99,27 @@ function nil_modelos_settings_page() {
 						</select>
 						<p class="description">
 							<?php esc_html_e( 'Este ajuste aplica globalmente a todos los perfiles de modelos.', 'hello-elementor-child' ); ?>
+						</p>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row">
+						<label for="nil_modelos_card_hover_style">
+							<?php esc_html_e( 'Estilo de hover en tarjetas', 'hello-elementor-child' ); ?>
+						</label>
+					</th>
+					<td>
+						<?php $card_hover_style = get_option( 'nil_modelos_card_hover_style', 'centered' ); ?>
+						<select id="nil_modelos_card_hover_style" name="nil_modelos_card_hover_style">
+							<option value="centered" <?php selected( $card_hover_style, 'centered' ); ?>>
+								<?php esc_html_e( 'Medidas centradas (dos columnas)', 'hello-elementor-child' ); ?>
+							</option>
+							<option value="left-aligned" <?php selected( $card_hover_style, 'left-aligned' ); ?>>
+								<?php esc_html_e( 'Medidas centradas (una columna)', 'hello-elementor-child' ); ?>
+							</option>
+						</select>
+						<p class="description">
+							<?php esc_html_e( 'Controla cómo se muestran las medidas del modelo al pasar el cursor sobre su tarjeta en las páginas de archivo.', 'hello-elementor-child' ); ?>
 						</p>
 					</td>
 				</tr>

@@ -1,19 +1,8 @@
 /* ══════════════════════════════════════════
    SITE BAR — persistent top strip
 ══════════════════════════════════════════ */
-
 .nil-site-bar {
-	position: fixed;
-	top: 0;
-	left: 0;
-	right: 0;
 	z-index: 200;
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	/*padding: 28px 40px;*/
-	padding: var(--nil-s-md) var(--nil-s-lg);
-	background: white;
 }
 .nil-footer-modelos{
 	padding: var(--nil-s-md) var(--nil-s-lg);
@@ -76,46 +65,23 @@
 ══════════════════════════════════════════ */
 
 .nil-fullscreen-nav {
-	position: fixed;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	width: auto;
 	height: 100dvh;
 	z-index: 250;
 	background: #0c0c0c;
-	display: flex;
 	align-items: stretch;
 	clip-path: inset(0 100% 0 0);
 	visibility: hidden;
 	pointer-events: none;
-	overflow-x: hidden;
-	overflow-y: auto;
 	overscroll-behavior: contain;
 	-webkit-overflow-scrolling: touch;
 }
 
 .nil-fn-inner {
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-	width: 100%;
 	padding: 80px 10vw 60px;
-	min-height: 100%;
 	box-sizing: border-box;
-	flex-shrink: 0;
 }
 
 /* ── Menu items ── */
-
-.nil-fn-menu {
-	list-style: none;
-	margin: 0;
-	padding: 0;
-	counter-reset: fn-item;
-}
-
 .nil-fn-menu > .menu-item {
 	counter-increment: fn-item;
 	overflow: hidden; /* clip per-item for future reveal variant */
@@ -127,25 +93,16 @@
 	align-items: baseline;
 	gap: 20px;
 	text-decoration: none;
-	color: rgba(255, 255, 255, .85);
-	font-size: clamp(2.2rem, 5vw, 5rem);
+	color: var(--nil-color-white);
+	font-size: clamp(2.2rem, 5vw, 3rem);
 	font-weight: 200;
-	letter-spacing: .1em;
+	letter-spacing: .08em;
 	text-transform: uppercase;
 	line-height: 1.15;
 	transition: color .25s ease;
 	padding: 6px 0;
 }
 
-/*.nil-fn-menu > .menu-item > a::before {
-	content: counter(fn-item, decimal-leading-zero);
-	font-size: .45em;
-	letter-spacing: .25em;
-	color: rgba(255, 255, 255, .35);
-	font-weight: 300;
-	flex-shrink: 0;
-	transition: color .25s ease;
-}*/
 
 .nil-fn-menu > .menu-item > a:hover {
 	color: #fff;
@@ -171,8 +128,8 @@
 	display: block;
 	text-decoration: none;
 	color: rgba(255, 255, 255, .45);
-	font-size: .7rem;
-	letter-spacing: .35em;
+	font-size: .65rem;
+	letter-spacing: .3em;
 	text-transform: uppercase;
 	padding: 4px 0;
 	transition: color .25s ease;
@@ -228,12 +185,6 @@
 /* ── Footer ── */
 
 .nil-fn-footer {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	flex-wrap: wrap;
-	gap: 16px;
-	padding: 40px 0 40px 0;
 	border-top: 1px solid rgba(255, 255, 255, .1);
 }
 
@@ -255,22 +206,49 @@
 	gap: 20px;
 }
 
-.nil-fn-footer-social a {
-	color: rgba(255, 255, 255, .4);
+.nil-fn-social-link {
+	color: rgb(255, 255, 255);
 	display: flex;
 	align-items: center;
 	text-decoration: none;
 	transition: color .25s ease;
+	gap: var(--nil-s-2xs);
+	font-family: var(--e-global-typography-accent-font-family, sans-serif);
+    font-weight: var(--e-global-typography-accent-font-weight, 500);
+    font-size: clamp(0.75rem, 1vw, 0.85rem);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
 }
 
-.nil-fn-footer-social a:hover {
+.nil-fn-social-link:hover {
 	color: rgba(255, 255, 255, .85);
 }
 
+.nil-fn-social-link svg {
+	width: 18px;
+	height: 18px;
+}
+/* ══════════════════════════════════════════
+   CORP MENU
+══════════════════════════════════════════ */
+.nil-corp-menu a {
+    font-size: 1.1rem;
+    letter-spacing: 0.25em;
+    transition: color 0.3s ease, transform 0.3s ease;
+    display: inline-block;
+    color: var(--nil-color-secondary);
+    text-transform: uppercase;
+    text-decoration: none;
+}
 /* ══════════════════════════════════════════
    RESPONSIVE
 ══════════════════════════════════════════ */
-
+@media (min-width: 768px) {
+    .nil-corp-menu a:hover {
+        color: var(--nil-color-white) !important;
+        transform: translateX(-8px); 
+    }
+} 
 @media (max-width: 768px) {
 	.nil-site-bar {
 		padding: 20px 24px;
@@ -282,7 +260,7 @@
 	}
 
 	.nil-fn-inner {
-		padding: 72px 8vw 48px;
+		padding: 52px 8vw 48px;
 	}
 
 	.nil-fn-menu > .menu-item > a {
@@ -292,6 +270,14 @@
 	.nil-fn-menu .sub-menu {
 		margin-left: calc(clamp(2.2rem, 5vw, 5rem) * .45 + 14px);
 	}
+	.nil-corp-menu {
+        margin-top: var(--nil-s-xl); 
+    }
+    
+    .nil-corp-menu a:hover {
+        color: var(--nil-color-white) !important;
+        transform: translateX(8px);
+    }
 }
 /* ── Menú de Redes Sociales Inline (Fluid Edition) ── */
 .nil-social-nav {

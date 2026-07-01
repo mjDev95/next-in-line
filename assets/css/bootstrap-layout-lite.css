@@ -499,6 +499,8 @@
 .px-lg { padding-inline: var(--nil-s-lg); }
 
 .py-0 { padding: 0 !important; }
+.ps-0 { padding-left: 0 !important; }
+.pe-0 { padding-right: 0 !important; }
 .py-xs { 
     padding-top: var(--nil-s-xs); 
     padding-bottom: var(--nil-s-xs); 

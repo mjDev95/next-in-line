@@ -25,7 +25,7 @@
 
 <?php if ( ! is_front_page() ) : ?>
 <!-- ── Site bar ─────────────────────────────────────────────────────────── -->
-<header class="nil-site-bar" role="banner">
+<header class="nil-site-bar position-fixed top-0 left-0 right-0 d-flex align-items-center justify-content-between py-md px-lg bg-white" role="banner">
 	<?php
 		if ( function_exists( 'the_custom_logo' ) && has_custom_logo() ) {
 			the_custom_logo();
@@ -49,7 +49,7 @@
 
 <!-- ── Fullscreen nav overlay ───────────────────────────────────────────── -->
 <nav
-	class="nil-fullscreen-nav"
+	class="nil-fullscreen-nav position-fixed inset-0 w-auto d-flex overflow-x-hidden overflow-y-auto"
 	id="nil-fullscreen-nav"
 	role="dialog"
 	aria-modal="true"
@@ -58,43 +58,41 @@
 >
 	<button class="nil-fn-close" aria-label="<?php esc_attr_e( 'Cerrar menú', 'hello-elementor-child' ); ?>"></button>
 
-	<div class="nil-fn-inner">
+	<div class="nil-fn-inner d-flex flex-column justify-content-between w-100 h-100">
 
-		<div class="nil-fn-body">
+		<div class="nil-fn-body flex-1 d-flex flex-column justify-content-center">
 			<?php
-			wp_nav_menu( array(
-				'theme_location' => 'nil-fullscreen-menu',
-				'container'      => false,
-				'menu_class'     => 'nil-fn-menu',
-				'fallback_cb'    => '__return_false',
-				'depth'          => 2,
-			) );
+				wp_nav_menu( array(
+					'theme_location' => 'nil-fullscreen-menu',
+					'container'      => false,
+					'menu_class'     => 'nil-fn-menu ps-0',
+					'fallback_cb'    => '__return_false',
+					'depth'          => 2,
+				) );
+			?>
+				
+			<?php
+			if ( has_nav_menu( 'nil-corp-menu' ) ) {
+				wp_nav_menu( array(
+					'theme_location' => 'nil-corp-menu',
+					'container'      => false,
+					'menu_class'     => 'nil-fn-menu mt-lg ps-0',
+					'fallback_cb'    => '__return_false',
+					'depth'          => 1,
+				) );
+			}
 			?>
 		</div>
 
-		<div class="nil-fn-footer">
-            <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="nil-fn-footer-brand" aria-label="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>">
-                <?php
-                if ( ! empty( $logo_src ) ) : ?>
-                    <img src="<?php echo esc_url( $logo_src ); ?>" alt="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>">
-                <?php else : ?>
-                    <span><?php bloginfo( 'name' ); ?></span>
-                <?php endif; ?>
-            </a>
-
+		<div class="nil-fn-footer d-flex align-items-center justify-content-between flex-wrap gap-3 py-lg">
+            <div class="nil-fn-footer-brand">
+              	<button class="nil-fn-footer-btn nil-js-close-trigger h5" aria-label="<?php esc_attr_e( 'Regresar', 'hello-elementor-child' ); ?>"><?php esc_html_e( 'Regresar', 'hello-elementor-child' ); ?></button>
+            </div>
             <div class="nil-fn-footer-social">
-                <?php
-                // Inyectamos el menú nativo de WordPress
-                if ( has_nav_menu( 'nil-social-menu' ) ) {
-                    wp_nav_menu( array(
-                        'theme_location' => 'nil-social-menu',
-                        'container'      => false,
-                        'menu_class'     => 'nil-social-nav list-unstyled d-md-flex flex-wrap align-items-center m-0',
-                        'fallback_cb'    => '__return_false',
-                        'depth'          => 1,
-                    ) );
-                }
-                ?>
+                <a href="https://www.instagram.com/nextinlinemanagement" target="_blank" rel="noopener noreferrer" class="nil-fn-social-link">
+                    <i data-feather="instagram"></i>
+                    <span>@nextinlinemanagement</span>
+                </a>
             </div>
         </div>
 

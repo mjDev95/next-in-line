@@ -150,10 +150,12 @@
 			tl.reverse();
 		}
 
-		// ── Close button (×) ──────────────────────────────────────────────────
-		var closeBtn = nav.querySelector( '.nil-fn-close' );
-		if ( closeBtn ) {
-			closeBtn.addEventListener( 'click', closeMenu );
+		// ── Close buttons (× and footer) ──────────────────────────────────────
+		var closeBtns = nav.querySelectorAll( '.nil-fn-close, .nil-js-close-trigger' );
+		if ( closeBtns.length ) {
+			closeBtns.forEach( function ( btn ) {
+				btn.addEventListener( 'click', closeMenu );
+			} );
 		}
 
 		btn.addEventListener( 'click', function () {

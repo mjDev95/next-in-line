@@ -648,3 +648,27 @@ body.nil-lightbox-active #site-header {
     color: #111;
     letter-spacing: 0.1em;
 }
+
+/* ══════════════════════════════════════════
+   FULLSCREEN NAV — BOTÓN REGRESAR EN FOOTER
+══════════════════════════════════════════ */
+.nil-fn-footer-btn {
+    position: static !important; /* Anular posicionamiento absoluto de .nil-fn-close */
+    background: transparent;
+    border: none;
+    padding: 0;
+    width: auto;
+    height: auto;
+    cursor: pointer;
+    /* Estilos de texto unificados con el menú social, pero en blanco */
+    color: #fff;
+    font-family: var(--e-global-typography-accent-font-family, sans-serif);
+    font-weight: var(--e-global-typography-accent-font-weight, 500);
+    font-size: clamp(0.75rem, 1vw, 0.85rem);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    transition: opacity .3s ease;
+}
+.nil-fn-footer-btn:hover {
+    opacity: .7;
+}

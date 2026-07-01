@@ -2,6 +2,8 @@
 
 <?php $term = get_queried_object(); ?>
 <?php
+$card_hover_style = get_option( 'nil_modelos_card_hover_style', 'centered' );
+
 $GLOBALS['wp_query'] = new WP_Query( array(
 	'post_type'      => 'modelos',
 	'posts_per_page' => -1,
@@ -57,22 +59,38 @@ $GLOBALS['wp_query'] = new WP_Query( array(
                             <?php the_post_thumbnail( 'large', array( 'class' => 'w-100 h-100 d-block object-fit-cover' ) ); ?>
                         <?php endif; ?>
 
-                        <div class="nil-model-card-meta position-absolute d-flex align-items-center justify-content-center flex-column text-center">
-                            		<div class="d-flex flex-column align-items-center justify-content-center w-100 h-100">
+						<?php
+						$is_left_aligned = ( 'left-aligned' === $card_hover_style );
 
-                            <?php foreach ( $model_meta as $label => $value ) : ?>
+						$wrapper_classes = 'nil-model-card-meta position-absolute d-flex flex-column';
+						$wrapper_classes .= ' align-items-center justify-content-center text-center';
 
-                            	<?php if ( ! empty( $value ) ) : ?>
-									<p class="text-uppercase d-flex align-items-center my-0 w-100 justify-content-center gap-2 h6">
-                            			<span class="d-block flex-1 w-100 text-end"><?php echo esc_html( $label ); ?></span>
-                            			<span class="d-block flex-1 w-100 text-start"><?php echo esc_html( $value ); ?></span>
-                            		</p>
-                            	<?php endif; ?>
+						$inner_wrapper_classes = 'd-flex flex-column justify-content-center w-100 h-100';
+						$inner_wrapper_classes .= ' align-items-center';
+						?>
+                        <div class="<?php echo esc_attr( $wrapper_classes ); ?>">
+							<div class="<?php echo esc_attr( $inner_wrapper_classes ); ?>">
+								<?php if ( $is_left_aligned ) : ?>
+									<?php foreach ( $model_meta as $label => $value ) : ?>
+										<?php if ( ! empty( $value ) ) : ?>
+											<p class="text-uppercase my-0 h6">
+												<span><?php echo esc_html( $label ); ?>: <?php echo esc_html( $value ); ?></span>
+											</p>
+										<?php endif; ?>
+									<?php endforeach; ?>
+								<?php else : ?>
+									<?php foreach ( $model_meta as $label => $value ) : ?>
+										<?php if ( ! empty( $value ) ) : ?>
+											<p class="text-uppercase d-flex align-items-center my-0 w-100 justify-content-center gap-2 h6">
+												<span class="d-block flex-1 w-100 text-end"><?php echo esc_html( $label ); ?></span>
+												<span class="d-block flex-1 w-100 text-start"><?php echo esc_html( $value ); ?></span>
+											</p>
+										<?php endif; ?>
+									<?php endforeach; ?>
+								<?php endif; ?>
+							</div>
+						</div>
 
-                            <?php endforeach; ?>
-                            		</div>
-
-                        </div>
 
                     </a>
 					<a href="<?php the_permalink(); ?>" class="py-xs text-start">
