@@ -521,6 +521,10 @@
     padding-top: var(--nil-s-xl); 
     padding-bottom: var(--nil-s-xl); 
 }
+.py-2xl { 
+    padding-top: var(--nil-s-2xl); 
+    padding-bottom: var(--nil-s-2xl); 
+}   
 
 .my-0 {  
     margin-top: 0;

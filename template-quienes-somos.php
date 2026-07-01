@@ -8,7 +8,7 @@
 get_header();
 ?>
 
-<main class="nil-simple-page-wrapper py-xl">
+<main class="nil-simple-page-wrapper py-2xl">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-12">
