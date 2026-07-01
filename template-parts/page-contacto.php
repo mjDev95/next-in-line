@@ -13,7 +13,6 @@
         <!-- Eyebrow + Título -->
         <div class="row mb-lg">
             <div class="col-12">
-                <p class="nil-page__eyebrow mb-sm"><?php esc_html_e( 'Next In Line Management', 'hello-elementor-child' ); ?></p>
                 <h1 class="h1 text-uppercase mb-0"><?php esc_html_e( 'Contacto', 'hello-elementor-child' ); ?></h1>
             </div>
         </div>
