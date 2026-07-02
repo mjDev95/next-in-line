@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 				<div class="col-md-9 text-lg-end">
 					<p class="mb-0">
-						&copy; <?php echo esc_html( gmdate( 'Y' ) ); ?> <?php echo esc_html( get_bloginfo( 'name' ) ); ?>. <?php esc_html_e( 'Todos los derechos reservados.', 'hello-elementor-child' ); ?>
+						&copy; <?php echo esc_html( gmdate( 'Y' ) ); ?> <?php esc_html_e( 'Todos los derechos reservados', 'hello-elementor-child' ); ?> <?php echo esc_html( get_bloginfo( 'name' ) ); ?>.
 					</p>
 				</div>
 			</div>
