@@ -560,7 +560,12 @@ body.nil-lightbox-active #site-header {
     text-transform: uppercase;
     margin: 0;
 }
-
+.nil-modelo-category {
+    font-size: .85rem;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    margin: 0;
+}
 .nil-hero-stats-wrapper {
     pointer-events: auto;
     margin-top: var(--nil-s-lg);
