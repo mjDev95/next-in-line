@@ -14,10 +14,12 @@
 
 		var topArc      = overlay.querySelector( '.nil-pt-rounded-wrap.top' );
 		var bottomArc   = overlay.querySelector( '.nil-pt-rounded-wrap.bottom' );
-		var ARC_HEIGHT  = window.innerWidth > 540 ? '10vh' : '5vh';
+		function getArcHeight() {
+			return window.innerWidth > 540 ? '10vh' : '5vh';
+		}
 		var isAnimating = false;
 
-		gsap.set( [ topArc, bottomArc ], { height: ARC_HEIGHT } );
+		gsap.set( [ topArc, bottomArc ], { height: getArcHeight() } );
 
 		function setOverlayTop( value ) {
 			gsap.set( overlay, { clearProps: 'transform' } );
@@ -40,6 +42,58 @@
 			}, position || 0 );
 		}
 
+		function resetCurves() {
+			var height = getArcHeight();
+
+			if ( topArc ) {
+				gsap.set( topArc, {
+					height: height,
+					scaleY: 0,
+				} );
+			}
+
+			if ( bottomArc ) {
+				gsap.set( bottomArc, {
+					height: height,
+					scaleY: 1,
+				} );
+			}
+		}
+
+		function hideCurves() {
+			if ( topArc ) {
+				gsap.set( topArc, {
+					height: '0vh',
+					scaleY: 0,
+				} );
+			}
+
+			if ( bottomArc ) {
+				gsap.set( bottomArc, {
+					height: '0vh',
+					scaleY: 0,
+				} );
+			}
+		}
+
+		function animateTopCurve( tl ) {
+			if ( ! topArc ) { return; }
+			tl.to( topArc, {
+				scaleY: 1,
+				duration: 0.4,
+				ease: 'power4.in',
+			}, 0 );
+		}
+
+		function animateBottomCurve( tl ) {
+			if ( ! bottomArc ) { return; }
+			tl.to( bottomArc, {
+				scaleY: 0,
+				duration: 0.85,
+				ease: 'power3.inOut',
+			}, 0.2 );
+		}
+
 		// ── ENTER: nueva página cargó — retirar overlay hacia arriba ──────────
 		// Si el preloader está activo lo saltamos (él cubre el inicio)
 		if ( ! document.documentElement.classList.contains( 'nil-preloader-active' ) ) {
@@ -48,27 +102,17 @@
 				onComplete: function () {
 					isAnimating = false;
 					overlay.style.pointerEvents = 'none';
+					hideCurves();
 					setOverlayTop( '-100%' );
 					document.dispatchEvent( new CustomEvent( 'nil:heroReady' ) );
 				},
 			} );
 
-			if ( topArc ) {
-				tlEnter.set( topArc, { scaleY: 0 }, 0 );
-			}
-			if ( bottomArc ) {
-				tlEnter.set( bottomArc, { scaleY: 1 }, 0 );
-			}
+			resetCurves();
 
 			animateOverlayOut( tlEnter, 0 );
 
-			if ( bottomArc ) {
-				tlEnter.to(
-					bottomArc,
-					{ scaleY: 0, duration: 0.85, ease: 'power3.inOut' },
-					0.2
-				);
-			}
+			animateBottomCurve( tlEnter );
 		} else {
 			// El preloader se encarga de la entrada; mantener overlay oculto
 			overlay.style.pointerEvents = 'none';
@@ -92,22 +136,11 @@
 				},
 			} );
 
-			if ( topArc ) {
-				tl.set( topArc, { scaleY: 0 }, 0 );
-			}
-			if ( bottomArc ) {
-				tl.set( bottomArc, { scaleY: 1 }, 0 );
-			}
+			resetCurves();
 
 			animateOverlayIn( tl, 0 );
 
-			if ( topArc ) {
-				tl.to(
-					topArc,
-					{ scaleY: 1, duration: 0.4, ease: 'power4.in' },
-					0
-				);
-			}
+			animateTopCurve( tl );
 		}
 
 		// Exponer globalmente para que fullscreen-nav.js lo use
@@ -148,6 +181,7 @@
 				setOverlayTop( '0%' );
 				var tlRestore = gsap.timeline({
 					onComplete: function () {
+						hideCurves();
 						setOverlayTop( '-100%' );
 						document.dispatchEvent( new CustomEvent( 'nil:heroReady' ) );
 					}
