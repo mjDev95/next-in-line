@@ -275,3 +275,61 @@ if ( ! defined( 'WPSEO_VERSION' ) ) {
 		}
 	}
 }
+
+/**
+ * Muestra los breadcrumbs del sitio.
+ *
+ * Prioritiza la función de Yoast SEO si está disponible.
+ * De lo contrario, genera una ruta de navegación manual simple y consistente.
+ *
+ * @return void
+ */
+function nil_the_breadcrumbs() {
+	// No mostrar en la página de inicio.
+	if ( is_front_page() ) {
+		return;
+	}
+
+	// Caso especial para el archivo de taxonomía, que tiene un diseño diferente.
+	if ( is_tax( 'tipo-modelo' ) ) {
+		$term = get_queried_object();
+		echo '<p class="nil-breadcrumb">';
+		echo '<a href="' . esc_url( home_url( '/' ) ) . '">' . esc_html__( 'Inicio', 'hello-elementor-child' ) . '</a>';
+		echo '<span>&nbsp;/&nbsp;</span>';
+		echo '<span>' . esc_html( $term->name ) . '</span>';
+		echo '</p>';
+		return;
+	}
+
+	// Contenedor principal de los breadcrumbs para el resto de páginas.
+	echo '<nav class="nil-breadcrumb container" aria-label="' . esc_attr__( 'Ruta de navegación', 'hello-elementor-child' ) . '">';
+
+	// Prioridad para Yoast SEO.
+	if ( function_exists( 'yoast_breadcrumb' ) ) {
+		yoast_breadcrumb( '<div class="nil-breadcrumb-inner">', '</div>' );
+		echo '</nav>';
+		return;
+	}
+
+	// --- Fallback: Breadcrumbs manuales ---
+	echo '<div class="nil-breadcrumb-inner">';
+
+	// 1. Enlace a Inicio (siempre presente).
+	echo '<a href="' . esc_url( home_url( '/' ) ) . '">' . esc_html__( 'Inicio', 'hello-elementor-child' ) . '</a>';
+	echo '<span class="nil-bc-sep" aria-hidden="true">/</span>';
+
+	// 2. Lógica contextual.
+	if ( is_singular( 'modelos' ) ) {
+		// Perfil de modelo: Inicio > Categoría > Modelo
+		$terms = get_the_terms( get_the_ID(), 'tipo-modelo' );
+		if ( $terms && ! is_wp_error( $terms ) ) {
+			$term = $terms[0];
+			echo '<a href="' . esc_url( get_term_link( $term ) ) . '">' . esc_html( $term->name ) . '</a>';
+			echo '<span class="nil-bc-sep" aria-hidden="true">/</span>';
+		}
+		the_title( '<span class="nil-bc-current" aria-current="page">', '</span>' );
+	}
+
+	echo '</div>'; // Cierre de .nil-breadcrumb-inner
+	echo '</nav>';  // Cierre de nav.nil-breadcrumb
+}

@@ -21,11 +21,7 @@ $GLOBALS['wp_query'] = new WP_Query( array(
 <main class="nil-archive-modelos nil-taxonomy-modelos pb-lg" data-layout="<?php echo esc_attr( $archive_layout ); ?>">
 
 	<header class="nil-archive-header">
-		<p class="nil-breadcrumb">
-			<a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php esc_html_e( 'Inicio', 'hello-elementor-child' ); ?></a>
-			<span>&nbsp;/&nbsp;</span>
-			<span><?php echo esc_html( $term->name ); ?></span>
-		</p>
+		<?php nil_the_breadcrumbs(); ?>
 		<h1 class="nil-archive-title text-uppercase fw-bold"><?php echo esc_html( strtoupper( $term->name ) ); ?></h1>
 		<?php if ( $term->description ) : ?>
 			<p class="nil-archive-desc"><?php echo esc_html( $term->description ); ?></p>
