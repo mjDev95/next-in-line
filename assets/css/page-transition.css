@@ -7,7 +7,7 @@
 	width: 100%;
 	transform: translateY( 100% );
 	pointer-events: none;
-	height: 100vh;
+	height: 100svh; /* Usa Small Viewport Height para evitar saltos en móvil */
     z-index: 10000; /* encima del page-transition (9999) y del fullscreen-nav (250) */
     background: var(--nil-color-primary);
     will-change: transform;
@@ -26,11 +26,13 @@ html.nil-js.nil-preloader-active #nil-page-transition {
 /* ── Admin bar ── */
 body.admin-bar #nil-page-transition {
 	top: 32px;
+	height: calc(100svh - 32px);
 }
 
 @media screen and (max-width: 782px) {
 	body.admin-bar #nil-page-transition {
 		top: 46px;
+		height: calc(100svh - 46px);
 	}
 }
 
