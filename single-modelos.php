@@ -165,7 +165,7 @@ $has_stats = array_filter( $stats );
                     <?php
                     printf(
                         esc_html__( 'Más Talento %s', 'hello-elementor-child' ),
-                        esc_html( trim( str_ireplace( 'Next', '', $current_term->name ) ) )
+                        esc_html( trim( str_ireplace( 'Next in', '', $current_term->name ) ) )
                     );
                     ?>
                 </span>
