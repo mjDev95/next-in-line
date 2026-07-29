@@ -51,11 +51,11 @@ $panels = array_values(
 
                             if ( stripos( $title, 'next' ) !== false ) {
                                 // Split around the word "next" (case-insensitive), only first occurrence
-                                $parts = preg_split( '/next/i', $title, 2 );
+                                $parts = preg_split( '/next in/i', $title, 2 );
 
                                 $after = isset( $parts[1] ) ? trim( $parts[1] ) : '';
 
-                                echo 'Next<br>';
+                                echo 'Next in<br>';
 
                                 if ( $after !== '' ) {
                                     echo '<span>' . wp_kses_post( $after ) . '</span>';

@@ -7,6 +7,16 @@ require_once get_stylesheet_directory() . '/inc/custom-posts.php';
 require_once get_stylesheet_directory() . '/inc/custom-fields.php';
 require_once get_stylesheet_directory() . '/inc/grace-period.php';
 
+// ── Google Integrations ─────────────────────────────────────────────────────
+require_once get_stylesheet_directory() . '/inc/google/helpers.php';
+require_once get_stylesheet_directory() . '/inc/google/class-google-settings.php';
+require_once get_stylesheet_directory() . '/inc/google/class-google-tag-manager.php';
+require_once get_stylesheet_directory() . '/inc/google/class-google-analytics.php';
+
+( new NIL_Google_Settings() )->init();
+( new NIL_Google_Tag_Manager() )->init();
+( new NIL_Google_Analytics() )->init();
+
 add_action( 'after_setup_theme', 'nil_theme_setup' );
 function nil_theme_setup() {
 	add_theme_support( 'post-thumbnails' );
@@ -169,6 +179,17 @@ function hello_elementor_child_enqueue_styles() {
             get_stylesheet_directory_uri() . '/assets/js/modelo-hero.js',
             array( 'gsap', 'gsap-scrolltrigger' ),
             $v( '/assets/js/modelo-hero.js' ),
+            true
+        );
+    }
+
+    // ── Botón "Cómo llegar" con geolocalización (solo en la página de Contacto) ──
+    if ( is_page_template( 'template-contacto.php' ) ) {
+        wp_enqueue_script(
+            'nil-directions',
+            get_stylesheet_directory_uri() . '/assets/js/nil-directions.js',
+            array(),
+            $v( '/assets/js/nil-directions.js' ),
             true
         );
     }

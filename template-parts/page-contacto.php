@@ -91,10 +91,10 @@
                         title="<?php esc_attr_e( 'Ubicación en Google Maps', 'hello-elementor-child' ); ?>">
                     </iframe>
                 </div>
-                <a  style="max-width: 250px;" href="https://www.google.com/maps/dir/?api=1&destination=Av.+Insurgentes+Sur+863-Piso+7,+Oficina+01,+Nápoles,+Benito+Juárez,+03010+Ciudad+de+México,+CDMX"
+                <a  style="max-width: 250px;" href="https://www.google.com/maps/dir/?api=1&destination=Av.+Insurgentes+Sur+863-Piso+7,+Oficina+01,+N%C3%A1poles,+Benito+Ju%C3%A1rez,+03010+Ciudad+de+M%C3%A9xico,+CDMX"
                    target="_blank"
                    rel="noopener noreferrer"
-                   class="w-auto nil-btn text-center text-uppercase nil-btn-back d-flex justify-content-center align-items-center gap-2">
+                   class="w-auto nil-btn nil-btn--directions text-center text-uppercase nil-btn-back d-flex justify-content-center align-items-center gap-2">
                     <?php esc_html_e( 'Cómo llegar', 'hello-elementor-child' ); ?>
                 </a>
             </div>
