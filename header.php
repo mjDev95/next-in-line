@@ -11,7 +11,7 @@
 <?php get_template_part( 'template-parts/preloader' ); ?>
 
 <!-- ── Page transition overlay ────────────────────────────────────────────────── -->
-<div id="nil-page-transition" class="position-fixed top-0 left-0 w-100 h-100 d-flex align-items-center justify-content-center" aria-hidden="true">
+<div id="nil-page-transition" class="position-fixed left-0 w-100 h-100 d-flex align-items-center justify-content-center" aria-hidden="true">
 	<div class="nil-pt-rounded-wrap top" aria-hidden="true">
 		<div class="nil-pt-rounded"></div>
 	</div>

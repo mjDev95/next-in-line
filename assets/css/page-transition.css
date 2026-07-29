@@ -5,22 +5,26 @@
 
 #nil-page-transition {
 	width: 100%;
-	transform: translateY( 100% );
+	position: fixed;
+	top: -100%;
+	left: 0;
+	right: 0;
 	pointer-events: none;
 	height: 100vh;
+	height: 100dvh;
     z-index: 10000; /* encima del page-transition (9999) y del fullscreen-nav (250) */
     background: var(--nil-color-primary);
-    will-change: transform;
+    will-change: top;
 }
 
 /* Con JS activo: cubre la página al cargar — GSAP lo retira */
 html.nil-js #nil-page-transition {
-	transform: translateY( 0 );
+	top: 0;
 }
 
 /* Cuando el preloader está activo: el overlay permanece oculto */
 html.nil-js.nil-preloader-active #nil-page-transition {
-	transform: translateY( 100% );
+	top: -100%;
 }
 
 /* ── Admin bar ── */

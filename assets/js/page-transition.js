@@ -19,6 +19,27 @@
 
 		gsap.set( [ topArc, bottomArc ], { height: ARC_HEIGHT } );
 
+		function setOverlayTop( value ) {
+			gsap.set( overlay, { clearProps: 'transform' } );
+			gsap.set( overlay, { top: value } );
+		}
+
+		function animateOverlayIn( tl, position ) {
+			tl.to( overlay, {
+				top: '0%',
+				duration: 0.5,
+				ease: 'power4.in',
+			}, position || 0 );
+		}
+
+		function animateOverlayOut( tl, position ) {
+			tl.to( overlay, {
+				top: '-100%',
+				duration: 0.8,
+				ease: 'power3.inOut',
+			}, position || 0 );
+		}
+
 		// ── ENTER: nueva página cargó — retirar overlay hacia arriba ──────────
 		// Si el preloader está activo lo saltamos (él cubre el inicio)
 		if ( ! document.documentElement.classList.contains( 'nil-preloader-active' ) ) {
@@ -27,7 +48,7 @@
 				onComplete: function () {
 					isAnimating = false;
 					overlay.style.pointerEvents = 'none';
-					gsap.set( overlay, { yPercent: 100 } );
+					setOverlayTop( '-100%' );
 					document.dispatchEvent( new CustomEvent( 'nil:heroReady' ) );
 				},
 			} );
@@ -39,11 +60,7 @@
 				tlEnter.set( bottomArc, { scaleY: 1 }, 0 );
 			}
 
-			tlEnter.to(
-				overlay,
-				{ yPercent: -100, duration: 0.8, ease: 'power3.inOut' },
-				0
-			);
+			animateOverlayOut( tlEnter, 0 );
 
 			if ( bottomArc ) {
 				tlEnter.to(
@@ -57,7 +74,7 @@
 			overlay.style.pointerEvents = 'none';
 			document.addEventListener( 'nil:preloaderDone', function () {
 				// Fijar inline transform antes de que se elimine la clase CSS (evita flash)
-				gsap.set( overlay, { yPercent: 100 } );
+				setOverlayTop( '-100%' );
 			} );
 		}
 
@@ -66,6 +83,8 @@
 			if ( isAnimating ) { return; }
 			isAnimating = true;
 			overlay.style.pointerEvents = 'all';
+
+			setOverlayTop( '100%' );
 
 			var tl = gsap.timeline( {
 				onComplete: function () {
@@ -80,13 +99,7 @@
 				tl.set( bottomArc, { scaleY: 1 }, 0 );
 			}
 
-			tl.set( overlay, { yPercent: 100 }, 0 );
-
-			tl.to(
-				overlay,
-				{ yPercent: 0, duration: 0.5, ease: 'power4.in' },
-				0
-			);
+			animateOverlayIn( tl, 0 );
 
 			if ( topArc ) {
 				tl.to(
@@ -132,19 +145,14 @@
 			if ( e.persisted ) {
 				isAnimating = false;
 				overlay.style.pointerEvents = 'none';
-				gsap.fromTo(
-					overlay,
-					{ yPercent: 0 },
-					{
-						yPercent: -100,
-						duration: 0.8,
-						ease: 'power3.inOut',
-						onComplete: function () {
-							gsap.set( overlay, { yPercent: 100 } );
-							document.dispatchEvent( new CustomEvent( 'nil:heroReady' ) );
-						},
+				setOverlayTop( '0%' );
+				var tlRestore = gsap.timeline({
+					onComplete: function () {
+						setOverlayTop( '-100%' );
+						document.dispatchEvent( new CustomEvent( 'nil:heroReady' ) );
 					}
-				);
+				});
+				animateOverlayOut( tlRestore, 0 );
 			}
 		} );
 
