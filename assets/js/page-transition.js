@@ -94,6 +94,22 @@
 			}, 0.2 );
 		}
 
+		function startTransition( onComplete ) {
+			if ( isAnimating ) { return; }
+			isAnimating = true;
+			overlay.style.pointerEvents = 'all';
+
+			setOverlayTop( '100%' );
+			resetCurves();
+
+			var tl = gsap.timeline({
+				onComplete: onComplete,
+			});
+
+			animateOverlayIn( tl, 0 );
+			animateTopCurve( tl );
+		}
+
 		// ── ENTER: nueva página cargó — retirar overlay hacia arriba ──────────
 		// Si el preloader está activo lo saltamos (él cubre el inicio)
 		if ( ! document.documentElement.classList.contains( 'nil-preloader-active' ) ) {
@@ -109,42 +125,33 @@
 			} );
 
 			resetCurves();
-
+			setOverlayTop( '0%' );
 			animateOverlayOut( tlEnter, 0 );
-
 			animateBottomCurve( tlEnter );
 		} else {
-			// El preloader se encarga de la entrada; mantener overlay oculto
 			overlay.style.pointerEvents = 'none';
 			document.addEventListener( 'nil:preloaderDone', function () {
-				// Fijar inline transform antes de que se elimine la clase CSS (evita flash)
+				hideCurves();
 				setOverlayTop( '-100%' );
 			} );
 		}
 
 		// ── EXIT: cubrir página antes de navegar ──────────────────────────────
 		function navigateTo( url ) {
-			if ( isAnimating ) { return; }
-			isAnimating = true;
-			overlay.style.pointerEvents = 'all';
-
-			setOverlayTop( '100%' );
-
-			var tl = gsap.timeline( {
-				onComplete: function () {
-					window.location.href = url;
-				},
+			startTransition( function () {
+				window.location.href = url;
 			} );
+		}
 
-			resetCurves();
-
-			animateOverlayIn( tl, 0 );
-
-			animateTopCurve( tl );
+		function navigateBack() {
+			startTransition( function () {
+				history.back();
+			} );
 		}
 
 		// Exponer globalmente para que fullscreen-nav.js lo use
 		window.nilNavigate = navigateTo;
+		window.nilNavigateBack = navigateBack;
 
 		// ── Interceptar clicks en enlaces internos ─────────────────────────────
 		document.addEventListener( 'click', function ( e ) {

@@ -31,11 +31,11 @@ $panels = array_values(
 
     <?php if ( ! empty( $panels ) ) : ?>
 
-    <div class="nil-categories-hero position-relative z-index-2 w-100 h-100 d-flex flex-column justify-content-between p-md p-lg-0">
+    <div class="nil-categories-hero position-relative z-index-2 w-100 h-100 d-flex flex-column justify-content-between p-0 p-lg-0">
 
         <div class="nil-home-logo position-relative w-100 z-index-10 text-center text-lg-start mb-auto" style="padding: 40px 0;"> 
             <a href="<?php echo esc_url( home_url( '/' ) ); ?>" aria-label="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>" class="d-inline-block">
-                <img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/logos/nil-light.svg" alt="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>" style="height: clamp(100px, 20vw, 100px); width: auto;">
+                <img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/logos/nil-light.svg" alt="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>">
             </a>
         </div>
 

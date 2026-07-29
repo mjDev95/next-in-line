@@ -62,7 +62,7 @@
         width: auto !important;
         padding-bottom: 0;
     }
-    body.admin-bar .nil-home-logo { top: calc(25vh + 32px) !important; }
+    body .nil-home-logo { top: calc(25vh + 32px) !important; }
     
     /* Configura las columnas verticales */
     .nil-cat-panel {

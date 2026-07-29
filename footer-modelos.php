@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<div class="py-sm">
 			<div class="row align-items-center">
 				<div class="col-md-3 col-lg-3">
-					<button onclick="history.back()" class="nil-btn-back"><?php esc_html_e( 'Regresar', 'hello-elementor-child' ); ?></button>
+					<button onclick="window.nilNavigateBack()" class="nil-btn-back"><?php esc_html_e( 'Regresar', 'hello-elementor-child' ); ?></button>
 				</div>
 
 				<div class="col-md-9 text-lg-end">
