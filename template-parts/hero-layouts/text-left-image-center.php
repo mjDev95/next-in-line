@@ -11,12 +11,12 @@
 
 ?>
 <section class="nil-modelo-hero" data-hero-mode="text-left-image-center">
-
 	<div class="nil-modelo-photo nil-modelo-photo-target">
 		<?php if ( has_post_thumbnail() ) : the_post_thumbnail( 'full' ); endif; ?>
 	</div>
 
 	<div class="nil-modelo-hero-layout">
+		<?php nil_the_breadcrumbs(); ?>
 		<div class="container">
 			<div class="row align-items-center">
 
