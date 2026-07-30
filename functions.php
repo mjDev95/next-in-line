@@ -181,6 +181,26 @@ function hello_elementor_child_enqueue_styles() {
             $v( '/assets/js/modelo-hero.js' ),
             true
         );
+
+		// Anima la aparición de los breadcrumbs para que se muestren
+		// después de la animación de entrada del hero.
+		$breadcrumb_anim_js = "
+			if (typeof gsap !== 'undefined') {
+				// Oculta los breadcrumbs al inicio para que no se vean y no ocupen espacio.
+				gsap.set('.nil-breadcrumb', { display: 'none', opacity: 0 });
+
+				// Anima la aparición después de un retraso.
+				gsap.to('.nil-breadcrumb', {
+					delay: 1.2,
+					duration: 0.5,
+					opacity: 1,
+					onStart: function() {
+						gsap.set(this.targets(), { display: 'block' });
+					}
+				});
+			}
+		";
+		wp_add_inline_script( 'nil-modelo-hero', $breadcrumb_anim_js, 'after' );
     }
 
     // ── Botón "Cómo llegar" con geolocalización (solo en la página de Contacto) ──

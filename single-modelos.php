@@ -26,12 +26,9 @@ $has_stats = array_filter( $stats );
 ?>
 
 <main class="nil-single-modelo nil-modelo-hero-mode-<?php echo esc_attr( $nil_hero_animation ); ?>"  data-layout="compact">
-
-
-	
+    <?php nil_the_breadcrumbs(); ?>
 
 	<div class="nil-hero-scroll-wrapper">
-        
 		<?php
         $hero_args = array(
             'nil_model_category' => $nil_model_category,

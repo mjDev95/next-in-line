@@ -14,7 +14,6 @@
 		<?php if ( has_post_thumbnail() ) : the_post_thumbnail( 'full' ); endif; ?>
 	</div>
 	<div class="nil-modelo-hero-layout">	
-		<?php nil_the_breadcrumbs(); ?>
 		<div class="container">
 			<div class="row align-items-center">
 				<div class="col-md-7 nil-modelo-hero-text nil-modelo-hero-left">

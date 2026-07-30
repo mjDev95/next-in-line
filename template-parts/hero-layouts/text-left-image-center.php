@@ -16,7 +16,6 @@
 	</div>
 
 	<div class="nil-modelo-hero-layout">
-		<?php nil_the_breadcrumbs(); ?>
 		<div class="container">
 			<div class="row align-items-center">
 
