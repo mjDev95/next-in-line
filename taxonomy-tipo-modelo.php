@@ -20,7 +20,7 @@ $GLOBALS['wp_query'] = new WP_Query( array(
 
 <main class="nil-archive-modelos nil-taxonomy-modelos pb-lg" data-layout="<?php echo esc_attr( $archive_layout ); ?>">
 
-	<header class="nil-archive-header">
+	<header class="nil-archive-header <?php if ( ! have_posts() ) echo 'pb-md'; ?>">
 		<?php nil_the_breadcrumbs(); ?>
 		<h1 class="nil-archive-title text-uppercase fw-bold"><?php echo esc_html( strtoupper( $term->name ) ); ?></h1>
 		<?php if ( $term->description ) : ?>
@@ -28,78 +28,74 @@ $GLOBALS['wp_query'] = new WP_Query( array(
 		<?php endif; ?>
 	</header>
 
-    <div class="container-fluid mb-lg">
-        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-5">
-            
-            <?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
+	<?php if ( have_posts() ) : ?>
+		<div class="container-fluid mb-lg">
+			<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5">     
+				<?php while ( have_posts() ) : the_post(); ?>
+					<?php
+					$model_meta = array(
+						__( 'Altura', 'hello-elementor-child' )   => get_post_meta( get_the_ID(), 'height', true ),
+						__( 'Busto', 'hello-elementor-child' )    => get_post_meta( get_the_ID(), 'bust', true ),
+						__( 'Cintura', 'hello-elementor-child' )  => get_post_meta( get_the_ID(), 'waist', true ),
+						__( 'Cadera', 'hello-elementor-child' )   => get_post_meta( get_the_ID(), 'hips', true ),
+						__( 'Saco', 'hello-elementor-child' )     => get_post_meta( get_the_ID(), 'suit', true ),
+						__( 'Camisa', 'hello-elementor-child' )   => get_post_meta( get_the_ID(), 'shirt', true ),
+						__( 'Pantalón', 'hello-elementor-child' ) => get_post_meta( get_the_ID(), 'pants', true ),
+						__( 'Zapato', 'hello-elementor-child' )   => get_post_meta( get_the_ID(), 'shoe', true ),
+						__( 'Cabello', 'hello-elementor-child' )  => get_post_meta( get_the_ID(), 'hair', true ),
+						__( 'Ojos', 'hello-elementor-child' )     => get_post_meta( get_the_ID(), 'eyes', true ),
+					);
+					
+					?>
 
-                <?php
-                $model_meta = array(
-				    __( 'Altura', 'hello-elementor-child' )   => get_post_meta( get_the_ID(), 'height', true ),
-					__( 'Busto', 'hello-elementor-child' )    => get_post_meta( get_the_ID(), 'bust', true ),
-					__( 'Cintura', 'hello-elementor-child' )  => get_post_meta( get_the_ID(), 'waist', true ),
-					__( 'Cadera', 'hello-elementor-child' )   => get_post_meta( get_the_ID(), 'hips', true ),
-					__( 'Saco', 'hello-elementor-child' )     => get_post_meta( get_the_ID(), 'suit', true ),
-					__( 'Camisa', 'hello-elementor-child' )   => get_post_meta( get_the_ID(), 'shirt', true ),
-					__( 'Pantalón', 'hello-elementor-child' ) => get_post_meta( get_the_ID(), 'pants', true ),
-					__( 'Zapato', 'hello-elementor-child' )   => get_post_meta( get_the_ID(), 'shoe', true ),
-					__( 'Cabello', 'hello-elementor-child' )  => get_post_meta( get_the_ID(), 'hair', true ),
-					__( 'Ojos', 'hello-elementor-child' )     => get_post_meta( get_the_ID(), 'eyes', true ),
-                );
-				
-                ?>
+					<div class="">
+						<a href="<?php the_permalink(); ?>" class="nil-model-card position-relative overflow-hidden w-100 d-flex flex-column flex-1 text-decoration-none">
 
-                <div class="d-flex flex-column">
-                    <a href="<?php the_permalink(); ?>" class="nil-model-card position-relative overflow-hidden w-100 d-flex flex-column flex-1 text-decoration-none">
+							<?php if ( has_post_thumbnail() ) : ?>
+								<?php the_post_thumbnail( 'large', array( 'class' => 'w-100 h-100 d-block object-fit-cover img-archive-thumbnail-profile' ) ); ?>
+							<?php endif; ?>
 
-                        <?php if ( has_post_thumbnail() ) : ?>
-                            <?php the_post_thumbnail( 'large', array( 'class' => 'w-100 h-100 d-block object-fit-cover' ) ); ?>
-                        <?php endif; ?>
+							<?php
+							$is_left_aligned = ( 'left-aligned' === $card_hover_style );
 
-						<?php
-						$is_left_aligned = ( 'left-aligned' === $card_hover_style );
+							$wrapper_classes = 'nil-model-card-meta position-absolute d-flex flex-column';
+							$wrapper_classes .= ' align-items-center justify-content-center text-center';
 
-						$wrapper_classes = 'nil-model-card-meta position-absolute d-flex flex-column';
-						$wrapper_classes .= ' align-items-center justify-content-center text-center';
-
-						$inner_wrapper_classes = 'd-flex flex-column justify-content-center w-100 h-100';
-						$inner_wrapper_classes .= ' align-items-center';
-						?>
-                        <div class="<?php echo esc_attr( $wrapper_classes ); ?>">
-							<div class="<?php echo esc_attr( $inner_wrapper_classes ); ?>">
-								<?php if ( $is_left_aligned ) : ?>
-									<?php foreach ( $model_meta as $label => $value ) : ?>
-										<?php if ( ! empty( $value ) ) : ?>
-											<p class="text-uppercase my-0 h6">
-												<span><?php echo esc_html( $label ); ?>: <?php echo esc_html( $value ); ?></span>
-											</p>
-										<?php endif; ?>
-									<?php endforeach; ?>
-								<?php else : ?>
-									<?php foreach ( $model_meta as $label => $value ) : ?>
-										<?php if ( ! empty( $value ) ) : ?>
-											<p class="text-uppercase d-flex align-items-center my-0 w-100 justify-content-center gap-2 h6">
-												<span class="d-block flex-1 w-100 text-end"><?php echo esc_html( $label ); ?></span>
-												<span class="d-block flex-1 w-100 text-start"><?php echo esc_html( $value ); ?></span>
-											</p>
-										<?php endif; ?>
-									<?php endforeach; ?>
-								<?php endif; ?>
+							$inner_wrapper_classes = 'd-flex flex-column justify-content-center w-100 h-100';
+							$inner_wrapper_classes .= ' align-items-center';
+							?>
+							<div class="<?php echo esc_attr( $wrapper_classes ); ?>">
+								<div class="<?php echo esc_attr( $inner_wrapper_classes ); ?>">
+									<?php if ( $is_left_aligned ) : ?>
+										<?php foreach ( $model_meta as $label => $value ) : ?>
+											<?php if ( ! empty( $value ) ) : ?>
+												<p class="text-uppercase my-0 h6">
+													<span><?php echo esc_html( $label ); ?>: <?php echo esc_html( $value ); ?></span>
+												</p>
+											<?php endif; ?>
+										<?php endforeach; ?>
+									<?php else : ?>
+										<?php foreach ( $model_meta as $label => $value ) : ?>
+											<?php if ( ! empty( $value ) ) : ?>
+												<p class="text-uppercase d-flex align-items-center my-0 w-100 justify-content-center gap-2 h6">
+													<span class="d-block flex-1 w-100 text-end"><?php echo esc_html( $label ); ?></span>
+													<span class="d-block flex-1 w-100 text-start"><?php echo esc_html( $value ); ?></span>
+												</p>
+											<?php endif; ?>
+										<?php endforeach; ?>
+									<?php endif; ?>
+								</div>
 							</div>
-						</div>
+						</a>
+						<a href="<?php the_permalink(); ?>" class="text-start">
+							<h2 class="text-uppercase h5 text-center mb-0 py-xs"><?php the_title(); ?></h2>
+						</a>
+					</div>
+				<?php endwhile; ?>
 
-
-                    </a>
-					<a href="<?php the_permalink(); ?>" class="py-xs text-start">
-                        <h2 class="text-uppercase h5 text-center mb-0"><?php the_title(); ?></h2>
-					</a>
-                </div>
-
-            <?php endwhile; endif; ?>
-
-        </div>
-    </div>
-
+			</div>
+		</div>
+	<?php endif; ?>
 
 	<?php
 	/* ── SEO Interlinking: otras categorías ── */
