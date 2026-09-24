@@ -601,9 +601,12 @@ body.nil-lightbox-active #site-header {
 
 /* Tu etiqueta (ej: Height) */
 .nil-spec-label {
-    font-size: 1rem;
+    font-size: 0.9rem;
     text-transform: uppercase;
     font-weight: 500;
     color: #111;
     letter-spacing: 0.1em;
+}
+.nil-spec-label span {
+    font-weight: 700;
 }

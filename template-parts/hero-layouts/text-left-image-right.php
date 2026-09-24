@@ -34,8 +34,8 @@
 						<?php foreach ( $stats as $label => $value ) :
 							if ( ! $value ) continue;
 						?>
-							<div class="nil-spec-item px-sm">
-								<span class="nil-spec-label me-2"><?php echo esc_html( $label ); ?>: <?php echo esc_html( $value ); ?></span>
+							<div class="nil-spec-item px-xs">
+								<span class="nil-spec-label me-2 small"><span><?php echo esc_html( $label ); ?>:</span> <?php echo esc_html( $value ); ?></span>
 							</div>
 						<?php endforeach; ?>
 					</div>
