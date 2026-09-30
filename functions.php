@@ -438,6 +438,12 @@ function nil_the_breadcrumbs() {
  */
 add_action( 'wp_head', 'nil_preload_lcp_image', 2 );
 function nil_preload_lcp_image() {
+	if ( is_front_page() ) {
+		$logo_url = get_stylesheet_directory_uri() . '/assets/images/logos/nil-light.svg';
+		echo '<link rel="preload" as="image" href="' . esc_url( $logo_url ) . '" type="image/svg+xml" fetchpriority="high">' . "\n";
+		return;
+	}
+
 	$thumb_id = 0;
 	$size     = 'full';
 

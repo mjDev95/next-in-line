@@ -19,7 +19,13 @@
 		<div class="nil-pt-rounded"></div>
 	</div>
 	<div class="nil-pl-logo position-relative z-index-2 d-block" aria-hidden="true">
-        <img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/logos/nil-light.svg" alt="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>">
+        <img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/logos/nil-light.svg" 
+             alt="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>"
+             fetchpriority="high"
+             loading="eager"
+             decoding="async"
+             width="200"
+             height="60">
     </div>
 </div>
 

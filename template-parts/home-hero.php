@@ -35,7 +35,13 @@ $panels = array_values(
 
         <div class="nil-home-logo position-relative w-100 z-index-10 text-center text-lg-start mb-auto" style="padding: 40px 0;"> 
             <a href="<?php echo esc_url( home_url( '/' ) ); ?>" aria-label="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>" class="d-inline-block">
-                <img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/logos/nil-light.svg" alt="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>">
+                <img src="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/images/logos/nil-light.svg' ); ?>" 
+                     alt="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>"
+                     fetchpriority="high"
+                     loading="eager"
+                     decoding="async"
+                     width="200"
+                     height="60">
             </a>
         </div>
 

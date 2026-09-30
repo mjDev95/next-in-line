@@ -11,7 +11,13 @@ if ( ! is_front_page() ) {
 <div id="nil-preloader" class="position-fixed top-0 left-0 w-100 h-100 d-flex align-items-center justify-content-center">
     
     <div class="nil-pl-logo position-relative z-index-2 d-block" aria-hidden="true">
-        <img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/logos/nil-light.svg" alt="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>">
+        <img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/logos/nil-light.svg" 
+             alt="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>"
+             fetchpriority="high"
+             loading="eager"
+             decoding="async"
+             width="200"
+             height="60">
     </div>
 
     <div class="nil-pl-rounded-wrap overflow-hidden bottom position-absolute left-0 w-100" aria-hidden="true">
