@@ -18,7 +18,7 @@
  *      o llama NilCursor.show('nombre-estado') desde el script que lo necesite.
  */
 
-(function ($) {
+(function () {
     'use strict';
 
     window.NilCursor = (function () {
@@ -54,14 +54,16 @@
                 });
             });
 
-            // ── Zona por defecto: galería → estado "eye" ──
-            $(document).on('mouseenter.nilcursor', '.nil-gallery-item', function () {
-                show('eye');
-            }).on('mouseleave.nilcursor', '.nil-gallery-item', function () {
-                // Solo ocultar si seguimos en estado 'eye'.
-                // Si el estado ya cambió a 'drag' (lightbox abierto desde el click),
-                // no interrumpir esa transición.
-                if (el && el.dataset.state === 'eye') hide();
+            // ── Zona por defecto: galería → estado "eye" (Vanilla JS) ──
+            document.addEventListener('mouseover', function (e) {
+                if (e.target && e.target.closest && e.target.closest('.nil-gallery-item')) {
+                    show('eye');
+                }
+            });
+            document.addEventListener('mouseout', function (e) {
+                if (e.target && e.target.closest && e.target.closest('.nil-gallery-item')) {
+                    if (el && el.dataset.state === 'eye') hide();
+                }
             });
 
             isReady = true;
@@ -111,10 +113,15 @@
         // Registra una zona hover y la asocia a un estado del cursor.
         // Uso: NilCursor.register('.mi-elemento', 'mi-estado')
         function register(selector, state) {
-            $(document).on('mouseenter.nilcursor', selector, function () {
-                show(state);
-            }).on('mouseleave.nilcursor', selector, function () {
-                if (el && el.dataset.state === state) hide();
+            document.addEventListener('mouseover', function (e) {
+                if (e.target && e.target.closest && e.target.closest(selector)) {
+                    show(state);
+                }
+            });
+            document.addEventListener('mouseout', function (e) {
+                if (e.target && e.target.closest && e.target.closest(selector)) {
+                    if (el && el.dataset.state === state) hide();
+                }
             });
         }
 
@@ -128,4 +135,4 @@
         }
     });
 
-})(jQuery);
+})();

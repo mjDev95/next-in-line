@@ -1,8 +1,10 @@
 /* global gsap, ScrollTrigger, Swiper */
-(function ($) {
+(function () {
     'use strict';
 
     document.addEventListener("DOMContentLoaded", () => {
+        const $ = window.jQuery;
+        if (!$) return;
         
         if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
             gsap.registerPlugin(ScrollTrigger);
@@ -245,4 +247,4 @@
             }
         });
     });
-})(jQuery);
+})();

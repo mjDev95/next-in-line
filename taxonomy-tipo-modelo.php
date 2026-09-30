@@ -31,7 +31,11 @@ $GLOBALS['wp_query'] = new WP_Query( array(
 	<?php if ( have_posts() ) : ?>
 		<div class="container-fluid mb-lg">
 			<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5">     
-				<?php while ( have_posts() ) : the_post(); ?>
+				<?php 
+				$nil_post_index = 0;
+				while ( have_posts() ) : the_post(); 
+					$nil_post_index++;
+				?>
 					<?php
 					$model_meta = array(
 						__( 'Altura', 'hello-elementor-child' )   => get_post_meta( get_the_ID(), 'height', true ),
@@ -52,7 +56,15 @@ $GLOBALS['wp_query'] = new WP_Query( array(
 						<a href="<?php the_permalink(); ?>" class="nil-model-card position-relative overflow-hidden w-100 d-flex flex-column flex-1 text-decoration-none">
 
 							<?php if ( has_post_thumbnail() ) : ?>
-								<?php the_post_thumbnail( 'large', array( 'class' => 'w-100 h-100 d-block object-fit-cover img-archive-thumbnail-profile' ) ); ?>
+								<?php 
+								$thumb_attrs = array( 'class' => 'w-100 h-100 d-block object-fit-cover img-archive-thumbnail-profile' );
+								if ( 1 === $nil_post_index ) {
+									$thumb_attrs['fetchpriority'] = 'high';
+									$thumb_attrs['loading']       = 'eager';
+									$thumb_attrs['decoding']      = 'async';
+								}
+								the_post_thumbnail( 'large', $thumb_attrs ); 
+								?>
 							<?php endif; ?>
 
 							<?php

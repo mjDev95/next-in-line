@@ -169,14 +169,20 @@ function hello_elementor_child_enqueue_styles() {
     // ── LIBRERÍAS DE TERCEROS (GSAP + PAGE TRANSITION EN TODO EL SITIO) ──
     wp_enqueue_script( 'gsap', 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js', [], null, true );
 
-    // ── FEATHER ICONS (iconos minimalistas para el cursor global y uso futuro) ──
-    wp_enqueue_script( 'feather-icons', 'https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js', [], '4.29.2', true );
+    // ── FEATHER ICONS (Alojado localmente para caché eficiente de 1 año) ──
+    wp_enqueue_script(
+        'feather-icons',
+        get_stylesheet_directory_uri() . '/assets/js/feather.min.js',
+        [],
+        $v( '/assets/js/feather.min.js' ),
+        true
+    );
 
     // ── CURSOR PERSONALIZADO GLOBAL ──
     wp_enqueue_script(
         'nil-cursor',
         get_stylesheet_directory_uri() . '/assets/js/nil-cursor.js',
-        array( 'jquery', 'gsap', 'feather-icons' ),
+        array( 'gsap', 'feather-icons' ),
         $v( '/assets/js/nil-cursor.js' ),
         true
     );
@@ -434,18 +440,31 @@ function nil_the_breadcrumbs() {
 }
 
 /**
- * ── Optimización Lighthouse (LCP): Single de Modelos ──────────────────────────
- * 1. Precarga la imagen LCP en <head> con fetchpriority="high" y responsive srcset/sizes.
- * 2. Garantiza atributos fetchpriority="high", loading="eager" y decoding="async"
- *    en el elemento <img> del modelo para evitar cualquier lazy loading indebido.
+ * ── Optimización Lighthouse (LCP Discovery & Fetchpriority High) ──────────────
+ * 1. Precarga la imagen LCP en <head> con fetchpriority="high" (Single y Archivos/Taxonomías).
+ * 2. Garantiza atributos fetchpriority="high", loading="eager" y decoding="async".
+ * 3. Desactiva loading="lazy" de WordPress sobre la imagen LCP para detección inmediata en HTML.
  */
-add_action( 'wp_head', 'nil_preload_single_modelo_lcp_image', 2 );
-function nil_preload_single_modelo_lcp_image() {
+add_action( 'wp_head', 'nil_preload_lcp_image', 2 );
+function nil_preload_lcp_image() {
+	$thumb_id = 0;
+	$size     = 'full';
+
 	if ( is_singular( 'modelos' ) && has_post_thumbnail() ) {
-		$thumbnail_id = get_post_thumbnail_id();
-		$image_src    = wp_get_attachment_image_src( $thumbnail_id, 'full' );
-		$image_srcset = wp_get_attachment_image_srcset( $thumbnail_id, 'full' );
-		$image_sizes  = wp_get_attachment_image_sizes( $thumbnail_id, 'full' );
+		$thumb_id = (int) get_post_thumbnail_id();
+		$size     = 'full';
+	} elseif ( ( is_tax( 'tipo-modelo' ) || is_post_type_archive( 'modelos' ) ) && have_posts() ) {
+		global $wp_query;
+		if ( ! empty( $wp_query->posts[0] ) ) {
+			$thumb_id = (int) get_post_thumbnail_id( $wp_query->posts[0]->ID );
+			$size     = 'large';
+		}
+	}
+
+	if ( $thumb_id ) {
+		$image_src    = wp_get_attachment_image_src( $thumb_id, $size );
+		$image_srcset = wp_get_attachment_image_srcset( $thumb_id, $size );
+		$image_sizes  = wp_get_attachment_image_sizes( $thumb_id, $size );
 
 		if ( $image_src ) {
 			$srcset_attr = $image_srcset ? ' imagesrcset="' . esc_attr( $image_srcset ) . '"' : '';
@@ -455,13 +474,47 @@ function nil_preload_single_modelo_lcp_image() {
 	}
 }
 
-add_filter( 'wp_get_attachment_image_attributes', 'nil_force_single_modelo_lcp_attributes', 99, 3 );
-function nil_force_single_modelo_lcp_attributes( $attr, $attachment, $size ) {
-	if ( is_singular( 'modelos' ) && has_post_thumbnail() && get_post_thumbnail_id() === $attachment->ID ) {
+add_filter( 'wp_get_attachment_image_attributes', 'nil_force_lcp_image_attributes', 99, 3 );
+function nil_force_lcp_image_attributes( $attr, $attachment, $size ) {
+	$is_lcp = false;
+
+	if ( is_singular( 'modelos' ) && has_post_thumbnail() ) {
+		if ( (int) get_post_thumbnail_id() === (int) $attachment->ID ) {
+			$is_lcp = true;
+		}
+	} elseif ( is_tax( 'tipo-modelo' ) || is_post_type_archive( 'modelos' ) ) {
+		global $wp_query;
+		if ( ! empty( $wp_query->posts[0] ) && (int) get_post_thumbnail_id( $wp_query->posts[0]->ID ) === (int) $attachment->ID ) {
+			$is_lcp = true;
+		}
+	}
+
+	if ( $is_lcp ) {
 		$attr['fetchpriority'] = 'high';
 		$attr['loading']       = 'eager';
 		$attr['decoding']      = 'async';
 	}
 	return $attr;
+}
+
+add_filter( 'wp_img_tag_add_loading_attr', 'nil_disable_lazy_on_lcp_image', 99, 3 );
+function nil_disable_lazy_on_lcp_image( $value, $image, $context ) {
+	if ( is_singular( 'modelos' ) && has_post_thumbnail() ) {
+		$thumb_id = (int) get_post_thumbnail_id();
+		$src = wp_get_attachment_image_url( $thumb_id, 'full' );
+		if ( $src && strpos( $image, basename( $src ) ) !== false ) {
+			return false; // Evita loading="lazy" en el LCP de single
+		}
+	} elseif ( is_tax( 'tipo-modelo' ) || is_post_type_archive( 'modelos' ) ) {
+		global $wp_query;
+		if ( ! empty( $wp_query->posts[0] ) ) {
+			$thumb_id = (int) get_post_thumbnail_id( $wp_query->posts[0]->ID );
+			$src = $thumb_id ? wp_get_attachment_image_url( $thumb_id, 'large' ) : '';
+			if ( $src && strpos( $image, basename( $src ) ) !== false ) {
+				return false; // Evita loading="lazy" en el LCP del archivo
+			}
+		}
+	}
+	return $value;
 }
 
