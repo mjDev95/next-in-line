@@ -1,3 +1,78 @@
+/* ══════════════════════════════════════════════════════════════════════════
+   TIPOGRAFÍAS LOCALES WOFF2 (Self-Hosted — Máximo Rendimiento Core Web Vitals)
+   ══════════════════════════════════════════════════════════════════════════ */
+@font-face {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 300;
+    font-display: swap;
+    src: url('../fonts/poppins-300.woff2') format('woff2');
+}
+@font-face {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('../fonts/poppins-400.woff2') format('woff2');
+}
+@font-face {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url('../fonts/poppins-500.woff2') format('woff2');
+}
+@font-face {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src: url('../fonts/poppins-600.woff2') format('woff2');
+}
+@font-face {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url('../fonts/poppins-700.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 300;
+    font-display: swap;
+    src: url('../fonts/manrope-300.woff2') format('woff2');
+}
+@font-face {
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('../fonts/manrope-400.woff2') format('woff2');
+}
+@font-face {
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url('../fonts/manrope-500.woff2') format('woff2');
+}
+@font-face {
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src: url('../fonts/manrope-600.woff2') format('woff2');
+}
+@font-face {
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url('../fonts/manrope-700.woff2') format('woff2');
+}
+
 /* ==========================================================================
    GLOBAL FIXES
    Evita el desbordamiento horizontal causado por anchos de 100vw
@@ -84,7 +159,7 @@ a:hover {
     font-size: .68rem;
     letter-spacing: .25em;
     font-weight: 600;
-    color: #aaa;
+    color: #565656;
 }
 
 .nil-404-title {

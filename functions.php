@@ -48,8 +48,27 @@ function nil_head_inline_script() {
 })();</script>\n";
 }
 
+// ── Optimización de Rendimiento Web (Lighthouse / Core Web Vitals) ──────────
+
 /**
- * Resource Hints (Lighthouse): Conexiones previas a CDNs críticos para reducir latencia de red.
+ * 1. Desactiva la carga externa de Google Fonts en Elementor (ahorro directo de ~400 ms).
+ * Las tipografías se sirven localmente en WOFF2 desde assets/fonts/.
+ */
+add_filter( 'elementor/frontend/print_google_fonts', '__return_false' );
+
+/**
+ * 2. Precarga de fuentes locales críticas (Poppins y Manrope) en <head>.
+ */
+add_action( 'wp_head', 'nil_preload_local_fonts', 1 );
+function nil_preload_local_fonts() {
+    $poppins = get_stylesheet_directory_uri() . '/assets/fonts/poppins-400.woff2';
+    $manrope = get_stylesheet_directory_uri() . '/assets/fonts/manrope-400.woff2';
+    echo '<link rel="preload" href="' . esc_url( $poppins ) . '" as="font" type="font/woff2" crossorigin>' . "\n";
+    echo '<link rel="preload" href="' . esc_url( $manrope ) . '" as="font" type="font/woff2" crossorigin>' . "\n";
+}
+
+/**
+ * 3. Resource Hints: Conexiones previas a CDNs críticos.
  */
 add_action( 'wp_head', 'nil_resource_hints_preconnect', 0 );
 function nil_resource_hints_preconnect() {
@@ -58,16 +77,56 @@ function nil_resource_hints_preconnect() {
 }
 
 /**
- * Optimización de Bloqueo de Renderizado (Lighthouse):
- * Carga asíncrona no bloqueante para estilos secundarios de galerías (swiper-css).
+ * 4. Optimización de Bloqueo de Renderizado CSS:
+ * Carga asíncrona no bloqueante para estilos secundarios (swiper-css y fuentes externas residuales).
  */
 add_filter( 'style_loader_tag', 'nil_async_non_critical_styles', 10, 4 );
 function nil_async_non_critical_styles( $html, $handle, $href, $media ) {
-    if ( 'swiper-css' === $handle ) {
+    if ( 'swiper-css' === $handle || strpos( $href, 'fonts.googleapis.com' ) !== false ) {
         return '<link rel="stylesheet" id="' . esc_attr( $handle ) . '-css" href="' . esc_url( $href ) . '" media="print" onload="this.media=\'all\'">' . "\n"
              . '<noscript><link rel="stylesheet" id="' . esc_attr( $handle ) . '-fallback-css" href="' . esc_url( $href ) . '"></noscript>' . "\n";
     }
     return $html;
+}
+
+/**
+ * 5. Optimización de Bloqueo de Renderizado JS:
+ * - Retira jquery-migrate en frontend (ahorro de ~180 ms).
+ * - Añade defer a jquery-core para evitar detener el parseo HTML (~360 ms).
+ */
+add_action( 'wp_default_scripts', 'nil_remove_jquery_migrate' );
+function nil_remove_jquery_migrate( $scripts ) {
+    if ( ! is_admin() && ! empty( $scripts->registered['jquery'] ) ) {
+        $scripts->registered['jquery']->deps = array_diff(
+            $scripts->registered['jquery']->deps,
+            array( 'jquery-migrate' )
+        );
+    }
+}
+
+add_filter( 'script_loader_tag', 'nil_defer_jquery', 10, 3 );
+function nil_defer_jquery( $tag, $handle, $src ) {
+    if ( is_admin() ) {
+        return $tag;
+    }
+    if ( in_array( $handle, array( 'jquery-core', 'jquery' ), true ) ) {
+        return str_replace( ' src', ' defer src', $tag );
+    }
+    return $tag;
+}
+
+/**
+ * 6. Desencolado de Estilos Redundantes en Frontend:
+ * - Desencola bloques Gutenberg en todo el frontend (sitio con plantillas PHP custom).
+ * - Desencola header-footer.css del tema Hello Elementor padre (el child tiene su propio header y footer).
+ */
+add_action( 'wp_enqueue_scripts', 'nil_dequeue_redundant_frontend_styles', 100 );
+function nil_dequeue_redundant_frontend_styles() {
+    wp_dequeue_style( 'wp-block-library' );
+    wp_dequeue_style( 'wp-block-library-theme' );
+    wp_dequeue_style( 'classic-theme-styles' );
+    wp_dequeue_style( 'wc-blocks-style' );
+    wp_dequeue_style( 'hello-elementor-header-footer' );
 }
 
 add_action( 'wp_enqueue_scripts', 'hello_elementor_child_enqueue_styles' );

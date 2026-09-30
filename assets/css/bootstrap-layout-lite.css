@@ -50,7 +50,7 @@
     --nil-color-primary:    var(--e-global-color-primary, #111111);
     --nil-color-secondary:  var(--e-global-color-secondary, #888888);
     --nil-color-accent:     var(--e-global-color-accent, #f52727);
-    --nil-color-muted:      var(--e-global-color-text, #aaaaaa); 
+    --nil-color-muted:      var(--e-global-color-text, #565656); 
     --nil-color-light:      #f9f9f9; /* Color estático propio */
     --nil-color-white:      #ffffff; /* Color estático propio */
 }
