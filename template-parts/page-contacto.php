@@ -45,8 +45,8 @@
 
                     <div class="col-12 col-lg-6">
                         <p class="nil-page__label text-uppercase mb-sm"><?php esc_html_e( 'Teléfono', 'hello-elementor-child' ); ?></p>
-                        <a href="tel:5579252559" class="nil-page__email">
-                            <i data-feather="phone"></i>
+                        <a href="tel:5579252559" class="nil-page__email d-inline-flex align-items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-phone"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
                             55 7925 2559
                         </a>
                     </div>
@@ -57,7 +57,7 @@
                            target="_blank"
                            rel="noopener noreferrer"
                            class="nil-page__social d-inline-flex align-items-center gap-2">
-                            <i data-feather="instagram"></i>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-instagram"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
                             <span class="text-uppercase h6 mb-0">@nextinlinemanagement</span>
                         </a>
                     </div>

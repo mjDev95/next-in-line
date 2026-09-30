@@ -34,11 +34,6 @@
             // No custom cursor en dispositivos táctiles / stylus (pointer: coarse)
             if (!window.matchMedia('(pointer: fine)').matches) return;
 
-            // Inicializar Feather Icons dentro del cursor
-            if (window.feather) {
-                feather.replace({ 'stroke-width': 1.5, width: 20, height: 20 });
-            }
-
             // Mostrar el elemento (CSS lo tiene display:none por defecto)
             el.style.display = 'flex';
             gsap.set(el, { scale: 0, opacity: 0 });

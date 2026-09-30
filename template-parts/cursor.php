@@ -29,16 +29,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 	<?php /* Estado: ojo — galería de fotos */ ?>
 	<span class="nil-cursor-state nil-cursor-state--eye">
-		<i data-feather="eye"></i>
+		<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
 	</span>
 
 	<?php /* Estado: flechas drag — lightbox / sliders */ ?>
 	<span class="nil-cursor-state nil-cursor-state--drag">
 		<span class="nil-cursor-arrow nil-cursor-arrow--prev">
-			<i data-feather="arrow-left"></i>
+			<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
 		</span>
 		<span class="nil-cursor-arrow nil-cursor-arrow--next">
-			<i data-feather="arrow-right"></i>
+			<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
 		</span>
 	</span>
 

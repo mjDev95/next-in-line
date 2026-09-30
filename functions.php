@@ -169,20 +169,11 @@ function hello_elementor_child_enqueue_styles() {
     // ── LIBRERÍAS DE TERCEROS (GSAP + PAGE TRANSITION EN TODO EL SITIO) ──
     wp_enqueue_script( 'gsap', 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js', [], null, true );
 
-    // ── FEATHER ICONS (Alojado localmente para caché eficiente de 1 año) ──
-    wp_enqueue_script(
-        'feather-icons',
-        get_stylesheet_directory_uri() . '/assets/js/feather.min.js',
-        [],
-        $v( '/assets/js/feather.min.js' ),
-        true
-    );
-
-    // ── CURSOR PERSONALIZADO GLOBAL ──
+    // ── CURSOR PERSONALIZADO GLOBAL (100% Vanilla JS + GSAP) ──
     wp_enqueue_script(
         'nil-cursor',
         get_stylesheet_directory_uri() . '/assets/js/nil-cursor.js',
-        array( 'gsap', 'feather-icons' ),
+        array( 'gsap' ),
         $v( '/assets/js/nil-cursor.js' ),
         true
     );
