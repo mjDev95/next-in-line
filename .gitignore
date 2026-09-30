@@ -1,2 +1,12 @@
 # Documentación local — no se sube al repositorio
 doc/
+docs/
+
+# Configuración de agentes y skills locales
+.agents/
+.agent/
+agents/
+
+# Archivos de sistema operativo
+.DS_Store
+*/.DS_Store

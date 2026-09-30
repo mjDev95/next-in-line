@@ -92,11 +92,14 @@
 	letter-spacing: .2em;
 	text-transform: uppercase;
 	color: #aaa;
+	min-height: 54px;
+	box-sizing: border-box;
 }
 
 @media screen and (max-width: 782px) {
 	.nil-breadcrumb {
 		padding: 16px 24px;
+		min-height: 46px;
 	}
 }
 

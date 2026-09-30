@@ -48,6 +48,28 @@ function nil_head_inline_script() {
 })();</script>\n";
 }
 
+/**
+ * Resource Hints (Lighthouse): Conexiones previas a CDNs críticos para reducir latencia de red.
+ */
+add_action( 'wp_head', 'nil_resource_hints_preconnect', 0 );
+function nil_resource_hints_preconnect() {
+    echo '<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>' . "\n";
+    echo '<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>' . "\n";
+}
+
+/**
+ * Optimización de Bloqueo de Renderizado (Lighthouse):
+ * Carga asíncrona no bloqueante para estilos secundarios de galerías (swiper-css).
+ */
+add_filter( 'style_loader_tag', 'nil_async_non_critical_styles', 10, 4 );
+function nil_async_non_critical_styles( $html, $handle, $href, $media ) {
+    if ( 'swiper-css' === $handle ) {
+        return '<link rel="stylesheet" id="' . esc_attr( $handle ) . '-css" href="' . esc_url( $href ) . '" media="print" onload="this.media=\'all\'">' . "\n"
+             . '<noscript><link rel="stylesheet" id="' . esc_attr( $handle ) . '-fallback-css" href="' . esc_url( $href ) . '"></noscript>' . "\n";
+    }
+    return $html;
+}
+
 add_action( 'wp_enqueue_scripts', 'hello_elementor_child_enqueue_styles' );
 function hello_elementor_child_enqueue_styles() {
     // Helper: usa filemtime para que el navegador siempre descargue la versión más reciente
@@ -182,21 +204,19 @@ function hello_elementor_child_enqueue_styles() {
             true
         );
 
-		// Anima la aparición de los breadcrumbs para que se muestren
-		// después de la animación de entrada del hero.
+		// Anima la aparición de los breadcrumbs preservando el espacio en el layout (evita CLS)
 		$breadcrumb_anim_js = "
 			if (typeof gsap !== 'undefined') {
-				// Oculta los breadcrumbs al inicio para que no se vean y no ocupen espacio.
-				gsap.set('.nil-breadcrumb', { display: 'none', opacity: 0 });
+				// Mantiene el espacio reservado en el flujo y oculta solo la visibilidad/opacidad inicial
+				gsap.set('.nil-breadcrumb', { opacity: 0, visibility: 'hidden' });
 
-				// Anima la aparición después de un retraso.
+				// Anima la aparición suave sin alterar el flujo ni desplazar el hero
 				gsap.to('.nil-breadcrumb', {
 					delay: 1.2,
 					duration: 0.5,
 					opacity: 1,
-					onStart: function() {
-						gsap.set(this.targets(), { display: 'block' });
-					}
+					visibility: 'visible',
+					ease: 'power2.out'
 				});
 			}
 		";
@@ -353,3 +373,36 @@ function nil_the_breadcrumbs() {
 	echo '</div>'; // Cierre de .nil-breadcrumb-inner
 	echo '</nav>';  // Cierre de nav.nil-breadcrumb
 }
+
+/**
+ * ── Optimización Lighthouse (LCP): Single de Modelos ──────────────────────────
+ * 1. Precarga la imagen LCP en <head> con fetchpriority="high" y responsive srcset/sizes.
+ * 2. Garantiza atributos fetchpriority="high", loading="eager" y decoding="async"
+ *    en el elemento <img> del modelo para evitar cualquier lazy loading indebido.
+ */
+add_action( 'wp_head', 'nil_preload_single_modelo_lcp_image', 2 );
+function nil_preload_single_modelo_lcp_image() {
+	if ( is_singular( 'modelos' ) && has_post_thumbnail() ) {
+		$thumbnail_id = get_post_thumbnail_id();
+		$image_src    = wp_get_attachment_image_src( $thumbnail_id, 'full' );
+		$image_srcset = wp_get_attachment_image_srcset( $thumbnail_id, 'full' );
+		$image_sizes  = wp_get_attachment_image_sizes( $thumbnail_id, 'full' );
+
+		if ( $image_src ) {
+			$srcset_attr = $image_srcset ? ' imagesrcset="' . esc_attr( $image_srcset ) . '"' : '';
+			$sizes_attr  = $image_sizes ? ' imagesizes="' . esc_attr( $image_sizes ) . '"' : '';
+			echo '<link rel="preload" as="image" href="' . esc_url( $image_src[0] ) . '" fetchpriority="high"' . $srcset_attr . $sizes_attr . '>' . "\n";
+		}
+	}
+}
+
+add_filter( 'wp_get_attachment_image_attributes', 'nil_force_single_modelo_lcp_attributes', 99, 3 );
+function nil_force_single_modelo_lcp_attributes( $attr, $attachment, $size ) {
+	if ( is_singular( 'modelos' ) && has_post_thumbnail() && get_post_thumbnail_id() === $attachment->ID ) {
+		$attr['fetchpriority'] = 'high';
+		$attr['loading']       = 'eager';
+		$attr['decoding']      = 'async';
+	}
+	return $attr;
+}
+

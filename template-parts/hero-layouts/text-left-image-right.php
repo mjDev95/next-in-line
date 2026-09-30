@@ -11,7 +11,15 @@
 ?>
 <section class="nil-modelo-hero" data-hero-mode="text-left-image-right">
 	<div class="nil-modelo-photo nil-modelo-photo-target">
-		<?php if ( has_post_thumbnail() ) : the_post_thumbnail( 'full' ); endif; ?>
+		<?php
+		if ( has_post_thumbnail() ) :
+			the_post_thumbnail( 'full', array(
+				'fetchpriority' => 'high',
+				'loading'       => 'eager',
+				'decoding'      => 'async',
+			) );
+		endif;
+		?>
 	</div>
 	<div class="nil-modelo-hero-layout">	
 		<div class="container">
